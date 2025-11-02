@@ -1,0 +1,144 @@
+import 'package:dio/dio.dart';
+
+import 'interceptors.dart';
+
+class DioClient {
+  late final Dio _dio;
+  DioClient()
+      : _dio = Dio(
+          BaseOptions(
+              headers: {'Content-Type': 'application/json'},
+              responseType: ResponseType.json,
+              sendTimeout: const Duration(seconds: 120),
+              receiveTimeout: const Duration(seconds: 120)),
+        )..interceptors.addAll([LoggerInterceptor()]);
+
+  // GET METHOD
+  Future<Response> get(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    _dio.options.headers = {'Content-Type': 'application/json'};
+
+    try {
+      final Response response = await _dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  // POST METHOD
+  Future<Response> post(
+    String url, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    _dio.options.headers = {'Content-Type': 'application/json'};
+    try {
+      final Response response = await _dio.post(
+        url,
+        data: data,
+        options: options,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // PUT METHOD
+  Future<Response> put(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      _dio.options.headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      };
+      final Response response = await _dio.put(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // DELETE METHOD
+  Future<Response> delete(
+    String url, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    _dio.options.headers = {'Content-Type': 'application/json'};
+
+    try {
+      final Response response = await _dio.delete(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // DELETE METHOD
+  Future<Response> download(
+    String url,
+    String filePath, {
+    data,
+    Function(int, int)? onReceiveProgress,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    _dio.options.headers = {'Content-Type': 'application/json'};
+
+    try {
+      final Response response = await _dio.download(
+        url,
+        filePath,
+        data: data,
+        onReceiveProgress: onReceiveProgress,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
