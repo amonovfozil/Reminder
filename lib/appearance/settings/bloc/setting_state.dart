@@ -6,11 +6,14 @@ part of 'setting_bloc.dart';
 // }
 
 abstract class SettingState {
-  ThemeMode mode;
+  ThemeData theme;
   bool statusNote;
-  SettingState({this.mode = ThemeMode.light, this.statusNote = true});
+  SettingState({
+   required this.theme ,
+    this.statusNote = true,
+  });
 }
 
 class SettingInitState extends SettingState {
-  SettingInitState({super.mode, super.statusNote});
+  SettingInitState({required super.theme, super.statusNote});
 }

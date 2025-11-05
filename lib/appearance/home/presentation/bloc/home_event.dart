@@ -2,5 +2,6 @@ part of 'home_bloc.dart';
 
 @freezed
 class HomeEvent with _$HomeEvent {
-  const factory HomeEvent.started() = _Started;
+  const factory HomeEvent.init() = _Init;
+  const factory HomeEvent.switchScreen({required int index}) = _SwitchScreen;
 }

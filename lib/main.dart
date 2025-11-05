@@ -1,4 +1,3 @@
-import 'utils/theme/theme.dart';
 import 'core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'core/constants/const_data.dart';
@@ -31,9 +30,10 @@ class MyApp extends StatelessWidget {
               navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,
               onGenerateRoute: AppRouter.generateRoute,
-              themeMode: state.mode,
-              theme: AppTheme.light(context),
-              darkTheme: AppTheme.dark(context),
+              theme: state.theme,
+              // themeMode: state.mode,
+              // theme: AppTheme.light(context),
+              // darkTheme: AppTheme.dark(context),
               locale: locale,
               localizationsDelegates: Locales.delegates,
               supportedLocales: Locales.supportedLocales,

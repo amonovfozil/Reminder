@@ -55,11 +55,12 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,TResult Function( _SwitchScreen value)?  switchScreen,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Started() when started != null:
-return started(_that);case _:
+case _Init() when init != null:
+return init(_that);case _SwitchScreen() when switchScreen != null:
+return switchScreen(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,required TResult Function( _SwitchScreen value)  switchScreen,}){
 final _that = this;
 switch (_that) {
-case _Started():
-return started(_that);case _:
+case _Init():
+return init(_that);case _SwitchScreen():
+return switchScreen(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,TResult? Function( _SwitchScreen value)?  switchScreen,}){
 final _that = this;
 switch (_that) {
-case _Started() when started != null:
-return started(_that);case _:
+case _Init() when init != null:
+return init(_that);case _SwitchScreen() when switchScreen != null:
+return switchScreen(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function( int index)?  switchScreen,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Started() when started != null:
-return started();case _:
+case _Init() when init != null:
+return init();case _SwitchScreen() when switchScreen != null:
+return switchScreen(_that.index);case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function( int index)  switchScreen,}) {final _that = this;
 switch (_that) {
-case _Started():
-return started();case _:
+case _Init():
+return init();case _SwitchScreen():
+return switchScreen(_that.index);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function( int index)?  switchScreen,}) {final _that = this;
 switch (_that) {
-case _Started() when started != null:
-return started();case _:
+case _Init() when init != null:
+return init();case _SwitchScreen() when switchScreen != null:
+return switchScreen(_that.index);case _:
   return null;
 
 }
@@ -174,8 +180,8 @@ return started();case _:
 /// @nodoc
 
 
-class _Started implements HomeEvent {
-  const _Started();
+class _Init implements HomeEvent {
+  const _Init();
   
 
 
@@ -185,7 +191,7 @@ class _Started implements HomeEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Started);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Init);
 }
 
 
@@ -194,7 +200,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'HomeEvent.started()';
+  return 'HomeEvent.init()';
 }
 
 
@@ -204,195 +210,69 @@ String toString() {
 
 
 /// @nodoc
-mixin _$HomeState {
 
 
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'HomeState()';
-}
-
-
-}
-
-/// @nodoc
-class $HomeStateCopyWith<$Res>  {
-$HomeStateCopyWith(HomeState _, $Res Function(HomeState) __);
-}
-
-
-/// Adds pattern-matching-related methods to [HomeState].
-extension HomeStatePatterns on HomeState {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,}){
-final _that = this;
-switch (_that) {
-case _Initial():
-return initial(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,}){
-final _that = this;
-switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _Initial() when initial != null:
-return initial();case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,}) {final _that = this;
-switch (_that) {
-case _Initial():
-return initial();case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,}) {final _that = this;
-switch (_that) {
-case _Initial() when initial != null:
-return initial();case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-
-
-class _Initial implements HomeState {
-  const _Initial();
+class _SwitchScreen implements HomeEvent {
+  const _SwitchScreen({required this.index});
   
 
+ final  int index;
 
-
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SwitchScreenCopyWith<_SwitchScreen> get copyWith => __$SwitchScreenCopyWithImpl<_SwitchScreen>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SwitchScreen&&(identical(other.index, index) || other.index == index));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,index);
 
 @override
 String toString() {
-  return 'HomeState.initial()';
+  return 'HomeEvent.switchScreen(index: $index)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$SwitchScreenCopyWith<$Res> implements $HomeEventCopyWith<$Res> {
+  factory _$SwitchScreenCopyWith(_SwitchScreen value, $Res Function(_SwitchScreen) _then) = __$SwitchScreenCopyWithImpl;
+@useResult
+$Res call({
+ int index
+});
 
 
+
+
+}
+/// @nodoc
+class __$SwitchScreenCopyWithImpl<$Res>
+    implements _$SwitchScreenCopyWith<$Res> {
+  __$SwitchScreenCopyWithImpl(this._self, this._then);
+
+  final _SwitchScreen _self;
+  final $Res Function(_SwitchScreen) _then;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? index = null,}) {
+  return _then(_SwitchScreen(
+index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
 
 // dart format on

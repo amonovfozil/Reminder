@@ -3,10 +3,15 @@ part of 'setting_bloc.dart';
 @freezed
 abstract class SettingEvent with _$SettingEvent {
   const factory SettingEvent.init() = _Init;
-  const factory SettingEvent.changeMode({
+  const factory SettingEvent.setColor({
     required BuildContext ctx,
-    required ThemeMode mode,
-  }) = _ChangeMode;
+    required Color color,
+  }) = _SetColor;
+
+  const factory SettingEvent.setFont({
+    required BuildContext ctx,
+    required String font,
+  }) = _SetFont;
 
   const factory SettingEvent.changeLocale({
     required BuildContext ctx,

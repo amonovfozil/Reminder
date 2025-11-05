@@ -1,6 +1,14 @@
 part of 'home_bloc.dart';
 
-@freezed
-class HomeState with _$HomeState {
-  const factory HomeState.initial() = _Initial;
+class HomeState {
+  final int currentIndex;
+  HomeState({this.currentIndex = 0});
+}
+
+class InitialHomeState extends HomeState {
+  InitialHomeState({super.currentIndex});
+}
+
+class ContuneHomeState extends HomeState {
+  ContuneHomeState({super.currentIndex});
 }
