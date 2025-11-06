@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/core/constants/const_data.dart';
-import 'package:reminder/utils/theme/text_styles.dart';
-import 'package:reminder/utils/theme/theme.dart';
-
 import '../../../utils/theme/app_colors.dart';
+import 'package:reminder/utils/theme/text_styles.dart';
+import 'package:reminder/core/constants/const_data.dart';
 
 class SimpleAppButton extends StatelessWidget {
   final String text;

@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../../data/models/servise_setting_model.dart';
 import '../../../../core/providers/error/failures.dart';
-import 'package:reminder/appearance/home/data/datasources/home_datasource.dart';
+import 'package:reminder/appearance/home/data/datasources/home_data_source.dart';
 
 abstract class HomeRepository {
   Future<Either<Failure, ServiceSettingModel>> checkStatusService();

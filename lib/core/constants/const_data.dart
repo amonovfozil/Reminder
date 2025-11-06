@@ -20,8 +20,8 @@ const String roboto = 'Roboto';
 
 //Border Radius val
 const double borderRadVal = 30;
-const double buttonBorderRadVal = 20; 
-const double buttonHeightVal = 20; 
+const double buttonBorderRadVal = 20;
+const double buttonHeightVal = 20;
 const double borderWidth = 1;
 
 //Padding Values
@@ -29,6 +29,9 @@ const double spacingVal = 16;
 const double marginVal = 16;
 const double verticalPadVal = 14;
 const double horizantPadVal = 24;
+const double paddingVal = 16;
 double bottomPadVal = Platform.isAndroid ? 16 : 28;
+const double bottomHeightVal = 90;
 
 Size get appSize => MediaQuery.of(navigatorKey.currentContext!).size;
+//const values

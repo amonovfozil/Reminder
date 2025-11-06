@@ -128,12 +128,12 @@ return changeLocale(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function( BuildContext ctx,  Color color)?  setColor,TResult Function( BuildContext ctx,  String font)?  setFont,TResult Function( BuildContext ctx,  String code)?  changeLocale,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function( Color color,  Color secondary)?  setColor,TResult Function( String font)?  setFont,TResult Function( BuildContext ctx,  String code)?  changeLocale,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
 return init();case _SetColor() when setColor != null:
-return setColor(_that.ctx,_that.color);case _SetFont() when setFont != null:
-return setFont(_that.ctx,_that.font);case _ChangeLocale() when changeLocale != null:
+return setColor(_that.color,_that.secondary);case _SetFont() when setFont != null:
+return setFont(_that.font);case _ChangeLocale() when changeLocale != null:
 return changeLocale(_that.ctx,_that.code);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return changeLocale(_that.ctx,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function( BuildContext ctx,  Color color)  setColor,required TResult Function( BuildContext ctx,  String font)  setFont,required TResult Function( BuildContext ctx,  String code)  changeLocale,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function( Color color,  Color secondary)  setColor,required TResult Function( String font)  setFont,required TResult Function( BuildContext ctx,  String code)  changeLocale,}) {final _that = this;
 switch (_that) {
 case _Init():
 return init();case _SetColor():
-return setColor(_that.ctx,_that.color);case _SetFont():
-return setFont(_that.ctx,_that.font);case _ChangeLocale():
+return setColor(_that.color,_that.secondary);case _SetFont():
+return setFont(_that.font);case _ChangeLocale():
 return changeLocale(_that.ctx,_that.code);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return changeLocale(_that.ctx,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function( BuildContext ctx,  Color color)?  setColor,TResult? Function( BuildContext ctx,  String font)?  setFont,TResult? Function( BuildContext ctx,  String code)?  changeLocale,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function( Color color,  Color secondary)?  setColor,TResult? Function( String font)?  setFont,TResult? Function( BuildContext ctx,  String code)?  changeLocale,}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
 return init();case _SetColor() when setColor != null:
-return setColor(_that.ctx,_that.color);case _SetFont() when setFont != null:
-return setFont(_that.ctx,_that.font);case _ChangeLocale() when changeLocale != null:
+return setColor(_that.color,_that.secondary);case _SetFont() when setFont != null:
+return setFont(_that.font);case _ChangeLocale() when changeLocale != null:
 return changeLocale(_that.ctx,_that.code);case _:
   return null;
 
@@ -225,11 +225,11 @@ String toString() {
 
 
 class _SetColor implements SettingEvent {
-  const _SetColor({required this.ctx, required this.color});
+  const _SetColor({required this.color, required this.secondary});
   
 
- final  BuildContext ctx;
  final  Color color;
+ final  Color secondary;
 
 /// Create a copy of SettingEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +241,16 @@ _$SetColorCopyWith<_SetColor> get copyWith => __$SetColorCopyWithImpl<_SetColor>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetColor&&(identical(other.ctx, ctx) || other.ctx == ctx)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetColor&&(identical(other.color, color) || other.color == color)&&(identical(other.secondary, secondary) || other.secondary == secondary));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,ctx,color);
+int get hashCode => Object.hash(runtimeType,color,secondary);
 
 @override
 String toString() {
-  return 'SettingEvent.setColor(ctx: $ctx, color: $color)';
+  return 'SettingEvent.setColor(color: $color, secondary: $secondary)';
 }
 
 
@@ -261,7 +261,7 @@ abstract mixin class _$SetColorCopyWith<$Res> implements $SettingEventCopyWith<$
   factory _$SetColorCopyWith(_SetColor value, $Res Function(_SetColor) _then) = __$SetColorCopyWithImpl;
 @useResult
 $Res call({
- BuildContext ctx, Color color
+ Color color, Color secondary
 });
 
 
@@ -278,10 +278,10 @@ class __$SetColorCopyWithImpl<$Res>
 
 /// Create a copy of SettingEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? ctx = null,Object? color = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? color = null,Object? secondary = null,}) {
   return _then(_SetColor(
-ctx: null == ctx ? _self.ctx : ctx // ignore: cast_nullable_to_non_nullable
-as BuildContext,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as Color,secondary: null == secondary ? _self.secondary : secondary // ignore: cast_nullable_to_non_nullable
 as Color,
   ));
 }
@@ -293,10 +293,9 @@ as Color,
 
 
 class _SetFont implements SettingEvent {
-  const _SetFont({required this.ctx, required this.font});
+  const _SetFont({required this.font});
   
 
- final  BuildContext ctx;
  final  String font;
 
 /// Create a copy of SettingEvent
@@ -309,16 +308,16 @@ _$SetFontCopyWith<_SetFont> get copyWith => __$SetFontCopyWithImpl<_SetFont>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetFont&&(identical(other.ctx, ctx) || other.ctx == ctx)&&(identical(other.font, font) || other.font == font));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetFont&&(identical(other.font, font) || other.font == font));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,ctx,font);
+int get hashCode => Object.hash(runtimeType,font);
 
 @override
 String toString() {
-  return 'SettingEvent.setFont(ctx: $ctx, font: $font)';
+  return 'SettingEvent.setFont(font: $font)';
 }
 
 
@@ -329,7 +328,7 @@ abstract mixin class _$SetFontCopyWith<$Res> implements $SettingEventCopyWith<$R
   factory _$SetFontCopyWith(_SetFont value, $Res Function(_SetFont) _then) = __$SetFontCopyWithImpl;
 @useResult
 $Res call({
- BuildContext ctx, String font
+ String font
 });
 
 
@@ -346,10 +345,9 @@ class __$SetFontCopyWithImpl<$Res>
 
 /// Create a copy of SettingEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? ctx = null,Object? font = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? font = null,}) {
   return _then(_SetFont(
-ctx: null == ctx ? _self.ctx : ctx // ignore: cast_nullable_to_non_nullable
-as BuildContext,font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
+font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

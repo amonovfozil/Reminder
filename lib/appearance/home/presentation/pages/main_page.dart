@@ -1,3 +1,5 @@
+import 'package:reminder/appearance/calendar/presentation/pages/calendar_page.dart';
+
 import '../../../settings/pages/settings_page.dart';
 import '../bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +16,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Widget> pages = [
-    const HomePage(),
-    Container(color: Colors.blueAccent),
-    const SettingsPage(),
-  ];
+  List<Widget> pages = const [HomePage(), CalendarPage(), SettingsPage()];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(

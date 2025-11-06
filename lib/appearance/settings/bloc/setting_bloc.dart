@@ -35,7 +35,10 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   Future<void> _onSetColor(_SetColor event, emit) async {
     emit(
       SettingInitState(
-        theme: state.theme.copyWith(primaryColor: event.color),
+        theme: state.theme.copyWith(
+          primaryColor: event.color,
+          secondaryHeaderColor: event.secondary,
+        ),
         statusNote: state.statusNote,
       ),
     );

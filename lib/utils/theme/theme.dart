@@ -1,12 +1,12 @@
-import 'dart:io';
-import 'package:reminder/core/constants/const_data.dart';
-
 import 'app_colors.dart';
+import 'page_transitions.dart';
 import 'package:flutter/material.dart';
+import 'package:reminder/core/constants/const_data.dart';
 
 class AppTheme {
   static ThemeData get light {
     return ThemeData(
+      useMaterial3: true,
       primaryColor: orange,
       secondaryHeaderColor: orangeAccent,
       cardColor: cardColor,
@@ -23,9 +23,9 @@ class AppTheme {
       ),
       iconTheme: const IconThemeData(color: lightGrey),
       colorScheme: const ColorScheme.light(
-        primary: kprimaryColor,
+        primary: orange,
         secondary: green,
-        error: kprimaryColor,
+        error: orangeAccent,
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.transparent,
@@ -36,19 +36,19 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: cardColor,
-        selectedItemColor: kprimaryColor,
+        selectedItemColor: orange,
         unselectedItemColor: lightGrey,
-        selectedIconTheme: IconThemeData(color: kprimaryColor),
+        selectedIconTheme: IconThemeData(color: orange),
         showUnselectedLabels: true,
       ),
       brightness: Brightness.light,
-      tabBarTheme: TabBarThemeData(indicatorColor: kprimaryColor),
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: LiquidPageTransitionBuilder(),
+          TargetPlatform.iOS: LiquidPageTransitionBuilder(),
+        },
+      ),
+      tabBarTheme: TabBarThemeData(indicatorColor: orange),
     );
   }
 }
-
-//const values
-const double paddingVal = 16;
-double bottomPadVal = Platform.isAndroid ? 14 : 28;
-double topShowModalPadVal = Platform.isAndroid ? 60 : 100;
-double safeBottomPaddingVal = Platform.isAndroid ? 20 : 0;

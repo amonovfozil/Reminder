@@ -1,6 +1,5 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/constants/const_data.dart';
@@ -8,20 +7,20 @@ import 'package:reminder/appearance/home/presentation/bloc/home_bloc.dart';
 
 class CustomBottomNavigationBarItem {
   final String? title;
-  final IconData icon;
+  final String iconPath;
   final Function? function;
 
   CustomBottomNavigationBarItem({
     this.title,
-    required this.icon,
+    required this.iconPath,
     this.function,
   });
 }
 
 List<CustomBottomNavigationBarItem> menu = [
-  CustomBottomNavigationBarItem(icon: CupertinoIcons.home),
-  CustomBottomNavigationBarItem(icon: CupertinoIcons.calendar),
-  CustomBottomNavigationBarItem(icon: Icons.settings),
+  CustomBottomNavigationBarItem(iconPath: "assets/images/home/home.png"),
+  CustomBottomNavigationBarItem(iconPath: "assets/images/home/calendar.png"),
+  CustomBottomNavigationBarItem(iconPath: "assets/images/home/settings.png"),
 ];
 
 class CutomBottomNavigationBar extends StatelessWidget {
@@ -66,7 +65,11 @@ class CutomBottomNavigationBar extends StatelessWidget {
                         horizontal: (appSize.width - 64) / 8.5,
                         vertical: 10,
                       ),
-                      child: Icon(item.icon, color: white, size: 28),
+                      child: ImageIcon(
+                        AssetImage(item.iconPath),
+                        color: white,
+                        size: 28,
+                      ),
                     ),
                   ),
                 )

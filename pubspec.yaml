@@ -57,8 +57,8 @@ flutter:
 
   # Images & Icons
     - assets/images/
-    - assets/images/today/
-    - assets/images/clock/
+    - assets/images/home/
+    - assets/images/setting/
     - assets/images/calendar/
 
   # fonts
