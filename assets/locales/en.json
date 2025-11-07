@@ -1,4 +1,6 @@
 {
   "hello": "Hello, @name ",
+  "about_app": "About the app",
+  "app_version": "App version 1.0.12",
   "": ""
 }

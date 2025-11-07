@@ -55,13 +55,15 @@ extension SettingEventPatterns on SettingEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,TResult Function( _SetColor value)?  setColor,TResult Function( _SetFont value)?  setFont,TResult Function( _ChangeLocale value)?  changeLocale,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Init value)?  init,TResult Function( _ToggleStatus value)?  togglestatus,TResult Function( _SetColor value)?  setColor,TResult Function( _SetFont value)?  setFont,TResult Function( _SetSound value)?  setSound,TResult Function( _ChangeLocale value)?  changeLocale,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init(_that);case _SetColor() when setColor != null:
+return init(_that);case _ToggleStatus() when togglestatus != null:
+return togglestatus(_that);case _SetColor() when setColor != null:
 return setColor(_that);case _SetFont() when setFont != null:
-return setFont(_that);case _ChangeLocale() when changeLocale != null:
+return setFont(_that);case _SetSound() when setSound != null:
+return setSound(_that);case _ChangeLocale() when changeLocale != null:
 return changeLocale(_that);case _:
   return orElse();
 
@@ -80,13 +82,15 @@ return changeLocale(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,required TResult Function( _SetColor value)  setColor,required TResult Function( _SetFont value)  setFont,required TResult Function( _ChangeLocale value)  changeLocale,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Init value)  init,required TResult Function( _ToggleStatus value)  togglestatus,required TResult Function( _SetColor value)  setColor,required TResult Function( _SetFont value)  setFont,required TResult Function( _SetSound value)  setSound,required TResult Function( _ChangeLocale value)  changeLocale,}){
 final _that = this;
 switch (_that) {
 case _Init():
-return init(_that);case _SetColor():
+return init(_that);case _ToggleStatus():
+return togglestatus(_that);case _SetColor():
 return setColor(_that);case _SetFont():
-return setFont(_that);case _ChangeLocale():
+return setFont(_that);case _SetSound():
+return setSound(_that);case _ChangeLocale():
 return changeLocale(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +108,15 @@ return changeLocale(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,TResult? Function( _SetColor value)?  setColor,TResult? Function( _SetFont value)?  setFont,TResult? Function( _ChangeLocale value)?  changeLocale,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Init value)?  init,TResult? Function( _ToggleStatus value)?  togglestatus,TResult? Function( _SetColor value)?  setColor,TResult? Function( _SetFont value)?  setFont,TResult? Function( _SetSound value)?  setSound,TResult? Function( _ChangeLocale value)?  changeLocale,}){
 final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init(_that);case _SetColor() when setColor != null:
+return init(_that);case _ToggleStatus() when togglestatus != null:
+return togglestatus(_that);case _SetColor() when setColor != null:
 return setColor(_that);case _SetFont() when setFont != null:
-return setFont(_that);case _ChangeLocale() when changeLocale != null:
+return setFont(_that);case _SetSound() when setSound != null:
+return setSound(_that);case _ChangeLocale() when changeLocale != null:
 return changeLocale(_that);case _:
   return null;
 
@@ -128,12 +134,14 @@ return changeLocale(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function( Color color,  Color secondary)?  setColor,TResult Function( String font)?  setFont,TResult Function( BuildContext ctx,  String code)?  changeLocale,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function( bool status)?  togglestatus,TResult Function( Color color,  Color secondary)?  setColor,TResult Function( BuildContext ctx,  String font)?  setFont,TResult Function( BuildContext ctx,  String sound)?  setSound,TResult Function( BuildContext ctx,  String code)?  changeLocale,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init();case _SetColor() when setColor != null:
+return init();case _ToggleStatus() when togglestatus != null:
+return togglestatus(_that.status);case _SetColor() when setColor != null:
 return setColor(_that.color,_that.secondary);case _SetFont() when setFont != null:
-return setFont(_that.font);case _ChangeLocale() when changeLocale != null:
+return setFont(_that.ctx,_that.font);case _SetSound() when setSound != null:
+return setSound(_that.ctx,_that.sound);case _ChangeLocale() when changeLocale != null:
 return changeLocale(_that.ctx,_that.code);case _:
   return orElse();
 
@@ -152,12 +160,14 @@ return changeLocale(_that.ctx,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function( Color color,  Color secondary)  setColor,required TResult Function( String font)  setFont,required TResult Function( BuildContext ctx,  String code)  changeLocale,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function( bool status)  togglestatus,required TResult Function( Color color,  Color secondary)  setColor,required TResult Function( BuildContext ctx,  String font)  setFont,required TResult Function( BuildContext ctx,  String sound)  setSound,required TResult Function( BuildContext ctx,  String code)  changeLocale,}) {final _that = this;
 switch (_that) {
 case _Init():
-return init();case _SetColor():
+return init();case _ToggleStatus():
+return togglestatus(_that.status);case _SetColor():
 return setColor(_that.color,_that.secondary);case _SetFont():
-return setFont(_that.font);case _ChangeLocale():
+return setFont(_that.ctx,_that.font);case _SetSound():
+return setSound(_that.ctx,_that.sound);case _ChangeLocale():
 return changeLocale(_that.ctx,_that.code);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +185,14 @@ return changeLocale(_that.ctx,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function( Color color,  Color secondary)?  setColor,TResult? Function( String font)?  setFont,TResult? Function( BuildContext ctx,  String code)?  changeLocale,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function( bool status)?  togglestatus,TResult? Function( Color color,  Color secondary)?  setColor,TResult? Function( BuildContext ctx,  String font)?  setFont,TResult? Function( BuildContext ctx,  String sound)?  setSound,TResult? Function( BuildContext ctx,  String code)?  changeLocale,}) {final _that = this;
 switch (_that) {
 case _Init() when init != null:
-return init();case _SetColor() when setColor != null:
+return init();case _ToggleStatus() when togglestatus != null:
+return togglestatus(_that.status);case _SetColor() when setColor != null:
 return setColor(_that.color,_that.secondary);case _SetFont() when setFont != null:
-return setFont(_that.font);case _ChangeLocale() when changeLocale != null:
+return setFont(_that.ctx,_that.font);case _SetSound() when setSound != null:
+return setSound(_that.ctx,_that.sound);case _ChangeLocale() when changeLocale != null:
 return changeLocale(_that.ctx,_that.code);case _:
   return null;
 
@@ -220,6 +232,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _ToggleStatus implements SettingEvent {
+  const _ToggleStatus({required this.status});
+  
+
+ final  bool status;
+
+/// Create a copy of SettingEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ToggleStatusCopyWith<_ToggleStatus> get copyWith => __$ToggleStatusCopyWithImpl<_ToggleStatus>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ToggleStatus&&(identical(other.status, status) || other.status == status));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,status);
+
+@override
+String toString() {
+  return 'SettingEvent.togglestatus(status: $status)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ToggleStatusCopyWith<$Res> implements $SettingEventCopyWith<$Res> {
+  factory _$ToggleStatusCopyWith(_ToggleStatus value, $Res Function(_ToggleStatus) _then) = __$ToggleStatusCopyWithImpl;
+@useResult
+$Res call({
+ bool status
+});
+
+
+
+
+}
+/// @nodoc
+class __$ToggleStatusCopyWithImpl<$Res>
+    implements _$ToggleStatusCopyWith<$Res> {
+  __$ToggleStatusCopyWithImpl(this._self, this._then);
+
+  final _ToggleStatus _self;
+  final $Res Function(_ToggleStatus) _then;
+
+/// Create a copy of SettingEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? status = null,}) {
+  return _then(_ToggleStatus(
+status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -293,9 +371,10 @@ as Color,
 
 
 class _SetFont implements SettingEvent {
-  const _SetFont({required this.font});
+  const _SetFont({required this.ctx, required this.font});
   
 
+ final  BuildContext ctx;
  final  String font;
 
 /// Create a copy of SettingEvent
@@ -308,16 +387,16 @@ _$SetFontCopyWith<_SetFont> get copyWith => __$SetFontCopyWithImpl<_SetFont>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetFont&&(identical(other.font, font) || other.font == font));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetFont&&(identical(other.ctx, ctx) || other.ctx == ctx)&&(identical(other.font, font) || other.font == font));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,font);
+int get hashCode => Object.hash(runtimeType,ctx,font);
 
 @override
 String toString() {
-  return 'SettingEvent.setFont(font: $font)';
+  return 'SettingEvent.setFont(ctx: $ctx, font: $font)';
 }
 
 
@@ -328,7 +407,7 @@ abstract mixin class _$SetFontCopyWith<$Res> implements $SettingEventCopyWith<$R
   factory _$SetFontCopyWith(_SetFont value, $Res Function(_SetFont) _then) = __$SetFontCopyWithImpl;
 @useResult
 $Res call({
- String font
+ BuildContext ctx, String font
 });
 
 
@@ -345,9 +424,78 @@ class __$SetFontCopyWithImpl<$Res>
 
 /// Create a copy of SettingEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? font = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? ctx = null,Object? font = null,}) {
   return _then(_SetFont(
-font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
+ctx: null == ctx ? _self.ctx : ctx // ignore: cast_nullable_to_non_nullable
+as BuildContext,font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _SetSound implements SettingEvent {
+  const _SetSound({required this.ctx, required this.sound});
+  
+
+ final  BuildContext ctx;
+ final  String sound;
+
+/// Create a copy of SettingEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SetSoundCopyWith<_SetSound> get copyWith => __$SetSoundCopyWithImpl<_SetSound>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetSound&&(identical(other.ctx, ctx) || other.ctx == ctx)&&(identical(other.sound, sound) || other.sound == sound));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,ctx,sound);
+
+@override
+String toString() {
+  return 'SettingEvent.setSound(ctx: $ctx, sound: $sound)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SetSoundCopyWith<$Res> implements $SettingEventCopyWith<$Res> {
+  factory _$SetSoundCopyWith(_SetSound value, $Res Function(_SetSound) _then) = __$SetSoundCopyWithImpl;
+@useResult
+$Res call({
+ BuildContext ctx, String sound
+});
+
+
+
+
+}
+/// @nodoc
+class __$SetSoundCopyWithImpl<$Res>
+    implements _$SetSoundCopyWith<$Res> {
+  __$SetSoundCopyWithImpl(this._self, this._then);
+
+  final _SetSound _self;
+  final $Res Function(_SetSound) _then;
+
+/// Create a copy of SettingEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? ctx = null,Object? sound = null,}) {
+  return _then(_SetSound(
+ctx: null == ctx ? _self.ctx : ctx // ignore: cast_nullable_to_non_nullable
+as BuildContext,sound: null == sound ? _self.sound : sound // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

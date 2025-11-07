@@ -33,7 +33,7 @@ class CutomBottomNavigationBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Material(
-        color: context.primaryColor,
+        color: context.secondaryColor,
 
         // height: 60,
         shape: RoundedRectangleBorder(
@@ -57,7 +57,7 @@ class CutomBottomNavigationBar extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: currentIndex == index
-                            ? white.withOpacity(0.22)
+                            ? context.primaryColor.withOpacity(1)
                             : null,
                         borderRadius: BorderRadius.circular(borderRadVal),
                       ),

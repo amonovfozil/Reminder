@@ -31,6 +31,8 @@ dependencies:
 # UI
   intl: ^0.20.2
   flutter_locales: ^3.0.3
+  package_info_plus: ^9.0.0
+  in_app_review: ^2.0.11
 
 
 
@@ -90,6 +92,41 @@ flutter:
           style: italic
         - asset: assets/fonts/roboto/Roboto-SemiBold.ttf
           weight: 900
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat-Regular.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Italic.ttf
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat-SemiBold.ttf
+          weight: 900
+
+    - family: Playfair
+      fonts:
+        - asset: assets/fonts/playfair/PlayfairDisplay-Regular.ttf
+        - asset: assets/fonts/playfair/PlayfairDisplay-Italic.ttf
+          style: italic
+        - asset: assets/fonts/playfair/PlayfairDisplay-SemiBold.ttf
+          weight: 900    
+
+    - family: PT_Sans_Narrow
+      fonts:
+        - asset: assets/fonts/pt_sans/PTSansNarrow-Regular.ttf
+        - asset: assets/fonts/pt_sans/PTSansNarrow-Regular.ttf
+          style: italic
+        - asset: assets/fonts/pt_sans/PTSansNarrow-Bold.ttf
+          weight: 900    
+
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/ubuntu/Ubuntu-Regular.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-Italic.ttf
+          style: italic
+        - asset: assets/fonts/ubuntu/Ubuntu-Medium.ttf
+          weight: 900                        
+            
+
+
   
   
 

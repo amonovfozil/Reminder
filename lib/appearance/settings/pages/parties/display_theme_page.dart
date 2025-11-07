@@ -167,10 +167,7 @@ class DisplayThemePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        spacing: spacingVal,
-        children: [SizedBox(height: 20, width: double.infinity)],
-      ),
+      body: SizedBox(),
     );
   }
 }

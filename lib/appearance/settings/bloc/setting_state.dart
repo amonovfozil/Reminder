@@ -7,13 +7,15 @@ part of 'setting_bloc.dart';
 
 abstract class SettingState {
   ThemeData theme;
-  bool statusNote;
+  bool noteStatus;
+  String noteSound;
   SettingState({
-   required this.theme ,
-    this.statusNote = true,
+    required this.theme,
+    this.noteSound = custom,
+    this.noteStatus = true,
   });
 }
 
 class SettingInitState extends SettingState {
-  SettingInitState({required super.theme, super.statusNote});
+  SettingInitState({required super.theme, super.noteSound, super.noteStatus});
 }

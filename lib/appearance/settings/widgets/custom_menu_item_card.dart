@@ -13,6 +13,7 @@ class CustomMenuItemCard extends StatelessWidget {
   final String subtitle;
   final Color? splashColor;
   final double borderRadius;
+  final double spaceTitle;
   final bool isActive;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
@@ -21,11 +22,12 @@ class CustomMenuItemCard extends StatelessWidget {
   const CustomMenuItemCard({
     super.key,
     this.width,
-    this.height = 75,
+    this.height = 65,
     this.splashColor,
     this.subtitle = "",
     required this.title,
     this.isActive = false,
+    this.spaceTitle = spacingVal,
     this.borderRadius = borderRadVal,
     this.suffix,
     this.prefix = const SizedBox(),
@@ -68,7 +70,7 @@ class CustomMenuItemCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 prefix,
-                const SizedBox(width: spacingVal),
+                SizedBox(width: spaceTitle),
                 Expanded(
                   child: Column(
                     // spacing: 5,

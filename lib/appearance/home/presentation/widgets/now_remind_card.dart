@@ -4,6 +4,8 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 
+import '../../../../core/constants/const_data.dart';
+
 class NowRemindCard extends StatelessWidget {
   const NowRemindCard({super.key});
 
@@ -80,18 +82,28 @@ class NowRemindCard extends StatelessWidget {
         child: Row(
           spacing: 6,
           children: [
-            SimpleAppButton(text: 'View', onTap: () {}),
+            SimpleAppButton(
+              text: 'View',
+              height: buttonHeightVal,
+              onTap: () {},
+              style: context.subStyle.copyWith(color: white),
+            ),
             SimpleAppButton(
               text: 'Edit',
               onTap: () {},
+              height: buttonHeightVal,
               color: Colors.transparent,
               textColor: context.primaryColor,
+              style: context.subStyle.copyWith(color: context.primaryColor),
             ),
             SimpleAppButton(
               text: 'Delete',
+
               onTap: () {},
+              height: buttonHeightVal,
               color: Colors.transparent,
               textColor: context.primaryColor,
+              style: context.subStyle.copyWith(color: context.primaryColor),
             ),
           ],
         ),

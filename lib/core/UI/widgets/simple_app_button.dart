@@ -26,7 +26,7 @@ class SimpleAppButton extends StatelessWidget {
     this.isLoad = false,
     this.borderRadius = buttonBorderRadVal,
     this.width,
-    this.height = buttonHeightVal,
+    this.height = 60,
     this.margin = const EdgeInsets.symmetric(horizontal: 0),
     this.padding = const EdgeInsets.symmetric(horizontal: paddingVal),
     this.style,
@@ -61,7 +61,8 @@ class SimpleAppButton extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               text,
-              style: context.subStyle.copyWith(color: textColor),
+              style:
+                  style ?? context.subTitleTextStyle.copyWith(color: textColor),
             ),
           ),
         ),
