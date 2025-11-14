@@ -27,14 +27,11 @@ class MyApp extends StatelessWidget {
           return LocaleBuilder(
             builder: (locale) => MaterialApp(
               title: 'Reminder app',
+              locale: locale,
+              theme: state.theme,
               navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,
               onGenerateRoute: AppRouter.generateRoute,
-              theme: state.theme,
-              // themeMode: state.mode,
-              // theme: AppTheme.light(context),
-              // darkTheme: AppTheme.dark(context),
-              locale: locale,
               localizationsDelegates: Locales.delegates,
               supportedLocales: Locales.supportedLocales,
               home: const MainPage(),

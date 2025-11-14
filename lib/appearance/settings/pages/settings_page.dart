@@ -1,22 +1,24 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:in_app_review/in_app_review.dart';
-import 'package:reminder/appearance/settings/widgets/sound_modal.dart';
 
 import '../bloc/setting_bloc.dart';
 import '../widgets/fonts_modal.dart';
 import 'package:flutter/material.dart';
 import '../widgets/locales_modal.dart';
+import 'package:flutter/cupertino.dart';
 import '../../../utils/theme/app_colors.dart';
 import '../widgets/custom_menu_item_card.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/constants/const_data.dart';
 import 'package:reminder/core/routes/routes.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:reminder/core/helpers/helper.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../core/UI/screens/custom_backgraund_style.dart';
 import 'package:reminder/utils/extension/string_extension.dart';
+import 'package:reminder/core/constants/secrets/app_secrets.dart';
+import 'package:reminder/appearance/settings/widgets/sound_modal.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -201,7 +203,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async =>
+                          await launchUrl(Uri.parse(AppSecrets.telegrambUrl)),
                       icon: Icon(Icons.telegram, color: white, size: 26),
                     ),
                     IconButton(
@@ -214,7 +217,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
 
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async =>
+                          await launchUrl(Uri.parse(AppSecrets.gitHubUrl)),
                       icon: ImageIcon(
                         AssetImage('assets/images/setting/github.png'),
                         color: white,

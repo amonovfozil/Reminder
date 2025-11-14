@@ -33,6 +33,7 @@ dependencies:
   flutter_locales: ^3.0.3
   package_info_plus: ^9.0.0
   in_app_review: ^2.0.11
+  url_launcher: ^6.3.2
 
 
 

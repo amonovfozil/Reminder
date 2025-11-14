@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return CustomBackgraundStyle(
       title: 'Reminder',
+      bodyColor: white,
       headBody: NowRemindCard(),
       body: SingleChildScrollView(
         child: Column(

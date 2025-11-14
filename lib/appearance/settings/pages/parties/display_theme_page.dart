@@ -14,6 +14,7 @@ class DisplayThemePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomBackgraundStyle(
       title: 'Display Theme',
+      scaffoldColor: context.primaryColor,
       appbar: AppBar(
         backgroundColor: Colors.transparent,
         leadingWidth: 60,
