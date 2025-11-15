@@ -4,6 +4,7 @@ import '../../widgets/custom_font_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../utils/theme/app_colors.dart';
 import '../../../../core/constants/const_data.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
 import 'package:reminder/appearance/settings/bloc/setting_bloc.dart';
 
@@ -15,14 +16,12 @@ class DisplayThemePage extends StatelessWidget {
     return CustomBackgraundStyle(
       title: 'Display Theme',
       scaffoldColor: context.primaryColor,
-      appbar: AppBar(
-        backgroundColor: Colors.transparent,
-        leadingWidth: 60,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).maybePop(),
-          icon: Icon(CupertinoIcons.back, color: white, size: 32),
-        ),
+      leadingWidth: 60,
+      leadingAppbar: IconButton(
+        onPressed: () => Navigator.of(context).maybePop(),
+        icon: Icon(CupertinoIcons.back, color: white, size: 32),
       ),
+
       headBody: Card(
         color: white.withOpacity(0.90),
         margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -43,9 +42,10 @@ class DisplayThemePage extends StatelessWidget {
               Expanded(
                 child: GridView.count(
                   // physics: PageScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 32),
+                  padding: EdgeInsets.only(top: horizantPadVal),
                   crossAxisCount: 3,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: 0.65.w / (1.0.h),
+                  // childAspectRatio: (0.75) * (1.w / 1.h),
                   children: [
                     CustomFontCard(
                       color: Colors.red,

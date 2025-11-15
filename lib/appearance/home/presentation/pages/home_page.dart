@@ -5,6 +5,7 @@ import 'package:reminder/core/constants/const_data.dart';
 import 'package:reminder/core/UI/widgets/custom_card.dart';
 import '../../../../core/UI/widgets/custom_card_button.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,16 +23,16 @@ class _HomePageState extends State<HomePage> {
       headBody: NowRemindCard(),
       body: SingleChildScrollView(
         child: Column(
-          spacing: spacingVal,
+          spacing: spacingVal.h,
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: 50.h),
             CustomCardButton(
               title: "Interview",
               subtitle: '03 June, 2024  07:00PM',
               suffix: ImageIcon(
                 AssetImage('assets/images/home/users.png'),
                 color: context.primaryColor,
-                size: 32,
+                size: 32.w,
               ),
               onTap: () {},
             ),
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
               suffix: ImageIcon(
                 AssetImage('assets/images/home/calendar_edit.png'),
                 color: context.primaryColor,
-                size: 32,
+                size: 32.w,
               ),
             ),
             CustomCard(
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               suffix: ImageIcon(
                 AssetImage('assets/images/home/emails.png'),
                 color: context.primaryColor,
-                size: 32,
+                size: 32.w,
               ),
             ),
             CustomCard(
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
               suffix: ImageIcon(
                 AssetImage('assets/images/home/docUser.png'),
                 color: context.primaryColor,
-                size: 32,
+                size: 32.w,
               ),
             ),
             CustomCard(
@@ -68,11 +69,11 @@ class _HomePageState extends State<HomePage> {
               suffix: ImageIcon(
                 AssetImage('assets/images/home/bag.png'),
                 color: context.primaryColor,
-                size: 32,
+                size: 32.w,
               ),
             ),
 
-            const SizedBox(height: bottomHeightVal),
+            SizedBox(height: bottomHeightVal.h),
           ],
         ),
       ),

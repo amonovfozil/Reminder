@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class CustomBottomNavigationBarItem {
   final String? title;
@@ -27,23 +28,23 @@ class CutomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: 32.w),
       child: Container(
-        width: appSize.width - 75,
+        width: appSize.width - 75.w,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadVal),
+          borderRadius: BorderRadius.circular(borderRadVal.r),
           color: context.secondaryColor,
         ),
         child: TabBar(
           indicatorSize: TabBarIndicatorSize.tab,
           indicatorAnimation: TabIndicatorAnimation.elastic,
-          padding: const EdgeInsets.all(5),
-          labelPadding: const EdgeInsets.all(0),
+          padding: EdgeInsets.all(5.w),
+          labelPadding: EdgeInsets.zero,
           indicatorWeight: 0,
           dividerHeight: 0,
           indicator: BoxDecoration(
             color: context.primaryColor,
-            borderRadius: BorderRadius.circular(borderRadVal),
+            borderRadius: BorderRadius.circular(borderRadVal.r),
           ),
           overlayColor: WidgetStatePropertyAll(context.secondaryColor),
           tabs: menu
@@ -52,7 +53,7 @@ class CutomBottomNavigationBar extends StatelessWidget {
                   child: ImageIcon(
                     AssetImage(item.iconPath),
                     color: white,
-                    size: 28,
+                    size: 28.w,
                   ),
                 ),
               )

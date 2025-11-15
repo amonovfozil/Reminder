@@ -17,6 +17,10 @@ const String playfair = 'Playfair';
 const String ptSans = 'PT_Sans_Narrow';
 const String ubuntu = 'Ubuntu';
 
+// Design size used for responsive scaling (iPhone 14 Pro-ish)
+const double designWidth = 390;
+const double designHeight = 844;
+
 //Sounds
 const String custom = 'custom';
 const String ringTon = 'RingTon';
@@ -34,8 +38,8 @@ const double borderWidth = 1;
 const double cardIconSize = 32;
 
 //Padding Values
-const double spacingVal = 16;
-const double marginVal = 16;
+const double spacingVal = 13;
+const double marginVal = 13;
 const double cardMarginVal = 32;
 const double verticalPadVal = 14;
 const double horizantPadVal = 24;

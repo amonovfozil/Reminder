@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class SimpleAppButton extends StatelessWidget {
   final String text;
@@ -13,8 +14,8 @@ class SimpleAppButton extends StatelessWidget {
   final double? height;
   final TextStyle? style;
   final Color? hoverColor;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets margin;
+  final EdgeInsets padding;
   final Function()? onTap;
   final Color bordercolor;
   final Color? splashColor;
@@ -40,12 +41,12 @@ class SimpleAppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: margin,
+      padding: margin.scaled,
       child: Material(
         color: color ?? context.primaryColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          side: BorderSide(width: borderWidth, color: bordercolor),
+          borderRadius: BorderRadius.circular(borderRadius.r),
+          side: BorderSide(width: borderWidth.w, color: bordercolor),
         ),
 
         child: InkWell(
@@ -53,11 +54,11 @@ class SimpleAppButton extends StatelessWidget {
           overlayColor: WidgetStateProperty.all(
             splashColor ?? context.secondaryColor,
           ),
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius.r),
           child: Container(
-            height: height,
-            width: width,
-            padding: padding,
+            height: height?.h,
+            width: width?.w,
+            padding: padding.scaled,
             alignment: Alignment.center,
             child: Text(
               text,

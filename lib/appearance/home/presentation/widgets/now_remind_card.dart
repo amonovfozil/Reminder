@@ -3,6 +3,7 @@ import '../../../../core/UI/widgets/custom_card.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:reminder/core/UI/widgets/simple_app_button.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 import '../../../../core/constants/const_data.dart';
 
@@ -20,16 +21,16 @@ class NowRemindCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            spacing: 2,
+            spacing: 2.w,
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 50,
-                width: 35,
+                height: 50.h,
+                width: 35.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: context.primaryColor,
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(5.r),
                 ),
                 child: ShaderMask(
                   shaderCallback: (bounds) => LinearGradient(
@@ -42,17 +43,17 @@ class NowRemindCard extends StatelessWidget {
                   ).createShader(bounds),
                   child: Text(
                     '3',
-                    style: context.headerTextStyle.copyWith(fontSize: 35),
+                    style: context.headerTextStyle.copyWith(fontSize: 35.sp),
                   ),
                 ),
               ),
               Container(
-                height: 50,
-                width: 35,
+                height: 50.h,
+                width: 35.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: context.primaryColor,
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(5.r),
                 ),
                 child: ShaderMask(
                   shaderCallback: (bounds) => LinearGradient(
@@ -65,7 +66,7 @@ class NowRemindCard extends StatelessWidget {
                   ).createShader(bounds),
                   child: Text(
                     '0',
-                    style: context.headerTextStyle.copyWith(fontSize: 35),
+                    style: context.headerTextStyle.copyWith(fontSize: 35.sp),
                   ),
                 ),
               ),
@@ -73,14 +74,14 @@ class NowRemindCard extends StatelessWidget {
           ),
           Text(
             'April , 2024',
-            style: context.subStyle.copyWith(fontSize: 12, height: 1.5),
+            style: context.subStyle.copyWith(fontSize: 12.sp, height: 1.5),
           ),
         ],
       ),
       prefix: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
+        padding: EdgeInsets.symmetric(vertical: 5.h),
         child: Row(
-          spacing: 6,
+          spacing: 6.w,
           children: [
             SimpleAppButton(
               text: 'View',

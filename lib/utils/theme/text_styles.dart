@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 extension Txt on BuildContext {
   TextStyle get headerTextStyle => TextStyle(
-    fontSize: 22,
+    fontSize: 20.sp,
     height: 1.2,
     color: white,
     fontFamily: Theme.of(this).textTheme.bodyMedium?.fontFamily,
@@ -12,7 +13,7 @@ extension Txt on BuildContext {
   );
 
   TextStyle get titleTextStyle => TextStyle(
-    fontSize: 18,
+    fontSize: 16.sp,
     height: 1.2,
     color: primaryColor,
     fontFamily: Theme.of(this).textTheme.bodyMedium?.fontFamily,
@@ -20,7 +21,7 @@ extension Txt on BuildContext {
     decoration: TextDecoration.none,
   );
   TextStyle get subTitleTextStyle => TextStyle(
-    fontSize: 16,
+    fontSize: 14.sp,
     height: 1.2,
     color: primaryColor,
     fontFamily: Theme.of(this).textTheme.bodyMedium?.fontFamily,
@@ -29,7 +30,7 @@ extension Txt on BuildContext {
   );
 
   TextStyle get subStyle => TextStyle(
-    fontSize: 13,
+    fontSize: 13.sp,
     height: 1,
     color: secondaryColor,
     fontFamily: Theme.of(this).textTheme.bodyMedium?.fontFamily,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class CustomCard extends StatelessWidget {
   final double height;
@@ -10,8 +11,8 @@ class CustomCard extends StatelessWidget {
   final String subtitle;
   final Widget suffix;
   final Widget prefix;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets margin;
+  final EdgeInsets padding;
 
   const CustomCard({
     super.key,
@@ -31,24 +32,24 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: margin,
+      margin: margin.scaled,
       elevation: 1,
       borderOnForeground: false,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          width: borderWidth,
+          width: borderWidth.w,
           color: context.borderColor.withOpacity(0.08),
         ),
-        borderRadius: BorderRadius.circular(borderRadVal),
+        borderRadius: BorderRadius.circular(borderRadVal.r),
       ),
       // decoration: BoxDecoration(
       //   borderRadius: BorderRadius.circular(borderRadVal),
       //   border: Border.all(width: borderWidth, color: context.borderColor),
       // ),
       child: Container(
-        height: height,
-        width: width ?? appSize.width,
-        padding: padding,
+        height: height.h,
+        width: width != null ? width!.w : appSize.width,
+        padding: padding.scaled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,12 +1,13 @@
 import '../bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
-import '../widgets/bottom_navigation_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../settings/pages/settings_page.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/UI/widgets/backgraund_font.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
 import 'package:reminder/appearance/calendar/presentation/pages/calendar_page.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -32,7 +33,10 @@ class _MainPageState extends State<MainPage> {
               children: [
                 BackgraundFont(),
                 TabBarView(children: pages),
-                Positioned(bottom: 32, child: CutomBottomNavigationBar()),
+                Positioned(
+                  bottom: 32.h,
+                  child: CutomBottomNavigationBar(),
+                ),
               ],
             ),
           ),

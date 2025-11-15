@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:reminder/appearance/settings/pages/settings_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/main_page.dart';
-import 'package:reminder/appearance/settings/pages/parties/notificatios_page.dart';
 import 'package:reminder/appearance/settings/pages/parties/display_theme_page.dart';
 
 class AppRouter {
@@ -23,8 +22,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => const SettingsPage());
       case displayThemePage:
         return MaterialPageRoute(builder: (ctx) => const DisplayThemePage());
-      case notificationsPage:
-        return MaterialPageRoute(builder: (ctx) => const NotificationsPage());
+      // case notificationsPage:
+      //   return MaterialPageRoute(builder: (ctx) => const NotificationsPage());
 
       default:
         return MaterialPageRoute(

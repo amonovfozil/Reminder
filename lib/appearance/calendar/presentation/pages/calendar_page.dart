@@ -3,6 +3,7 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import '../../../../core/constants/const_data.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
 import '../widgets/cutom_calendar.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -17,10 +18,13 @@ class CalendarPage extends StatelessWidget {
       headBody: Container(
         decoration: BoxDecoration(
           color: white,
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(32.r),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 16.h,
+        ),
         child: CustomCalendar(
           primaryColor: context.primaryColor,
           todayColor: context.secondaryColor,
@@ -38,12 +42,16 @@ class CalendarPage extends StatelessWidget {
         width: appSize.width,
         decoration: BoxDecoration(
           color: white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(32.r),
+          ),
         ),
         child: Column(
           // mainAxisSize: MainAxisSize.min,
-          spacing: spacingVal,
-          children: [SizedBox(height: bottomHeightVal, width: appSize.width)],
+          spacing: spacingVal.h,
+          children: [
+            SizedBox(height: bottomHeightVal.h, width: appSize.width),
+          ],
         ),
       ),
     );

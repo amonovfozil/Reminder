@@ -1,4 +1,3 @@
-
 import '../bloc/setting_bloc.dart';
 import '../widgets/fonts_modal.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,7 @@ import '../../../core/UI/screens/custom_backgraund_style.dart';
 import 'package:reminder/utils/extension/string_extension.dart';
 import 'package:reminder/core/constants/secrets/app_secrets.dart';
 import 'package:reminder/appearance/settings/widgets/sound_modal.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -44,48 +44,43 @@ class _SettingsPageState extends State<SettingsPage> {
         return CustomBackgraundStyle(
           title: 'Settings',
           headBody: SizedBox(
-            height: appSize.height / 1.42,
-
+            height: appSize.height - 230.h,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Card(
                   elevation: 1,
                   color: white.withOpacity(0.90),
-                  margin: const EdgeInsets.symmetric(horizontal: cardMarginVal),
+                  margin: EdgeInsets.symmetric(horizontal: cardMarginVal),
                   borderOnForeground: false,
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
-                      width: borderWidth,
+                      width: borderWidth.w,
                       color: context.borderColor.withOpacity(0.08),
                     ),
-                    borderRadius: BorderRadius.circular(borderRadVal),
+                    borderRadius: BorderRadius.circular(borderRadVal.r),
                   ),
 
                   child: Container(
-                    // height: appSize.height / 1.45,
-                    // height: 4iteamCardBorderRadVal,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: cardMarginVal,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: cardMarginVal),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: spacingVal,
+                      spacing: spacingVal.h,
                       children: [
                         CustomMenuItemCard(
                           title: "Display thema",
                           borderRadius: iteamCardBorderRadVal,
-                          padding: const EdgeInsets.only(
-                            left: horizantPadVal,
-                            bottom: verticalPadVal,
-                            top: verticalPadVal,
-                            right: paddingVal,
-                          ),
+                          // padding: EdgeInsets.only(
+                          //   left: horizantPadVal.w,
+                          //   bottom: verticalPadVal.h,
+                          //   top: verticalPadVal.h,
+                          //   right: paddingVal.w,
+                          // ),
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/catalog.png'),
                             color: context.primaryColor,
-                            size: cardIconSize,
+                            size: cardIconSize.w,
                           ),
                           onTap: () => Navigator.of(
                             context,
@@ -94,16 +89,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         CustomMenuItemCard(
                           title: "Notification",
                           borderRadius: iteamCardBorderRadVal,
-                          padding: const EdgeInsets.only(
-                            left: horizantPadVal,
-                            bottom: verticalPadVal,
-                            top: verticalPadVal,
-                            right: paddingVal,
-                          ),
+                          // padding: EdgeInsets.only(
+                          //   // left: horizantPadVal.w,
+                          //   // bottom: verticalPadVal.h,
+                          //   // top: verticalPadVal.h,
+                          //   right: paddingVal.w,
+                          // ),
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/bell.png'),
                             color: context.primaryColor,
-                            size: cardMarginVal,
+                            size: cardMarginVal.w,
                           ),
 
                           suffix: CupertinoSwitch(
@@ -120,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/sound.png'),
                             color: context.primaryColor,
-                            size: cardIconSize,
+                            size: cardIconSize.w,
                           ),
                           suffix: Text(
                             state.noteSound,
@@ -138,11 +133,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/lang.png'),
                             color: context.primaryColor,
-                            size: cardIconSize,
+                            size: cardIconSize.w,
                           ),
                           suffix: Image.asset(
                             localeIcon(currentLocale),
-                            height: cardIconSize,
+                            height: cardIconSize.h,
                           ),
                           onTap: () => Helper.showBottomModel(
                             ctx: context,
@@ -156,7 +151,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/font.png'),
                             color: context.primaryColor,
-                            size: cardIconSize,
+                            size: cardIconSize.w,
                           ),
                           suffix: Text(
                             fontName(context.subStyle.fontFamily),
@@ -175,7 +170,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/rating.png'),
                             color: context.primaryColor,
-                            size: cardMarginVal,
+                            size: cardMarginVal.w,
                           ),
                           suffix: SizedBox(),
                           onTap: () async {
@@ -192,6 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
 
                 const Spacer(),
+                SizedBox(height: 10.h),
                 Center(
                   child: Text(
                     "app_version".tr.replaceAll('1.0.12', version),
@@ -205,14 +201,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     IconButton(
                       onPressed: () async =>
                           await launchUrl(Uri.parse(AppSecrets.telegrambUrl)),
-                      icon: Icon(Icons.telegram, color: white, size: 26),
+                      icon: Icon(Icons.telegram, color: white, size: 26.w),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: ImageIcon(
                         AssetImage('assets/images/setting/instagram.png'),
                         color: white,
-                        size: 24,
+                        size: 24.w,
                       ),
                     ),
 
@@ -222,7 +218,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: ImageIcon(
                         AssetImage('assets/images/setting/github.png'),
                         color: white,
-                        size: 24,
+                        size: 24.w,
                       ),
                     ),
                   ],
@@ -230,7 +226,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          body: SizedBox(),
+          // body: SizedBox(),
         );
       },
     );

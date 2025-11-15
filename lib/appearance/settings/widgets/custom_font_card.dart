@@ -3,6 +3,7 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import '../../../core/UI/widgets/backgraund_font.dart';
 import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class CustomFontCard extends StatelessWidget {
   final Color color;
@@ -25,8 +26,8 @@ class CustomFontCard extends StatelessWidget {
         GestureDetector(
           onTap: () => onSelect(color, secondaryColor),
           child: Container(
-            height: 120,
-            width: 95,
+            height: 120.h,
+            width: 95.w,
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),

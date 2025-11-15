@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import '../widgets/backgraund_font.dart';
 import '../../../../core/constants/const_data.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class CustomBackgraundStyle extends StatelessWidget {
   final String title;
-  final AppBar? appbar;
+  // final AppBar? appbar;
   final Widget? headBody;
   final Widget? body;
   final Color bodyColor;
   final Color scaffoldColor;
   final Widget? bottomNavigationBar;
   final Widget? bottomSheet;
+  final Widget? leadingAppbar;
+  final double? toolbarHeight;
+  final double? leadingWidth;
   final double headTopPosetionVal;
   const CustomBackgraundStyle({
     super.key,
@@ -20,9 +24,11 @@ class CustomBackgraundStyle extends StatelessWidget {
     this.headBody,
     this.bodyColor = Colors.transparent,
     this.scaffoldColor = Colors.transparent,
-    this.appbar,
+    this.leadingAppbar,
     this.bottomNavigationBar,
-    this.headTopPosetionVal = 175,
+    this.headTopPosetionVal = 125,
+    this.toolbarHeight,
+    this.leadingWidth,
     this.bottomSheet,
   });
 
@@ -36,23 +42,33 @@ class CustomBackgraundStyle extends StatelessWidget {
         children: [
           BackgraundFont(color: scaffoldColor),
           Positioned(
-            top: -20,
-            left: 0,
-            right: 10,
+            // top: (-10).h,
+            // left: 0.w,
+            // right: 10.w,
             child: Column(
               children: [
-                appbar ?? AppBar(backgroundColor: Colors.transparent),
-                Text(title.toUpperCase(), style: context.headerTextStyle),
+                // appbar ??
+                AppBar(
+                  toolbarHeight: toolbarHeight,
+                  leadingWidth: leadingWidth,
+                  leading: leadingAppbar,
+                  backgroundColor: Colors.transparent,
+                  title: Text(
+                    title.toUpperCase(),
+                    style: context.headerTextStyle,
+                  ),
+                ),
+                // Text(title.toUpperCase(), style: context.headerTextStyle),
               ],
             ),
           ),
           Container(
-            height: appSize.height - 270,
+            height: appSize.height - 220.h,
             color: bodyColor,
-            child: Column(children: [Expanded(child: body ?? SizedBox())]),
+            child: body ?? SizedBox(),
           ),
           Positioned(
-            top: headTopPosetionVal,
+            top: headTopPosetionVal.h,
             left: 0,
             right: 0,
             child: headBody ?? SizedBox(),
