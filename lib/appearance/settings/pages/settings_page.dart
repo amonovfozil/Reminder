@@ -51,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Card(
                   elevation: 1,
                   color: white.withOpacity(0.90),
-                  margin: EdgeInsets.symmetric(horizontal: cardMarginVal),
+                  margin: EdgeInsets.symmetric(horizontal: cardMarginVal.w),
                   borderOnForeground: false,
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
@@ -62,7 +62,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
 
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: cardMarginVal),
+                    padding: EdgeInsets.symmetric(
+                      vertical: paddingVal.h,
+                    ).scaled,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         CustomMenuItemCard(
                           title: "Display thema",
-                          borderRadius: iteamCardBorderRadVal,
+                          borderRadius: iteamCardborderRadVal.r,
                           // padding: EdgeInsets.only(
                           //   left: horizantPadVal.w,
                           //   bottom: verticalPadVal.h,
@@ -88,7 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         CustomMenuItemCard(
                           title: "Notification",
-                          borderRadius: iteamCardBorderRadVal,
+                          borderRadius: iteamCardborderRadVal.r,
                           // padding: EdgeInsets.only(
                           //   // left: horizantPadVal.w,
                           //   // bottom: verticalPadVal.h,
@@ -111,7 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         CustomMenuItemCard(
                           title: "Alarm sound",
-                          borderRadius: iteamCardBorderRadVal,
+                          borderRadius: iteamCardborderRadVal.r,
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/sound.png'),
                             color: context.primaryColor,
@@ -129,7 +131,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         CustomMenuItemCard(
                           title: "Language",
-                          borderRadius: iteamCardBorderRadVal,
+                          borderRadius: iteamCardborderRadVal.r,
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/lang.png'),
                             color: context.primaryColor,
@@ -147,7 +149,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         CustomMenuItemCard(
                           title: "Font",
-                          borderRadius: iteamCardBorderRadVal,
+                          borderRadius: iteamCardborderRadVal.r,
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/font.png'),
                             color: context.primaryColor,
@@ -166,7 +168,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         CustomMenuItemCard(
                           title: "Rated",
-                          borderRadius: iteamCardBorderRadVal,
+                          borderRadius: iteamCardborderRadVal.r,
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/rating.png'),
                             color: context.primaryColor,
@@ -187,28 +189,35 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
 
                 const Spacer(),
-                SizedBox(height: 10.h),
                 Center(
                   child: Text(
                     "app_version".tr.replaceAll('1.0.12', version),
-                    style: context.subStyle.copyWith(color: white, height: 1.4),
+                    style: context.subStyle.copyWith(
+                      color: white,
+                      height: 1.sp,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Row(
+                  spacing: 1.w / 1.h,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
                       onPressed: () async =>
                           await launchUrl(Uri.parse(AppSecrets.telegrambUrl)),
-                      icon: Icon(Icons.telegram, color: white, size: 26.w),
+                      icon: Icon(
+                        Icons.telegram,
+                        color: white,
+                        size: 28.w / 1.h,
+                      ),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: ImageIcon(
                         AssetImage('assets/images/setting/instagram.png'),
                         color: white,
-                        size: 24.w,
+                        size: 24.w / 1.h,
                       ),
                     ),
 
@@ -218,7 +227,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: ImageIcon(
                         AssetImage('assets/images/setting/github.png'),
                         color: white,
-                        size: 24.w,
+                        size: 24.w / 1.h,
                       ),
                     ),
                   ],

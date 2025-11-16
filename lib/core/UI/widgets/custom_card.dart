@@ -43,7 +43,7 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadVal.r),
       ),
       // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(borderRadVal),
+      //   borderRadius: BorderRadius.circular(borderRadVal.r),
       //   border: Border.all(width: borderWidth, color: context.borderColor),
       // ),
       child: Container(

@@ -32,7 +32,7 @@ class DisplayThemePage extends StatelessWidget {
             width: borderWidth,
             color: context.borderColor.withOpacity(0.08),
           ),
-          borderRadius: BorderRadius.circular(borderRadVal),
+          borderRadius: BorderRadius.circular(borderRadVal.r),
         ),
         child: Container(
           height: appSize.height / 1.35,

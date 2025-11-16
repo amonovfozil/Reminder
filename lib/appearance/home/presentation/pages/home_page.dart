@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import '../widgets/now_remind_card.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/constants/const_data.dart';
-import 'package:reminder/core/UI/widgets/custom_card.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 import '../../../../core/UI/widgets/custom_card_button.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
-import 'package:reminder/utils/theme/responsive_size.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {},
             ),
-            CustomCard(
+            CustomCardButton(
               title: "Birthday",
               subtitle: '03 June, 2024  07:00PM',
               suffix: ImageIcon(
@@ -45,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 size: 32.w,
               ),
             ),
-            CustomCard(
+            CustomCardButton(
               title: "Meeting",
               subtitle: '03 June, 2024  07:00PM',
               suffix: ImageIcon(
@@ -54,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                 size: 32.w,
               ),
             ),
-            CustomCard(
+            CustomCardButton(
               title: "Checkup",
               subtitle: '03 June, 2024  07:00PM',
               suffix: ImageIcon(
@@ -63,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 size: 32.w,
               ),
             ),
-            CustomCard(
+            CustomCardButton(
               title: "Shopping",
               subtitle: '03 June, 2024  07:00PM',
               suffix: ImageIcon(

@@ -28,9 +28,10 @@ class CutomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32.w),
+      padding: EdgeInsets.symmetric(horizontal: marginVal).scaled,
       child: Container(
-        width: appSize.width - 75.w,
+        height: 50.h,
+        width: appSize.width - 70.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadVal.r),
           color: context.secondaryColor,
@@ -38,7 +39,7 @@ class CutomBottomNavigationBar extends StatelessWidget {
         child: TabBar(
           indicatorSize: TabBarIndicatorSize.tab,
           indicatorAnimation: TabIndicatorAnimation.elastic,
-          padding: EdgeInsets.all(5.w),
+          padding: EdgeInsets.all(5).scaled,
           labelPadding: EdgeInsets.zero,
           indicatorWeight: 0,
           dividerHeight: 0,

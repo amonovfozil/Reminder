@@ -42,29 +42,28 @@ class CustomBackgraundStyle extends StatelessWidget {
         children: [
           BackgraundFont(color: scaffoldColor),
           Positioned(
-            // top: (-10).h,
-            // left: 0.w,
-            // right: 10.w,
-            child: Column(
-              children: [
-                // appbar ??
-                AppBar(
-                  toolbarHeight: toolbarHeight,
-                  leadingWidth: leadingWidth,
-                  leading: leadingAppbar,
-                  backgroundColor: Colors.transparent,
-                  title: Text(
-                    title.toUpperCase(),
-                    style: context.headerTextStyle,
-                  ),
-                ),
-                // Text(title.toUpperCase(), style: context.headerTextStyle),
-              ],
+            child: AppBar(
+              toolbarHeight: toolbarHeight,
+              leadingWidth: leadingWidth,
+              leading: leadingAppbar,
+              backgroundColor: Colors.transparent,
+              title: Text(title.toUpperCase(), style: context.headerTextStyle),
             ),
           ),
           Container(
             height: appSize.height - 220.h,
-            color: bodyColor,
+            margin: EdgeInsets.only(
+              top: 16.h,
+              left: marginVal.w,
+              right: marginVal.w,
+            ),
+
+            decoration: BoxDecoration(
+              color: bodyColor,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(borderRadVal.r),
+              ),
+            ),
             child: body ?? SizedBox(),
           ),
           Positioned(

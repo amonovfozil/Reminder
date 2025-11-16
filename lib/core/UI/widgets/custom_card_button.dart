@@ -46,7 +46,7 @@ class CustomCardButton extends StatelessWidget {
             width: borderWidth.w,
             color: context.borderColor.withOpacity(0.08),
           ),
-          borderRadius: BorderRadius.circular(borderRadVal.r),
+          borderRadius: BorderRadius.circular(iteamCardborderRadVal.r),
         ),
 
         child: InkWell(

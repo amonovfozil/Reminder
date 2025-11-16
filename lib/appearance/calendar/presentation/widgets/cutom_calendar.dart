@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reminder/utils/theme/app_colors.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 
 class CustomCalendar extends StatefulWidget {
   final DateTime? initialDate; // Boshlang'ich tanlangan sana
@@ -49,8 +51,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
     return Column(
       children: [
         _buildHeader(primary),
+        SizedBox(height: 8.h),
         if (widget.showWeekDays) _buildWeekDaysRow(theme),
-        const SizedBox(height: 4),
+        SizedBox(height: 5.h),
         _buildDaysGrid(primary, todayBorder, theme),
       ],
     );
@@ -67,16 +70,20 @@ class _CustomCalendarState extends State<CustomCalendar> {
         IconButton(
           visualDensity: VisualDensity.compact,
           onPressed: _goToPrevMonth,
-          icon: const Icon(Icons.chevron_left),
+          icon: Icon(Icons.chevron_left, size: 30.h),
         ),
         Text(
           '$monthName $year',
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontSize: 18.sp,
+            color: black,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         IconButton(
           visualDensity: VisualDensity.compact,
           onPressed: _goToNextMonth,
-          icon: const Icon(Icons.chevron_right),
+          icon: Icon(Icons.chevron_right, size: 30.h),
         ),
       ],
     );
@@ -94,6 +101,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 child: Text(
                   d,
                   style: theme.textTheme.labelMedium!.copyWith(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -113,10 +121,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: days.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
+        mainAxisSpacing: 4.h / 1.w,
+        crossAxisSpacing: 4.h / 1.w,
+        childAspectRatio: 1.45.w / 1.h,
       ),
       itemBuilder: (context, index) {
         final day = days[index];
@@ -138,7 +147,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
         BoxBorder? border;
         if (isToday && !isSelected) {
-          border = Border.all(color: todayBorder, width: 1.4);
+          border = Border.all(color: todayBorder, width: 1.4.r);
         }
         if (isSelected) {
           bg = primary;
@@ -156,16 +165,18 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
+            // padding: EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               color: bg,
               border: border,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10.r),
             ),
             alignment: Alignment.center,
             child: Text(
               '${day.day}',
               style: theme.textTheme.bodyMedium!.copyWith(
                 color: textColor,
+                fontSize: 13.sp,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               ),
             ),

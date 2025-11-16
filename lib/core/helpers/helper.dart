@@ -1,5 +1,6 @@
 import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 
+import '../../utils/theme/responsive_size.dart';
 import '../constants/const_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
@@ -22,7 +23,7 @@ class Helper {
             width: borderWidth,
             color: context.borderColor.withOpacity(0.08),
           ),
-          borderRadius: BorderRadius.circular(borderRadVal),
+          borderRadius: BorderRadius.circular(borderRadVal.r),
         ),
         child: Column(
           spacing: spacingVal,
@@ -44,7 +45,7 @@ class Helper {
               child: SimpleAppButton(
                 text: 'Confirm',
                 // height: 55,
-                borderRadius: borderRadVal,
+                borderRadius: borderRadVal.r,
                 margin: const EdgeInsets.symmetric(
                   horizontal: cardMarginVal,
                   vertical: 10,

@@ -17,7 +17,7 @@ const String playfair = 'Playfair';
 const String ptSans = 'PT_Sans_Narrow';
 const String ubuntu = 'Ubuntu';
 
-// Design size used for responsive scaling (iPhone 14 Pro-ish)
+// Design size used for responsive scaling (iPhone 14 Pro)
 const double designWidth = 390;
 const double designHeight = 844;
 
@@ -31,8 +31,8 @@ const String melody = 'Melody';
 
 //Border Radius val
 const double borderRadVal = 30;
-const double iteamCardBorderRadVal = 20;
-const double buttonBorderRadVal = 20;
+const double iteamCardborderRadVal = 20;
+const double buttonborderRadVal = 20;
 const double buttonHeightVal = 20;
 const double borderWidth = 1;
 const double cardIconSize = 32;
@@ -40,7 +40,7 @@ const double cardIconSize = 32;
 //Padding Values
 const double spacingVal = 13;
 const double marginVal = 13;
-const double cardMarginVal = 32;
+const double cardMarginVal = 26;
 const double verticalPadVal = 14;
 const double horizantPadVal = 24;
 const double paddingVal = 16;

@@ -14,46 +14,53 @@ class CalendarPage extends StatelessWidget {
       title: 'Calendar',
       // headBody: NowRemindCard(),
       // bodyColor: white,
-      headTopPosetionVal: 150,
-      headBody: Container(
-        decoration: BoxDecoration(
-          color: white,
-          borderRadius: BorderRadius.circular(32.r),
-        ),
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 16.h,
-        ),
-        child: CustomCalendar(
-          primaryColor: context.primaryColor,
-          todayColor: context.secondaryColor,
-          initialDate: DateTime.now(),
-          minDate: DateTime.now().subtract(const Duration(days: 7)),
-          maxDate: DateTime.now().add(const Duration(days: 60)),
-          onDateSelected: (date) {
-            // Tanlangan sanani bu yerda BLoC yoki boshqa logikaga uzat
-            debugPrint('Selected: $date');
-          },
-        ),
-      ),
-      bottomNavigationBar: Container(
-        height: appSize.height * 0.4,
-        width: appSize.width,
-        decoration: BoxDecoration(
-          color: white,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(32.r),
+      // headTopPosetionVal: 110.h / 1.w,
+      headBody: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: BorderRadius.circular(32.r),
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            child: CustomCalendar(
+              primaryColor: context.primaryColor,
+              todayColor: context.secondaryColor,
+              initialDate: DateTime.now(),
+              minDate: DateTime.now().subtract(const Duration(days: 7)),
+              maxDate: DateTime.now().add(const Duration(days: 360)),
+              onDateSelected: (date) {
+                // Tanlangan sanani bu yerda BLoC yoki boshqa logikaga uzat
+                debugPrint('Selected: $date');
+              },
+            ),
           ),
-        ),
-        child: Column(
-          // mainAxisSize: MainAxisSize.min,
-          spacing: spacingVal.h,
-          children: [
-            SizedBox(height: bottomHeightVal.h, width: appSize.width),
-          ],
-        ),
+
+          Container(
+            height: appSize.height,
+            // width: appSize.width.w,
+            margin: EdgeInsets.only(
+              top: 16.h,
+              left: marginVal.w,
+              right: marginVal.w,
+            ),
+
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: bottomHeightVal.h, width: appSize.width),
+              ],
+            ),
+          ),
+        ],
       ),
+      // bottomNavigationBar: ,
     );
   }
 }

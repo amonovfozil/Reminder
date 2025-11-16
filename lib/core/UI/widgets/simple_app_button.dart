@@ -25,7 +25,7 @@ class SimpleAppButton extends StatelessWidget {
     required this.text,
     this.onTap,
     this.isLoad = false,
-    this.borderRadius = buttonBorderRadVal,
+    this.borderRadius = buttonborderRadVal,
     this.width,
     this.height = 60,
     this.margin = const EdgeInsets.symmetric(horizontal: 0),
