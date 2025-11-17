@@ -35,7 +35,7 @@ class BackgraundFont extends StatelessWidget {
         Visibility(
           visible: color != Colors.transparent,
           child: Positioned(
-            top: (220 * percentSize).h,
+            top: (250 * percentSize).h,
             left: (-105 * percentSize).w,
             child: Container(
               height: (125 * percentSize).h,
@@ -51,7 +51,7 @@ class BackgraundFont extends StatelessWidget {
           visible: color != Colors.transparent,
           child: Positioned(
             top: (95 * percentSize).h,
-            right: (-90 * percentSize).w,
+            right: (-80 * percentSize).w,
             child: Container(
               height: (125 * percentSize).h,
               width: (138 * percentSize).w,

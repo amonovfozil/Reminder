@@ -133,7 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           title: "Language",
                           borderRadius: iteamCardborderRadVal.r,
                           prefix: ImageIcon(
-                            AssetImage('assets/images/setting/lang.png'),
+                            AssetImage('assets/images/setting/earth.png'),
                             color: context.primaryColor,
                             size: cardIconSize.w,
                           ),

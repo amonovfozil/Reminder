@@ -35,140 +35,97 @@ class DisplayThemePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadVal.r),
         ),
         child: Container(
-          height: appSize.height / 1.35,
+          height: appSize.height * 0.62.w / 1.h,
           padding: const EdgeInsets.symmetric(horizontal: paddingVal),
-          child: Column(
+          child: GridView.count(
+            // physics: PageScrollPhysics(),
+            padding: EdgeInsets.only(top: horizantPadVal),
+            crossAxisCount: 3,
+            childAspectRatio: 0.65.w / (1.0.h),
+            // childAspectRatio: (0.75) * (1.w / 1.h),
             children: [
-              Expanded(
-                child: GridView.count(
-                  // physics: PageScrollPhysics(),
-                  padding: EdgeInsets.only(top: horizantPadVal),
-                  crossAxisCount: 3,
-                  childAspectRatio: 0.65.w / (1.0.h),
-                  // childAspectRatio: (0.75) * (1.w / 1.h),
-                  children: [
-                    CustomFontCard(
-                      color: Colors.red,
-                      secondaryColor: Colors.redAccent,
-                      title: 'Red',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: Colors.green,
-                      secondaryColor: Colors.lightGreen,
+              CustomFontCard(
+                color: Colors.red,
+                secondaryColor: Colors.redAccent,
+                title: 'Red',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: Colors.green,
+                secondaryColor: Colors.lightGreen,
 
-                      title: 'Green',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: Colors.cyan,
-                      secondaryColor: const Color.fromARGB(255, 39, 153, 153),
+                title: 'Green',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: Colors.cyan,
+                secondaryColor: const Color.fromARGB(255, 39, 153, 153),
 
-                      title: 'Cuan',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: Colors.blue,
-                      secondaryColor: Colors.blueAccent,
+                title: 'Cuan',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: Colors.blue,
+                secondaryColor: Colors.blueAccent,
 
-                      title: 'Blue',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: Colors.purple,
-                      secondaryColor: Colors.purpleAccent,
+                title: 'Blue',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: Colors.purple,
+                secondaryColor: Colors.purpleAccent,
 
-                      title: 'Purple',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: Colors.indigo,
-                      secondaryColor: Colors.indigoAccent,
+                title: 'Purple',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: Colors.indigo,
+                secondaryColor: Colors.indigoAccent,
 
-                      title: 'Indigo',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: darkBlue,
-                      secondaryColor: Colors.black,
+                title: 'Indigo',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: darkBlue,
+                secondaryColor: Colors.black,
 
-                      title: 'Black',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: orange,
-                      secondaryColor: orangeAccent,
-                      title: 'Orange',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                    CustomFontCard(
-                      color: Colors.pink,
-                      secondaryColor: Colors.pinkAccent,
-                      title: 'Pink',
-                      onSelect: (color, secondary) =>
-                          context.read<SettingBloc>().add(
-                            SettingEvent.setColor(
-                              color: color!,
-                              secondary: secondary!,
-                            ),
-                          ),
-                    ),
-                  ],
+                title: 'Black',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: orange,
+                secondaryColor: orangeAccent,
+                title: 'Orange',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
+                ),
+              ),
+              CustomFontCard(
+                color: Colors.pink,
+                secondaryColor: Colors.pinkAccent,
+                title: 'Pink',
+                onSelect: (color, secondary) => context.read<SettingBloc>().add(
+                  SettingEvent.setColor(color: color!, secondary: secondary!),
                 ),
               ),
             ],
           ),
         ),
       ),
-      body: SizedBox(),
     );
   }
 }

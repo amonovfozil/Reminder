@@ -1,3 +1,5 @@
+import 'package:reminder/appearance/alarms/presentation/pages/alarm_page.dart';
+
 import '../bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +19,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Widget> pages = const [HomePage(), CalendarPage(), SettingsPage()];
+  List<Widget> pages = const [
+    HomePage(),
+    AlarmsPage(),
+    CalendarPage(),
+    SettingsPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
@@ -33,10 +40,7 @@ class _MainPageState extends State<MainPage> {
               children: [
                 BackgraundFont(),
                 TabBarView(children: pages),
-                Positioned(
-                  bottom: 32.h,
-                  child: CutomBottomNavigationBar(),
-                ),
+                Positioned(bottom: 32.h, child: CutomBottomNavigationBar()),
               ],
             ),
           ),
