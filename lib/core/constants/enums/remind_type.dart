@@ -1,20 +1,9 @@
-enum RemindType {
-  daily,
-  twiceDaily,
-  multipleDaily,
-  noReminder,
-  interval,
-  week,
-  cyclic,
-}
+enum RemindType { interval, multiple, week, cyclic }
 
 final typeValues = RemindTypeEnumValues({
-  "once_daily": RemindType.daily,
-  "twice_daily": RemindType.twiceDaily,
-  "multiple_daily": RemindType.multipleDaily,
-  "on_demand": RemindType.noReminder,
   "interval": RemindType.interval,
-  "week_days": RemindType.week,
+  "multiple": RemindType.multiple,
+  "weekly": RemindType.week,
   "cycle": RemindType.cyclic,
 });
 

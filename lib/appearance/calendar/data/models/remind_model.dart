@@ -1,20 +1,19 @@
-import 'option/time_dose_model.dart';
+import 'package:reminder/core/constants/enums/remind_type.dart';
 
-abstract class RemindModel {
+class RemindModel {
   String id;
   String title;
   String body;
-  TimeType? type;
+  RemindType? type;
   bool enableAlert;
   bool remindMe;
   bool isPaused;
 
   RemindModel({
     required this.id,
-    required this.title,
+    this.title = '',
     this.body = '',
     this.type,
-
     this.enableAlert = true,
     this.remindMe = true,
     this.isPaused = false,

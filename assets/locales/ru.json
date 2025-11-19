@@ -2,5 +2,18 @@
   "hello": "Привет, @name ",
   "about_app": "О приложении",
   "app_version": "Версия приложения 1.0.12",
+  "interval": "Интервал",
+  "interval_subtitle": "Например, раз в два дня, раз в 6 часов ",
+  "every_x_hour": "Каждые X часов",
+  "every_x_day": "Каждые X дней ",
+  "remind_every": "Напоминать каждые",
+  "hour": "часов",
+  "day": "День",
+  "week": "Неделя",
+  "month": "Месяц",
+  "multiple_daily": "Несколько раз в день",
+  "multiple_daily_subtitle": "Например 3 или  более  раз  в день",
+  "intakes": "Потребление",
+  "times_daily": "X раза в день ",
   "": ""
 }

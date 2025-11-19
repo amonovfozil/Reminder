@@ -18,7 +18,7 @@ class CustomBottomNavigationBarItem {
 
 List<CustomBottomNavigationBarItem> menu = [
   CustomBottomNavigationBarItem(iconPath: "assets/images/home/home.png"),
-  CustomBottomNavigationBarItem(iconPath: "assets/images/home/remind.png"),
+  // CustomBottomNavigationBarItem(iconPath: "assets/images/home/remind.png"),
   CustomBottomNavigationBarItem(iconPath: "assets/images/home/calendar.png"),
   CustomBottomNavigationBarItem(iconPath: "assets/images/home/settings.png"),
 ];

@@ -1,6 +1,19 @@
 {
   "hello": "Salom, @name ",
-    "about_app": "Ilova haqida",
-    "app_version": "Ilova talqini 1.0.12",
+  "about_app": "Ilova haqida",
+  "app_version": "Ilova talqini 1.0.12",
+  "interval": "Interval",
+  "interval_subtitle": "masalan, har ikki kunda, har 6 soatdan",
+  "every_x_hour": "Har X soatda",
+  "every_x_day": "Har X kunda",
+  "remind_every": "Eslatish har",
+  "hour": "soat",
+  "day": "Kun",
+  "week": "Hafta",
+  "month": "Oy",
+  "multiple_daily": "Kuniga bir necha marta",
+  "multiple_daily_subtitle": "masalan, kuniga 3 yoki undan ko'p marta",
+  "intakes": "Iste'mol",
+  "times_daily": "Kuniga X marta",
   "": ""
 }

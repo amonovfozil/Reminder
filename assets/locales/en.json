@@ -2,5 +2,18 @@
   "hello": "Hello, @name ",
   "about_app": "About the app",
   "app_version": "App version 1.0.12",
+  "interval": "Interval",
+  "interval_subtitle": "e.g. every second day, once every 6 hours",
+  "every_x_hour": "Every X hours",
+  "every_x_day": "Every X days",
+  "remind_every": "Remind every",
+  "hour": "hours",
+  "day": "Day",
+  "week": "Week",
+  "month": "Month",
+  "multiple_daily": "Multiple times daily",
+  "multiple_daily_subtitle": "e.g. 3 or more times a day",
+  "intakes": "Intakes",
+  "times_daily": "X times daily",
   "": ""
 }

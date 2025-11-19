@@ -1,14 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../appearance/home/presentation/bloc/home_bloc.dart';
 import 'package:reminder/appearance/settings/bloc/setting_bloc.dart';
-import 'package:reminder/appearance/calendar/presentation/bloc/calendar_bloc.dart';
+import 'package:reminder/appearance/calendar/presentation/bloc/creator_bloc.dart';
 
 List<BlocProvider> blocProviders = [
   //Home
   BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
 
   //Calendar
-  BlocProvider<CalendarBloc>(create: (context) => CalendarBloc()),
+  BlocProvider<CreatorBloc>(create: (context) => CreatorBloc()),
 
   // Settings
   BlocProvider<SettingBloc>(
