@@ -15,5 +15,21 @@
   "multiple_daily_subtitle": "e.g. 3 or more times a day",
   "amount_": "amount_",
   "times_daily": "X times daily",
+  "weekly": "Specific days of the week",
+  "weekly_subtitle": "e.g. Mon, Wed & Fri ",
+  "cyclic_mode": "Cyclic mode",
+  "cyclic_mode_subtitle": "e.g. 21 intake days , 7 pause days",
+  "pouse_day": "Pause days",
+  "cyclic_start_day": "What's the first day of this medication cycle?",
+  "start_date": "Start date",
+  "cyclic_title": "N Intake days, X pause days",
+
+  "mon": "Mn",
+  "tue": "Te",
+  "wed": "Wd",
+  "thur": "Thr",
+  "fri": "Fr",
+  "sat": "St",
+  "sun": "Sn",
   "": ""
 }

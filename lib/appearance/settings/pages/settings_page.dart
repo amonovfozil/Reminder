@@ -73,12 +73,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         CustomMenuItemCard(
                           title: "Display thema",
                           borderRadius: iteamCardborderRadVal.r,
-                          // padding: EdgeInsets.only(
-                          //   left: horizantPadVal.w,
-                          //   bottom: verticalPadVal.h,
-                          //   top: verticalPadVal.h,
-                          //   right: paddingVal.w,
-                          // ),
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/catalog.png'),
                             color: context.primaryColor,
@@ -91,12 +85,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         CustomMenuItemCard(
                           title: "Notification",
                           borderRadius: iteamCardborderRadVal.r,
-                          // padding: EdgeInsets.only(
-                          //   // left: horizantPadVal.w,
-                          //   // bottom: verticalPadVal.h,
-                          //   // top: verticalPadVal.h,
-                          //   right: paddingVal.w,
-                          // ),
                           prefix: ImageIcon(
                             AssetImage('assets/images/setting/bell.png'),
                             color: context.primaryColor,

@@ -1,30 +1,36 @@
+import '../../../../../core/constants/enums/remind_type.dart';
+import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
+
 List<String> weekDays = ["mon", "tue", "wed", "thur", "fri", "sat", "sun"];
 
-class WeeklyOption {
+class WeeklyRemindModel extends RemindModel {
   List<int> days;
 
-  WeeklyOption({required this.days});
+  WeeklyRemindModel({
+    required super.id,
+    super.title,
+    super.body,
+    super.type = RemindType.weekly,
+    super.enableAlert,
+    super.remindMe,
+    super.isPaused,
+    required this.days,
 
-  Map<String, dynamic> toJson() => {
-    // "start_date": DateTime.now().toIso8601String(),
-    "week_days": days.map((index) => weekDays[index]).join(','),
-  };
+  });
 
-  // factory WeeklyOption.fromOrder(TimeDeteilModel time) {
-  //   return WeeklyOption(
-  //       days: time.weekDays
-  //           .split(',')
-  //           .map((index) => weekDays.indexOf(index))
-  //           .toList(),
-  //       times: List.from(
-  //         time.items.map(
-  //           (e) => TimeDoseModel(
-  //             time: DateTime.parse(
-  //                 "${time.startDate.toIso8601String().split('T').first}T${e.time}"),
-  //             id: e.id.toString(),
-  //             dose: e.dose.toString(),
-  //           ),
-  //         ),
-  //       ));
-  // }
+  WeeklyRemindModel copyWith({
+    int? amount,
+    String? title,
+    String? body,
+    List<int>? days,
+  }) {
+    return WeeklyRemindModel(
+      id: id,
+      title: title ?? this.title,
+      body: body ?? this.body,
+      days: days ?? this.days,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {"amount": days, "type": type?.name};
 }

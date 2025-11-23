@@ -66,7 +66,7 @@ class _IntervalOptionsState extends State<IntervalOptions> {
             padding: EdgeInsets.symmetric(
               vertical: paddingVal,
               horizontal: horizantPadVal,
-            ).scaled,
+            ),
             child: Column(
               spacing: spacingVal,
               mainAxisSize: MainAxisSize.min,
@@ -75,6 +75,7 @@ class _IntervalOptionsState extends State<IntervalOptions> {
                   children: [
                     Expanded(
                       child: Column(
+                        spacing: 3,
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -121,7 +122,7 @@ class _IntervalOptionsState extends State<IntervalOptions> {
                           color: widget.remind.isHourly
                               ? white
                               : context.primaryColor,
-                          fontSize: 11.sp,
+                          fontSize: 12.sp,
                         ),
                         onTap: () {
                           context.read<CreatorBloc>().add(
@@ -164,7 +165,7 @@ class _IntervalOptionsState extends State<IntervalOptions> {
                           color: !widget.remind.isHourly
                               ? white
                               : context.primaryColor,
-                          fontSize: 11.sp,
+                          fontSize: 12.sp,
                         ),
                         onTap: () {
                           context.read<CreatorBloc>().add(
@@ -186,7 +187,6 @@ class _IntervalOptionsState extends State<IntervalOptions> {
           ),
         ),
         Visibility(
-          // visible: remind.enableInterval,
           child: Card(
             color: white.withOpacity(0.90),
             margin: const EdgeInsets.symmetric(
@@ -219,7 +219,7 @@ class _IntervalOptionsState extends State<IntervalOptions> {
                           child: Text(
                             e.toString(),
                             textAlign: TextAlign.start,
-                            style: context.subTitleTextStyle.copyWith(
+                            style: context.titleTextStyle.copyWith(
                               // fontSize: 20,
                             ),
                           ),

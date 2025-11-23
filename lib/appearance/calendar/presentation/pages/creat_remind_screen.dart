@@ -1,20 +1,24 @@
-import '../../bloc/creator_bloc.dart';
+import '../bloc/creator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import '../../data/models/remind_model.dart';
+import '../widgets/options/cyclic_options.dart';
+import '../widgets/options/weekly_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../data/models/remind_model.dart';
-import '../../../../../utils/theme/app_colors.dart';
-import '../../widgets/options/multiple_options.dart';
-import '../../widgets/options/interval_options.dart';
-import '../../../../../core/constants/const_data.dart';
-import '../../../../../utils/theme/responsive_size.dart';
-import '../../../data/models/types/multiple_remind.dart';
-import '../../../data/models/types/interval_remind.dart';
-import '../../../../../utils/extension/string_extension.dart';
-import '../../../../../core/UI/widgets/simple_app_button.dart';
+import '../../../../utils/theme/app_colors.dart';
+import '../widgets/options/multiple_options.dart';
+import '../widgets/options/interval_options.dart';
+import '../../../../core/constants/const_data.dart';
+import '../../data/models/types/cyclic_remind.dart';
+import '../../data/models/types/weekly_remind.dart';
+import '../../../../utils/theme/responsive_size.dart';
+import '../../data/models/types/multiple_remind.dart';
+import '../../data/models/types/interval_remind.dart';
+import '../../../../utils/extension/string_extension.dart';
+import '../../../../core/UI/widgets/simple_app_button.dart';
 import 'package:reminder/core/constants/enums/remind_type.dart';
 import 'package:reminder/core/UI/widgets/custom_text_feild.dart';
-import '../../../../../core/UI/screens/custom_backgraund_style.dart';
+import '../../../../core/UI/screens/custom_backgraund_style.dart';
 
 class CreatRemindScreen extends StatefulWidget {
   const CreatRemindScreen({super.key});
@@ -58,7 +62,9 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                 children: [
                   Card(
                     color: white.withOpacity(1),
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: horizantPadVal,
+                    ).scaled,
                     elevation: 1,
                     borderOnForeground: false,
                     shape: RoundedRectangleBorder(
@@ -102,7 +108,6 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                                       text: getTitle(type),
                                       height: 40,
                                       width: double.infinity,
-
                                       bordercolor: borderColor,
                                       color: state.remind.type == type
                                           ? context.primaryColor
@@ -111,14 +116,10 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                                           ? white
                                           : context.primaryColor,
                                       borderRadius: 10.r,
-                                      // borderRadius: iteamCardborderRadVal,
                                       padding: EdgeInsets.symmetric(
                                         horizontal: 14,
                                       ).scaled,
-                                      // style: context.subTitleTextStyle.copyWith(
-                                      //   color: white,
-                                      //   fontSize: 11.sp,
-                                      // ),
+
                                       onTap: () =>
                                           context.read<CreatorBloc>().add(
                                             CreatorEvent.updateData(
@@ -145,7 +146,15 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                         ? MultipleOptions(
                             remind: state.remind as MultipleRemindModel,
                           )
-                        : SizedBox(),
+                        : state.remind.type == RemindType.weekly
+                        ? WeeklyOptions(
+                            remind: state.remind as WeeklyRemindModel,
+                          )
+                        : state.remind.type == RemindType.cyclic
+                        ? CyclicOptions(
+                            remind: state.remind as CyclicRemindModel,
+                          )
+                        : const SizedBox(),
                   ),
                   const Spacer(),
                   Padding(
@@ -198,8 +207,8 @@ RemindModel getModel(RemindType type) {
   return switch (type) {
     RemindType.interval => intervalModel,
     RemindType.multiple => multipleRemindModel,
-    RemindType.weekly => defaultModel,
-    RemindType.cyclic => defaultModel,
+    RemindType.weekly => weeklyRemindModel,
+    RemindType.cyclic => cyclicRemindModel,
   };
 }
 

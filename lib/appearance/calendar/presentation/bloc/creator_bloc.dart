@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:reminder/appearance/calendar/data/models/types/cyclic_remind.dart';
 import '../../data/models/remind_model.dart';
+import '../../data/models/types/weekly_remind.dart';
 import '../../data/models/types/multiple_remind.dart';
 import '../../data/models/types/interval_remind.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -24,13 +26,24 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
       emit(InitialCreatorState(remind: event.data));
 }
 
-RemindModel defaultModel = RemindModel(id: UniqueKey().toString());
-
 IntervalRemindModel intervalModel = IntervalRemindModel(
   id: UniqueKey().toString(),
   times: [],
 );
+
 MultipleRemindModel multipleRemindModel = MultipleRemindModel(
   id: UniqueKey().toString(),
   times: [],
 );
+
+WeeklyRemindModel weeklyRemindModel = WeeklyRemindModel(
+  id: UniqueKey().toString(),
+  days: [0, 2, 4],
+);
+
+CyclicRemindModel cyclicRemindModel = CyclicRemindModel(
+  id: UniqueKey().toString(),
+  startDate: DateTime.now(),
+);
+
+RemindModel defaultModel = RemindModel(id: UniqueKey().toString());

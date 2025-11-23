@@ -10,6 +10,7 @@ class SimpleAppButton extends StatelessWidget {
   final Color textColor;
   final bool isLoad;
   final double borderRadius;
+  final double fontSize;
   final double? width;
   final double? height;
   final TextStyle? style;
@@ -28,6 +29,7 @@ class SimpleAppButton extends StatelessWidget {
     this.borderRadius = borderRadVal,
     this.width,
     this.height = 45,
+    this.fontSize = 14,
     this.margin = const EdgeInsets.symmetric(horizontal: 0),
     this.padding = const EdgeInsets.symmetric(horizontal: paddingVal),
     this.style,
@@ -63,7 +65,11 @@ class SimpleAppButton extends StatelessWidget {
             child: Text(
               text,
               style:
-                  style ?? context.subTitleTextStyle.copyWith(color: textColor),
+                  style ??
+                  context.subTitleTextStyle.copyWith(
+                    color: textColor,
+                    fontSize: fontSize.sp,
+                  ),
             ),
           ),
         ),

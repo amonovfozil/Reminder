@@ -3,7 +3,7 @@ import 'package:reminder/appearance/settings/pages/settings_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/main_page.dart';
 import 'package:reminder/appearance/settings/pages/parties/display_theme_page.dart';
-import '../../appearance/calendar/presentation/pages/moduls/creat_remind_screen.dart';
+import '../../appearance/calendar/presentation/pages/creat_remind_screen.dart';
 
 class AppRouter {
   static const String mainPage = '/main_page';

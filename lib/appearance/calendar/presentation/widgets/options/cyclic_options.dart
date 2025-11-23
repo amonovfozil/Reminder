@@ -3,23 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../utils/theme/app_colors.dart';
+import '../../../data/models/types/cyclic_remind.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import '../../../../../core/constants/const_data.dart';
-import '../../../data/models/types/multiple_remind.dart';
 import '../../../../../utils/theme/responsive_size.dart';
 import '../../../../../utils/extension/string_extension.dart';
 import '../../../../../core/UI/widgets/simple_app_button.dart';
 
-class MultipleOptions extends StatefulWidget {
-  const MultipleOptions({super.key, required this.remind});
-  final MultipleRemindModel remind;
+class CyclicOptions extends StatefulWidget {
+  const CyclicOptions({super.key, required this.remind});
+  final CyclicRemindModel remind;
 
   @override
-  State<MultipleOptions> createState() => _MultipleOptionsState();
+  State<CyclicOptions> createState() => _CyclicOptionsState();
 }
 
-class _MultipleOptionsState extends State<MultipleOptions> {
-  List<int> intervalValues = List.generate(10 - 2 + 1, (index) => (1 + index));
+class _CyclicOptionsState extends State<CyclicOptions> {
+  List<int> intervalValues = List.generate(90 - 2 + 1, (index) => (2 + index));
+  late FixedExtentScrollController scrollController;
+  @override
+  void initState() {
+    scrollController = FixedExtentScrollController(initialItem: 0);
+    super.initState();
+  }
+
+  void jumpToIndex(int index) {
+    scrollController.animateToItem(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +65,7 @@ class _MultipleOptionsState extends State<MultipleOptions> {
               horizontal: horizantPadVal,
             ),
             child: Column(
-              spacing: spacingVal,
+              spacing: spacingVal.w / 2.h,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
@@ -56,12 +76,9 @@ class _MultipleOptionsState extends State<MultipleOptions> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text('cyclic_mode'.tr, style: context.titleTextStyle),
                           Text(
-                            'multiple_daily'.tr,
-                            style: context.titleTextStyle,
-                          ),
-                          Text(
-                            'multiple_daily_subtitle'.tr,
+                            'cyclic_mode_subtitle'.tr,
                             style: context.subStyle,
                           ),
                         ],
@@ -69,38 +86,75 @@ class _MultipleOptionsState extends State<MultipleOptions> {
                     ),
                   ],
                 ),
-                Divider(height: 0, color: context.secondaryColor),
+                Divider(height: 2, color: context.secondaryColor),
                 Row(
                   children: [
                     Text('amount_'.tr, style: context.subTitleTextStyle),
                     const Spacer(),
                     SimpleAppButton(
-                      text: widget.remind.amount.toString(),
-                      onTap: () => context.read<CreatorBloc>().add(
-                        CreatorEvent.updateData(
-                          data: widget.remind.copyWith(
-                            enableInterval: !widget.remind.enableInterval,
+                      text: widget.remind.activeVal.toString(),
+                      onTap: () {
+                        context.read<CreatorBloc>().add(
+                          CreatorEvent.updateData(
+                            data: widget.remind.copyWith(enableInterval: 1),
                           ),
-                        ),
-                      ),
+                        );
+                        WidgetsBinding.instance.addPostFrameCallback(
+                          (_) => jumpToIndex(
+                            intervalValues.indexOf(widget.remind.activeVal),
+                          ),
+                        );
+                      },
                       height: 22.h,
                       width: 22.w,
-                      color: widget.remind.enableInterval
+                      color: widget.remind.enableInterval == 1
                           ? context.primaryColor
                           : white,
-                      textColor: widget.remind.enableInterval
+                      textColor: widget.remind.enableInterval == 1
                           ? white
                           : context.primaryColor,
                       borderRadius: 7,
                       fontSize: 12,
-                      bordercolor: context.primaryColor,
+                      bordercolor: context.secondaryColor,
                       padding: EdgeInsets.all(3).scaled,
                       margin: EdgeInsets.only(right: 5).scaled,
                     ),
-                    Text(
-                      'times_daily'.tr.replaceAll('X', ''),
-                      style: context.subStyle,
+                    Text('day'.tr.replaceAll('X', ''), style: context.subStyle),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text('pouse_day'.tr, style: context.subTitleTextStyle),
+                    const Spacer(),
+                    SimpleAppButton(
+                      text: widget.remind.pauseVal.toString(),
+                      onTap: () {
+                        context.read<CreatorBloc>().add(
+                          CreatorEvent.updateData(
+                            data: widget.remind.copyWith(enableInterval: 2),
+                          ),
+                        );
+                        WidgetsBinding.instance.addPostFrameCallback(
+                          (_) => jumpToIndex(
+                            intervalValues.indexOf(widget.remind.pauseVal),
+                          ),
+                        );
+                      },
+                      height: 22.h,
+                      width: 22.w,
+                      color: widget.remind.enableInterval == 2
+                          ? context.primaryColor
+                          : white,
+                      textColor: widget.remind.enableInterval == 2
+                          ? white
+                          : context.primaryColor,
+                      borderRadius: 7,
+                      fontSize: 12,
+                      bordercolor: context.secondaryColor,
+                      padding: EdgeInsets.all(3).scaled,
+                      margin: EdgeInsets.only(right: 5).scaled,
                     ),
+                    Text('day'.tr.replaceAll('X', ''), style: context.subStyle),
                   ],
                 ),
               ],
@@ -108,7 +162,7 @@ class _MultipleOptionsState extends State<MultipleOptions> {
           ),
         ),
         Visibility(
-          visible: widget.remind.enableInterval,
+          visible: widget.remind.enableInterval != 0,
           child: Card(
             color: white.withOpacity(0.90),
             margin: const EdgeInsets.symmetric(
@@ -133,6 +187,7 @@ class _MultipleOptionsState extends State<MultipleOptions> {
                 height: 160.w / 1.h,
                 child: CupertinoPicker(
                   itemExtent: 35,
+                  scrollController: scrollController,
                   children: intervalValues
                       .map(
                         (e) => Padding(
@@ -151,7 +206,12 @@ class _MultipleOptionsState extends State<MultipleOptions> {
                       context.read<CreatorBloc>().add(
                         CreatorEvent.updateData(
                           data: widget.remind.copyWith(
-                            amount: intervalValues[index],
+                            activeVal: widget.remind.enableInterval == 1
+                                ? intervalValues[index]
+                                : widget.remind.activeVal,
+                            pauseVal: widget.remind.enableInterval == 2
+                                ? intervalValues[index]
+                                : widget.remind.pauseVal,
                           ),
                         ),
                       ),
