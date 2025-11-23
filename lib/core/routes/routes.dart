@@ -3,6 +3,7 @@ import 'package:reminder/appearance/settings/pages/settings_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/main_page.dart';
 import 'package:reminder/appearance/settings/pages/parties/display_theme_page.dart';
+import '../../appearance/calendar/presentation/pages/moduls/creat_remind_screen.dart';
 
 class AppRouter {
   static const String mainPage = '/main_page';
@@ -11,6 +12,8 @@ class AppRouter {
   static const String displayThemePage = '/display_theme_page';
   static const String notificationsPage = '/notifications_page';
   static const String abautAppPage = '/abaut_app_page';
+  //Remind moduls
+  static const String creatRemindScreen = '/creat_remind_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -24,6 +27,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => const DisplayThemePage());
       // case notificationsPage:
       //   return MaterialPageRoute(builder: (ctx) => const NotificationsPage());
+
+      //Remind moduls
+      case creatRemindScreen:
+        return MaterialPageRoute(builder: (ctx) => const CreatRemindScreen());
 
       default:
         return MaterialPageRoute(

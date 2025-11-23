@@ -1,9 +1,9 @@
-import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
-
 import '../../../../../core/constants/enums/remind_type.dart';
+import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
 
 class IntervalRemindModel extends RemindModel {
   bool isHourly;
+  bool enableInterval;
   double interval;
   DateTime? startDate;
   DateTime? endDate;
@@ -19,6 +19,7 @@ class IntervalRemindModel extends RemindModel {
     super.remindMe,
     super.isPaused,
     this.isHourly = true,
+    this.enableInterval = false,
     this.interval = 0.5,
     this.startDate,
     this.endDate,
@@ -26,6 +27,7 @@ class IntervalRemindModel extends RemindModel {
 
   IntervalRemindModel copyWith({
     bool? isHourly,
+    bool? enableInterval,
     double? interval,
     DateTime? startDate,
     DateTime? endDate,
@@ -39,6 +41,7 @@ class IntervalRemindModel extends RemindModel {
       body: body ?? this.body,
       times: times ?? this.times,
       isHourly: isHourly ?? this.isHourly,
+      enableInterval: enableInterval ?? this.enableInterval,
       interval: interval ?? this.interval,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,

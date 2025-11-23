@@ -18,5 +18,5 @@ extension AppColor on BuildContext {
   Color get secondaryColor => Theme.of(this).secondaryHeaderColor;
   Color get scaffoldColor => white;
   Color get cardColor => Theme.of(this).primaryColor;
-  Color get borderColor => lightGrey;
+  Color get borderColor => Theme.of(this).hoverColor;
 }

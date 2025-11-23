@@ -46,7 +46,7 @@ class SimpleAppButton extends StatelessWidget {
         color: color ?? context.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius.r),
-          side: BorderSide(width: borderWidth.w, color: bordercolor),
+          side: BorderSide(width: borderWidth.w * 1.5, color: bordercolor),
         ),
 
         child: InkWell(

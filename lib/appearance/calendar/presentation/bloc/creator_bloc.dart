@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:reminder/appearance/calendar/data/models/types/multiple_remind.dart';
 import '../../data/models/remind_model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
+import '../../data/models/types/multiple_remind.dart';
 import '../../data/models/types/interval_remind.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'creator_event.dart';
 part 'creator_state.dart';
@@ -17,7 +16,10 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
   }
 
   //Functions
-  void _onStrated(_Started event, emit) {}
+  void _onStrated(_Started event, emit) {
+    emit(InitialCreatorState(remind: defaultModel));
+  }
+
   void _onUpdateData(_UpdateData event, emit) =>
       emit(InitialCreatorState(remind: event.data));
 }

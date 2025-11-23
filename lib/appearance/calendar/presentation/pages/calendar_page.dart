@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../widgets/cutom_calendar.dart';
-import '../widgets/remind_types_modal.dart';
-import '../../../../core/helpers/helper.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../core/constants/const_data.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
@@ -47,16 +46,19 @@ class _CalendarPageState extends State<CalendarPage> {
           SimpleAppButton(
             text: 'creat',
             color: white,
+            borderRadius: iteamCardborderRadVal,
             textColor: context.primaryColor,
             margin: EdgeInsets.symmetric(
               horizontal: marginVal.w,
               vertical: 5.h,
             ),
-            onTap: () => Helper.showBottomModel(
-              ctx: context,
-              body: RemindTypesModal(),
-              title: "Select Remind type",
-            ),
+            onTap: () =>
+                Navigator.of(context).pushNamed(AppRouter.creatRemindScreen),
+            // Helper.showBottomModel(
+            //   ctx: context,
+            //   body: RemindTypesModal(),
+            //   title: "Select Remind type",
+            // ),
           ),
 
           Container(
