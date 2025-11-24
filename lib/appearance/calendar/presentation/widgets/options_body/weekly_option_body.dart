@@ -8,15 +8,15 @@ import '../../../../../core/constants/const_data.dart';
 import '../../../../../utils/theme/responsive_size.dart';
 import '../../../../../utils/extension/string_extension.dart';
 
-class WeeklyOptions extends StatefulWidget {
-  const WeeklyOptions({super.key, required this.remind});
+class WeeklyOptionBody extends StatefulWidget {
+  const WeeklyOptionBody({super.key, required this.remind});
   final WeeklyRemindModel remind;
 
   @override
-  State<WeeklyOptions> createState() => _WeeklyOptionsState();
+  State<WeeklyOptionBody> createState() => _WeeklyOptionBodyState();
 }
 
-class _WeeklyOptionsState extends State<WeeklyOptions> {
+class _WeeklyOptionBodyState extends State<WeeklyOptionBody> {
   @override
   Widget build(BuildContext context) {
     return Column(

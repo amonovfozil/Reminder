@@ -22,6 +22,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return CustomBackgraundStyle(
       title: 'Calendar',
       headTopPosetionVal: 105.h / 1.w,
+
       headBody: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -52,8 +53,9 @@ class _CalendarPageState extends State<CalendarPage> {
               horizontal: marginVal.w,
               vertical: 5.h,
             ),
-            onTap: () =>
-                Navigator.of(context).pushNamed(AppRouter.creatRemindScreen),
+            onTap: () => Navigator.of(
+              context,
+            ).pushNamed(AppRouter.selectRemindTypeScreen),
             // Helper.showBottomModel(
             //   ctx: context,
             //   body: RemindTypesModal(),

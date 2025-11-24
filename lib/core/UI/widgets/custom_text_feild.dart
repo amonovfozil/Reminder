@@ -26,6 +26,8 @@ class CustomTextField extends StatefulWidget {
     this.withBorder = true,
     this.contentPadding = const EdgeInsets.fromLTRB(16, 7, 16, 7),
     this.labelStyle,
+    this.cardColor = Colors.transparent,
+    this.margin = const EdgeInsets.all(0),
   });
 
   final TextEditingController controller;
@@ -38,7 +40,7 @@ class CustomTextField extends StatefulWidget {
   final Function()? onTap;
   final Function(String)? onChanged;
   final Function()? editComplete;
-  final Function validator;
+  final String? Function(String?) validator;
   final List<TextInputFormatter>? textInputFormatter;
   final EdgeInsets? contentPadding;
   final bool? obscureText;
@@ -47,7 +49,9 @@ class CustomTextField extends StatefulWidget {
   final String? hintText;
   final String? initialval;
   final TextStyle? labelStyle;
+  final Color cardColor;
   final TextCapitalization? textCapitaliz;
+  final EdgeInsets margin;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -101,19 +105,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
         FocusScope(
           child: Focus(
             onFocusChange: (focus) {
+              final validationResult = widget.validator(widget.controller.text);
               setState(() {
                 getBorderColor(focus);
-                if (checkOfErrorOnFocusChange &&
-                    widget
-                        .validator(widget.controller.text)!
-                        .toString()
-                        .isNotEmpty) {
-                  isError = true;
-                  errorString = widget.validator(widget.controller.text) ?? '';
-                } else {
-                  isError = false;
-                  errorString = widget.validator(widget.controller.text) ?? '';
-                }
+                final hasError = checkOfErrorOnFocusChange &&
+                    (validationResult?.isNotEmpty ?? false);
+                isError = hasError;
+                errorString = validationResult ?? '';
               });
             },
             child: Container(
@@ -121,8 +119,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
               width: double.infinity,
               alignment: Alignment.center,
               padding: const EdgeInsetsDirectional.symmetric(horizontal: 2),
+              margin: widget.margin,
               decoration: BoxDecoration(
-                // color: theme.cardColor,
+                color: widget.cardColor,
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
                 border: widget.withBorder
                     ? Border.all(
@@ -158,19 +157,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   }
                 },
                 validator: (value) {
-                  if (widget
-                      .validator(widget.controller.text)!
-                      .toString()
-                      .isNotEmpty) {
+                  final validationResult =
+                      widget.validator(widget.controller.text);
+                  if (validationResult?.isNotEmpty ?? false) {
                     setState(() {
                       isError = true;
-                      errorString = widget.validator(widget.controller.text)!;
+                      errorString = validationResult ?? '';
                     });
                     return "";
                   } else {
                     setState(() {
                       isError = false;
-                      errorString = widget.validator(widget.controller.text)!;
+                      errorString = validationResult ?? '';
                     });
                   }
                   return null;

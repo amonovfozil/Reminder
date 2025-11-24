@@ -10,15 +10,15 @@ import '../../../../../utils/theme/responsive_size.dart';
 import '../../../../../utils/extension/string_extension.dart';
 import '../../../../../core/UI/widgets/simple_app_button.dart';
 
-class CyclicOptions extends StatefulWidget {
-  const CyclicOptions({super.key, required this.remind});
+class CyclicOptionBody extends StatefulWidget {
+  const CyclicOptionBody({super.key, required this.remind});
   final CyclicRemindModel remind;
 
   @override
-  State<CyclicOptions> createState() => _CyclicOptionsState();
+  State<CyclicOptionBody> createState() => _CyclicOptionBodyState();
 }
 
-class _CyclicOptionsState extends State<CyclicOptions> {
+class _CyclicOptionBodyState extends State<CyclicOptionBody> {
   List<int> intervalValues = List.generate(90 - 2 + 1, (index) => (2 + index));
   late FixedExtentScrollController scrollController;
   @override

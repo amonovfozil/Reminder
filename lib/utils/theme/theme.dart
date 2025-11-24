@@ -44,8 +44,8 @@ class AppTheme {
       brightness: Brightness.light,
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
-          TargetPlatform.android: LiquidPageTransitionBuilder(),
-          TargetPlatform.iOS: LiquidPageTransitionBuilder(),
+          TargetPlatform.android: CustomPageTransitionBuilder(),
+          TargetPlatform.iOS: CustomPageTransitionBuilder(),
         },
       ),
       tabBarTheme: TabBarThemeData(indicatorColor: orange),

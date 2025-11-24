@@ -4,10 +4,10 @@ import '../storage/app_storage.dart';
 class Formatter {
   static String noteDateFormat(DateTime date) =>
       DateFormat('dd.MM.yyyy    HH:mm').format(date);
-  static String dayMonthFormat(DateTime date) =>
-      DateFormat('dd-MMMM  HH:mm', AppStorage.appLocale).format(date);
-  static String dayMonthBy(DateTime date, {String atribut = '-'}) =>
-      DateFormat("dd${atribut}MM${atribut}yyyy").format(date);
+  static String dayMonthBy(DateTime date, {String atribut = '-'}) => DateFormat(
+    "dd${atribut}MMM${atribut}yyyy",
+    AppStorage.appLocale,
+  ).format(date);
 
   // static MaskTextInputFormatter dateInputFormatter = MaskTextInputFormatter(
   //   mask: '##/##/####',

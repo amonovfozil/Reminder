@@ -10,15 +10,15 @@ import '../../../../../utils/theme/responsive_size.dart';
 import '../../../../../utils/extension/string_extension.dart';
 import '../../../../../core/UI/widgets/simple_app_button.dart';
 
-class MultipleOptions extends StatefulWidget {
-  const MultipleOptions({super.key, required this.remind});
+class MultipleOptionBody extends StatefulWidget {
+  const MultipleOptionBody({super.key, required this.remind});
   final MultipleRemindModel remind;
 
   @override
-  State<MultipleOptions> createState() => _MultipleOptionsState();
+  State<MultipleOptionBody> createState() => _MultipleOptionBodyState();
 }
 
-class _MultipleOptionsState extends State<MultipleOptions> {
+class _MultipleOptionBodyState extends State<MultipleOptionBody> {
   List<int> intervalValues = List.generate(10 - 2 + 1, (index) => (2 + index));
 
   @override

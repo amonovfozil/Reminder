@@ -11,6 +11,7 @@ class CustomMenuItemCard extends StatelessWidget {
   final double? width;
   final Widget? suffix;
   final Widget prefix;
+  final Widget bottomWidget;
   final String subtitle;
   final Color? splashColor;
   final double borderRadius;
@@ -37,6 +38,8 @@ class CustomMenuItemCard extends StatelessWidget {
       horizontal: horizantPadVal,
       vertical: verticalPadVal,
     ),
+    this.bottomWidget = const SizedBox(),
+
     this.onTap,
   });
 
@@ -62,47 +65,55 @@ class CustomMenuItemCard extends StatelessWidget {
             splashColor ?? context.secondaryColor.withOpacity(0.04),
           ),
           borderRadius: BorderRadius.circular(borderRadius.r),
-          child: Container(
-            height: height.h,
-            width: width != null ? width!.w : appSize.width,
-            padding: padding.scaled,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                prefix,
-                SizedBox(width: spaceTitle.h),
-                Expanded(
-                  child: Column(
-                    // spacing: 5,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: context.subTitleTextStyle.copyWith(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: height.h,
+                width: width != null ? width!.w : appSize.width,
+                padding: padding.scaled,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    prefix,
+                    SizedBox(width: spaceTitle.h),
+                    Expanded(
+                      child: Column(
+                        // spacing: 5,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: context.subTitleTextStyle.copyWith(
+                              color: isActive ? white : context.primaryColor,
+                            ),
+                          ),
+                          if (subtitle.isNotEmpty)
+                            Text(
+                              subtitle,
+                              style: context.subStyle.copyWith(
+                                color: isActive
+                                    ? white
+                                    : context.secondaryColor,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+
+                    suffix ??
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          size: 28.h,
                           color: isActive ? white : context.primaryColor,
                         ),
-                      ),
-                      if (subtitle.isNotEmpty)
-                        Text(
-                          subtitle,
-                          style: context.subStyle.copyWith(
-                            color: isActive ? white : context.secondaryColor,
-                          ),
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
-
-                suffix ??
-                    Icon(
-                      CupertinoIcons.chevron_forward,
-                      size: 28.h,
-                      color: isActive ? white : context.primaryColor,
-                    ),
-              ],
-            ),
+              ),
+              bottomWidget,
+            ],
           ),
         ),
       ),

@@ -49,191 +49,137 @@ class _IntervalOptionsState extends State<IntervalOptions> {
     return Column(
       spacing: spacingVal,
       children: [
-        Card(
-          color: white.withOpacity(0.90),
-          margin: const EdgeInsets.symmetric(horizontal: horizantPadVal).scaled,
-          elevation: 1,
-          borderOnForeground: false,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              width: borderWidth,
-              color: context.borderColor.withOpacity(0.08),
-            ),
-            borderRadius: BorderRadius.circular(borderRadVal.r),
-          ),
-          child: Container(
-            width: appSize.width,
-            padding: EdgeInsets.symmetric(
-              vertical: paddingVal,
-              horizontal: horizantPadVal,
-            ),
-            child: Column(
-              spacing: spacingVal,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        spacing: 3,
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'multiple_daily'.tr,
-                            style: context.titleTextStyle,
-                          ),
-                          Text(
-                            'multiple_daily_subtitle'.tr,
-                            style: context.subStyle,
-                          ),
-                        ],
+        Padding(
+          padding: const EdgeInsets.only(left: 0),
+          child: Divider(height: 0, color: context.secondaryColor),
+        ),
+
+        Container(
+          width: appSize.width,
+          padding: EdgeInsets.symmetric(horizontal: horizantPadVal),
+          child: Column(
+            spacing: spacingVal,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                spacing: spacingVal,
+                children: [
+                  Expanded(
+                    child: SimpleAppButton(
+                      text: 'every_x_hour'.tr.replaceAll(
+                        'X',
+                        !widget.remind.isHourly
+                            ? 'X'
+                            : widget.remind.interval.toStringAsFixed(
+                                widget.remind.interval ==
+                                        widget.remind.interval.toInt()
+                                    ? 0
+                                    : 1,
+                              ),
                       ),
-                    ),
-                  ],
-                ),
-                Divider(height: 0, color: context.secondaryColor),
-                Row(
-                  spacing: spacingVal,
-                  children: [
-                    Expanded(
-                      child: SimpleAppButton(
-                        text: 'every_x_hour'.tr.replaceAll(
-                          'X',
-                          !widget.remind.isHourly
-                              ? 'X'
-                              : widget.remind.interval.toStringAsFixed(
-                                  widget.remind.interval ==
-                                          widget.remind.interval.toInt()
-                                      ? 0
-                                      : 1,
-                                ),
-                        ),
-                        height: 35.w / 1.h,
-                        width: double.infinity,
-                        bordercolor: borderColor,
+                      height: 35.w / 1.h,
+                      width: double.infinity,
+                      bordercolor: borderColor,
+                      color: widget.remind.isHourly
+                          ? context.primaryColor
+                          : Colors.transparent,
+                      borderRadius: 10.r,
+                      // borderRadius: iteamCardborderRadVal,
+                      padding: EdgeInsets.symmetric(horizontal: 14).scaled,
+                      style: context.subTitleTextStyle.copyWith(
                         color: widget.remind.isHourly
-                            ? context.primaryColor
-                            : Colors.transparent,
-                        borderRadius: 10.r,
-                        // borderRadius: iteamCardborderRadVal,
-                        padding: EdgeInsets.symmetric(horizontal: 14).scaled,
-                        style: context.subTitleTextStyle.copyWith(
-                          color: widget.remind.isHourly
-                              ? white
-                              : context.primaryColor,
-                          fontSize: 12.sp,
-                        ),
-                        onTap: () {
-                          context.read<CreatorBloc>().add(
-                            CreatorEvent.updateData(
-                              data: widget.remind.copyWith(
-                                isHourly: true,
-                                interval: 0.5,
-                              ),
-                            ),
-                          );
-                          _jumpToIndex(0);
-                        },
+                            ? white
+                            : context.primaryColor,
+                        fontSize: 12.sp,
                       ),
+                      onTap: () {
+                        context.read<CreatorBloc>().add(
+                          CreatorEvent.updateData(
+                            data: widget.remind.copyWith(
+                              isHourly: true,
+                              interval: 0.5,
+                            ),
+                          ),
+                        );
+                        _jumpToIndex(0);
+                      },
                     ),
+                  ),
 
-                    Expanded(
-                      child: SimpleAppButton(
-                        text: 'every_x_day'.tr.replaceAll(
-                          'X',
-                          widget.remind.isHourly
-                              ? 'X'
-                              : widget.remind.interval.toStringAsFixed(
-                                  widget.remind.interval ==
-                                          widget.remind.interval.toInt()
-                                      ? 0
-                                      : 1,
-                                ),
-                        ),
+                  Expanded(
+                    child: SimpleAppButton(
+                      text: 'every_x_day'.tr.replaceAll(
+                        'X',
+                        widget.remind.isHourly
+                            ? 'X'
+                            : widget.remind.interval.toStringAsFixed(
+                                widget.remind.interval ==
+                                        widget.remind.interval.toInt()
+                                    ? 0
+                                    : 1,
+                              ),
+                      ),
 
-                        height: 35.w / 1.h,
-                        width: double.infinity,
-                        bordercolor: borderColor,
+                      height: 35.w / 1.h,
+                      width: double.infinity,
+                      bordercolor: borderColor,
+                      color: !widget.remind.isHourly
+                          ? context.primaryColor
+                          : Colors.transparent,
+                      borderRadius: 10.r,
+                      // borderRadius: iteamCardborderRadVal,
+                      padding: EdgeInsets.symmetric(horizontal: 14).scaled,
+                      style: context.subTitleTextStyle.copyWith(
                         color: !widget.remind.isHourly
-                            ? context.primaryColor
-                            : Colors.transparent,
-                        borderRadius: 10.r,
-                        // borderRadius: iteamCardborderRadVal,
-                        padding: EdgeInsets.symmetric(horizontal: 14).scaled,
-                        style: context.subTitleTextStyle.copyWith(
-                          color: !widget.remind.isHourly
-                              ? white
-                              : context.primaryColor,
-                          fontSize: 12.sp,
-                        ),
-                        onTap: () {
-                          context.read<CreatorBloc>().add(
-                            CreatorEvent.updateData(
-                              data: widget.remind.copyWith(
-                                isHourly: false,
-                                interval: 2,
-                              ),
-                            ),
-                          );
-                          _jumpToIndex(0);
-                        },
+                            ? white
+                            : context.primaryColor,
+                        fontSize: 12.sp,
                       ),
+                      onTap: () {
+                        context.read<CreatorBloc>().add(
+                          CreatorEvent.updateData(
+                            data: widget.remind.copyWith(
+                              isHourly: false,
+                              interval: 2,
+                            ),
+                          ),
+                        );
+                        _jumpToIndex(0);
+                      },
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        Visibility(
-          child: Card(
-            color: white.withOpacity(0.90),
-            margin: const EdgeInsets.symmetric(
-              horizontal: horizantPadVal,
-            ).scaled,
-            elevation: 1,
-            borderOnForeground: false,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                width: borderWidth,
-                color: context.borderColor.withOpacity(0.08),
-              ),
-              borderRadius: BorderRadius.circular(borderRadVal.r),
-            ),
-            child: Container(
-              width: appSize.width,
-              padding: EdgeInsets.symmetric(
-                // vertical: paddingVal,
-                horizontal: horizantPadVal,
-              ).scaled,
-              child: SizedBox(
-                height: 160.w / 1.h,
-                child: CupertinoPicker(
-                  itemExtent: 35,
-                  scrollController: scrollController,
-                  children: intervalValues
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(top: 6).scaled,
-                          child: Text(
-                            e.toString(),
-                            textAlign: TextAlign.start,
-                            style: context.titleTextStyle.copyWith(
-                              // fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onSelectedItemChanged: (index) =>
-                      context.read<CreatorBloc>().add(
-                        CreatorEvent.updateData(
-                          data: widget.remind.copyWith(
-                            interval: intervalValues[index].toDouble(),
-                          ),
+        Container(
+          width: appSize.width,
+          padding: EdgeInsets.symmetric(horizontal: horizantPadVal).scaled,
+          child: SizedBox(
+            height: 160.w / 1.h,
+            child: CupertinoPicker(
+              itemExtent: 35,
+              scrollController: scrollController,
+              children: intervalValues
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.only(top: 6).scaled,
+                      child: Text(
+                        e.toString(),
+                        textAlign: TextAlign.start,
+                        style: context.titleTextStyle.copyWith(
+                          // fontSize: 20,
                         ),
                       ),
+                    ),
+                  )
+                  .toList(),
+              onSelectedItemChanged: (index) => context.read<CreatorBloc>().add(
+                CreatorEvent.updateData(
+                  data: widget.remind.copyWith(
+                    interval: intervalValues[index].toDouble(),
+                  ),
                 ),
               ),
             ),
