@@ -59,130 +59,139 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
             ),
 
             headBody: SizedBox(
-              height: appSize.height * 0.8.w / 1.h,
-              child: Center(
-                child: Column(
-                  spacing: spacingVal,
-                  children: [
-                    // CustomTextField(
-                    //   hintText: 'Title',
-                    //   cardColor: white,
-                    //   margin: const EdgeInsets.symmetric(
-                    //     horizontal: horizantPadVal,
-                    //   ).scaled,
-                    //   controller: TextEditingController(),
-                    //   validator: (val) {},
-                    // ),
-                    // CustomTextField(
-                    //   hintText: 'Note (Optional)',
-                    //   minLines: 3,
-                    //   cardColor: white,
-                    //   margin: const EdgeInsets.symmetric(
-                    //     horizontal: horizantPadVal,
-                    //   ).scaled,
-                    //   controller: TextEditingController(),
-                    //   validator: (val) {},
-                    // ),
-                    Card(
-                      color: white.withOpacity(1),
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: horizantPadVal,
-                      ).scaled,
-                      elevation: 1,
-                      borderOnForeground: false,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: borderWidth,
-                          color: context.borderColor.withOpacity(0.08),
-                        ),
-                        borderRadius: BorderRadius.circular(borderRadVal.r),
-                      ),
-                      child: Container(
-                        width: appSize.width,
-                        padding: EdgeInsets.symmetric(
-                          vertical: horizantPadVal,
-                          horizontal: paddingVal,
+              height: appSize.height * 0.85.w / 1.h,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 90),
+                  child: Column(
+                    spacing: spacingVal,
+                    children: [
+                      // CustomTextField(
+                      //   hintText: 'Title',
+                      //   cardColor: white,
+                      //   margin: const EdgeInsets.symmetric(
+                      //     horizontal: horizantPadVal,
+                      //   ).scaled,
+                      //   controller: TextEditingController(),
+                      //   validator: (val) {},
+                      // ),
+                      // CustomTextField(
+                      //   hintText: 'Note (Optional)',
+                      //   minLines: 3,
+                      //   cardColor: white,
+                      //   margin: const EdgeInsets.symmetric(
+                      //     horizontal: horizantPadVal,
+                      //   ).scaled,
+                      //   controller: TextEditingController(),
+                      //   validator: (val) {},
+                      // ),
+                      Card(
+                        color: white.withOpacity(1),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: horizantPadVal,
                         ).scaled,
-                        child: Column(
-                          spacing: spacingVal,
-                          children: [
-                            CustomTextField(
-                              initialval: state.remind.title,
-                              hintText: 'Title',
-                              controller: titleCtrl,
-                              validator: (val) {
-                                return null;
-                              },
-                              onChanged: (val) =>
-                                  context.read<CreatorBloc>().add(
-                                    CreatorEvent.updateData(
-                                      data: getCurrentModel(
-                                        state.remind,
-                                      ).copyWith(title: val),
+                        elevation: 1,
+                        borderOnForeground: false,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            width: borderWidth,
+                            color: context.borderColor.withOpacity(0.08),
+                          ),
+                          borderRadius: BorderRadius.circular(borderRadVal.r),
+                        ),
+                        child: Container(
+                          width: appSize.width,
+                          padding: EdgeInsets.symmetric(
+                            vertical: horizantPadVal,
+                            horizontal: paddingVal,
+                          ).scaled,
+                          child: Column(
+                            spacing: spacingVal,
+                            children: [
+                              CustomTextField(
+                                initialval: state.remind.title,
+                                hintText: 'Title',
+                                controller: titleCtrl,
+                                validator: (val) {
+                                  return null;
+                                },
+                                onChanged: (val) =>
+                                    context.read<CreatorBloc>().add(
+                                      CreatorEvent.updateData(
+                                        data: getCurrentModel(
+                                          state.remind,
+                                        ).copyWith(title: val),
+                                      ),
                                     ),
-                                  ),
-                            ),
-                            CustomTextField(
-                              initialval: state.remind.body,
-                              hintText: 'Note (Optional)',
-                              minLines: 3,
-                              controller: noteCtrl,
-                              validator: (val) => null,
-                              onChanged: (val) =>
-                                  context.read<CreatorBloc>().add(
-                                    CreatorEvent.updateData(
-                                      data: getCurrentModel(
-                                        state.remind,
-                                      ).copyWith(body: val),
+                              ),
+                              CustomTextField(
+                                initialval: state.remind.body,
+                                hintText: 'Note (Optional)',
+                                minLines: 3,
+                                controller: noteCtrl,
+                                validator: (val) => null,
+                                onChanged: (val) =>
+                                    context.read<CreatorBloc>().add(
+                                      CreatorEvent.updateData(
+                                        data: getCurrentModel(
+                                          state.remind,
+                                        ).copyWith(body: val),
+                                      ),
                                     ),
-                                  ),
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    getOptionBody(state.remind),
-                    const Spacer(),
-                    Padding(
-                      padding: EdgeInsetsGeometry.symmetric(
-                        horizontal: horizantPadVal,
-                      ),
-                      child: Row(
-                        spacing: spacingVal,
-                        children: [
-                          Expanded(
-                            child: SimpleAppButton(
-                              text: 'creat',
-                              width: double.infinity,
-                              textColor: context.secondaryColor,
-                              splashColor: context.secondaryColor.withOpacity(
-                                0.15,
-                              ),
-                              color: white,
-                              onTap: () {
-                                _formKey.currentState?.validate();
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: SimpleAppButton(
-                              text: 'clear',
-                              width: double.infinity,
-                              textColor: context.secondaryColor,
-                              splashColor: context.secondaryColor.withOpacity(
-                                0.15,
-                              ),
-                              color: white,
-                              onTap: () => context.read<CreatorBloc>().add(
-                                CreatorEvent.updateData(data: defaultModel),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      getOptionBody(state.remind),
+                      // RemindNoteStatusWidget(remind: state.remind),
+                      // const Spacer(),
+                    ],
+                  ),
                 ),
+              ),
+            ),
+            bottomSheet: Padding(
+              padding: EdgeInsets.only(
+                left: horizantPadVal,
+                right: horizantPadVal,
+                top: horizantPadVal,
+                bottom: paddingVal * 2,
+              ).scaled,
+              child: Row(
+                spacing: spacingVal,
+                children: [
+                  Expanded(
+                    child: SimpleAppButton(
+                      text: 'creat',
+                      width: double.infinity,
+                      textColor: context.secondaryColor,
+                      splashColor: context.secondaryColor.withOpacity(0.15),
+                      color: white,
+                      onTap: () {
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: SimpleAppButton(
+                      text: 'clear',
+                      width: double.infinity,
+                      textColor: context.secondaryColor,
+                      splashColor: context.secondaryColor.withOpacity(0.15),
+                      color: white,
+                      onTap: () {
+                        titleCtrl.clear();
+                        noteCtrl.clear();
+                        context.read<CreatorBloc>().add(
+                          CreatorEvent.updateData(
+                            data: getdefaultModel(state.remind),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           );
@@ -190,6 +199,24 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
       ),
     );
   }
+}
+
+RemindModel getdefaultModel(RemindModel model) {
+  DateTime now = DateTime.now();
+
+  return switch (model.type) {
+    RemindType.interval => intervalModel.copyWith(
+      isHourly: (model as IntervalRemindModel).isHourly,
+      interval: model.interval,
+      // title: '',
+      // body: '',
+      times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+    ),
+    RemindType.multiple => multipleRemindModel,
+    RemindType.weekly => weeklyRemindModel,
+    RemindType.cyclic => cyclicRemindModel,
+    null => throw model,
+  };
 }
 
 getCurrentModel(RemindModel model) {

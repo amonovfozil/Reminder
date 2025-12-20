@@ -1,5 +1,4 @@
-import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
-
+import '../remind_model.dart';
 import '../../../../../core/constants/enums/remind_type.dart';
 
 class CyclicRemindModel extends RemindModel {
@@ -16,8 +15,8 @@ class CyclicRemindModel extends RemindModel {
     super.enableAlert,
     super.remindMe,
     super.isPaused,
-    this.activeVal = 10,
-    this.pauseVal = 5,
+    this.activeVal = 21,
+    this.pauseVal = 7,
     required this.startDate,
     this.enableInterval = 0,
   });

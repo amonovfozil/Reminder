@@ -100,15 +100,22 @@ class _SelectRemindTypeScreenState extends State<SelectRemindTypeScreen> {
 
                 const Spacer(),
                 SimpleAppButton(
-                  text: 'next',
+                  text: 'Next',
                   width: double.infinity,
-                  textColor: context.secondaryColor,
+                  bordercolor: context.borderColor,
+                  textColor: state.remind.type != null
+                      ? context.secondaryColor
+                      : white,
                   splashColor: context.secondaryColor.withOpacity(0.15),
                   margin: EdgeInsets.symmetric(horizontal: horizantPadVal),
-                  color: white,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRouter.creatRemindScreen),
+                  color: state.remind.type != null
+                      ? white
+                      : context.primaryColor,
+                  onTap: state.remind.type == null
+                      ? null
+                      : () => Navigator.of(
+                          context,
+                        ).pushNamed(AppRouter.creatRemindScreen),
                 ),
               ],
             ),

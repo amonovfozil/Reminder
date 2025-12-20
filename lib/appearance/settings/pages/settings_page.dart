@@ -36,6 +36,13 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
   }
 
+  Future<void> _InAppReview() async {
+    final InAppReview inAppReview = InAppReview.instance;
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String? currentLocale = context.locales?.locale.languageCode;
@@ -163,13 +170,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             size: cardMarginVal.w,
                           ),
                           suffix: SizedBox(),
-                          onTap: () async {
-                            final InAppReview inAppReview =
-                                InAppReview.instance;
-                            if (await inAppReview.isAvailable()) {
-                              inAppReview.requestReview();
-                            }
-                          },
+                          onTap: _InAppReview,
                         ),
                       ],
                     ),

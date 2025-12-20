@@ -33,12 +33,14 @@ class IntervalRemindModel extends RemindModel {
     DateTime? endDate,
     String? title,
     String? body,
+    bool? enableAlert,
     List<DateTime>? times,
   }) {
     return IntervalRemindModel(
       id: id,
       title: title ?? this.title,
       body: body ?? this.body,
+      enableAlert: enableAlert ?? this.enableAlert,
       times: times ?? this.times,
       isHourly: isHourly ?? this.isHourly,
       enableInterval: enableInterval ?? this.enableInterval,

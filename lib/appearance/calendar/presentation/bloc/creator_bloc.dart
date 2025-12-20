@@ -26,24 +26,27 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
       emit(InitialCreatorState(remind: event.data));
 }
 
-IntervalRemindModel intervalModel = IntervalRemindModel(
+DateTime now = DateTime.now();
+final intervalModel = IntervalRemindModel(
   id: UniqueKey().toString(),
-  times: [],
+  startDate: now.copyWith(hour: 6, minute: 0, second: 0, millisecond: 0),
+  endDate: now.copyWith(hour: 22, minute: 0, second: 0, millisecond: 0),
+  times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
 );
 
-MultipleRemindModel multipleRemindModel = MultipleRemindModel(
+final multipleRemindModel = MultipleRemindModel(
   id: UniqueKey().toString(),
-  times: [],
+  times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
 );
 
-WeeklyRemindModel weeklyRemindModel = WeeklyRemindModel(
+final weeklyRemindModel = WeeklyRemindModel(
   id: UniqueKey().toString(),
   days: [0, 2, 4],
 );
 
-CyclicRemindModel cyclicRemindModel = CyclicRemindModel(
+final cyclicRemindModel = CyclicRemindModel(
   id: UniqueKey().toString(),
   startDate: DateTime.now(),
 );
 
-RemindModel defaultModel = RemindModel(id: UniqueKey().toString());
+final defaultModel = RemindModel(id: UniqueKey().toString());

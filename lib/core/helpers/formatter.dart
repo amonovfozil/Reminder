@@ -4,6 +4,7 @@ import '../storage/app_storage.dart';
 class Formatter {
   static String noteDateFormat(DateTime date) =>
       DateFormat('dd.MM.yyyy    HH:mm').format(date);
+  static String timeFormat(DateTime date) => DateFormat.Hm().format(date);
   static String dayMonthBy(DateTime date, {String atribut = '-'}) => DateFormat(
     "dd${atribut}MMM${atribut}yyyy",
     AppStorage.appLocale,
