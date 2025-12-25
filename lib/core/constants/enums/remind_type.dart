@@ -5,6 +5,7 @@ final typeValues = RemindTypeEnumValues({
   "multiple": RemindType.multiple,
   "weekly": RemindType.weekly,
   "cycle": RemindType.cyclic,
+  "cyclic": RemindType.cyclic,
 });
 
 class RemindTypeEnumValues<T> {

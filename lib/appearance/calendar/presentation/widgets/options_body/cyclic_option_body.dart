@@ -1,3 +1,5 @@
+import '../../../../../core/helpers/formatter.dart';
+import '../../../../../core/helpers/helper.dart';
 import '../../bloc/creator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,156 +21,194 @@ class CyclicOptionBody extends StatefulWidget {
 }
 
 class _CyclicOptionBodyState extends State<CyclicOptionBody> {
-  List<int> intervalValues = List.generate(90 - 2 + 1, (index) => (2 + index));
-  late FixedExtentScrollController scrollController;
-  @override
-  void initState() {
-    scrollController = FixedExtentScrollController(initialItem: 0);
-    super.initState();
-  }
-
-  void jumpToIndex(int index) {
-    scrollController.animateToItem(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       spacing: spacingVal,
       children: [
-        Divider(height: 0, color: context.secondaryColor),
+        Card(
+          color: white.withOpacity(1),
+          margin: const EdgeInsets.symmetric(horizontal: horizantPadVal).scaled,
+          elevation: 1,
+          borderOnForeground: false,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: borderWidth,
+              color: context.borderColor.withOpacity(0.08),
+            ),
+            borderRadius: BorderRadius.circular(borderRadVal.r),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: verticalPadVal),
+            child: CyclicForm(remind: widget.remind),
+          ),
+        ),
+        // RemindNoteStatusWidget(remind: widget.remind),
+      ],
+    );
+  }
+}
 
+class CyclicForm extends StatelessWidget {
+  const CyclicForm({super.key, required this.remind});
+  final CyclicRemindModel remind;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
         Container(
-          width: appSize.width,
           padding: EdgeInsets.symmetric(horizontal: horizantPadVal),
-          child: Column(
-            spacing: spacingVal.w,
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
+            spacing: spacingVal,
             children: [
-              Row(
-                children: [
-                  Text('amount_'.tr, style: context.subTitleTextStyle),
-                  const Spacer(),
-                  SimpleAppButton(
-                    text: widget.remind.activeVal.toString(),
-                    onTap: () {
-                      context.read<CreatorBloc>().add(
-                        CreatorEvent.updateData(
-                          data: widget.remind.copyWith(enableInterval: 1),
-                        ),
-                      );
-                      WidgetsBinding.instance.addPostFrameCallback(
-                        (_) => jumpToIndex(
-                          intervalValues.indexOf(widget.remind.activeVal),
-                        ),
-                      );
-                    },
-                    height: 22.h,
-                    width: 22.w,
-                    color: widget.remind.enableInterval == 1
-                        ? context.primaryColor
-                        : white,
-                    textColor: widget.remind.enableInterval == 1
-                        ? white
-                        : context.primaryColor,
-                    borderRadius: 7,
-                    fontSize: 12,
-                    bordercolor: context.secondaryColor,
-                    padding: EdgeInsets.all(3).scaled,
-                    margin: EdgeInsets.only(right: 5).scaled,
-                  ),
-                  Text('day'.tr.replaceAll('X', ''), style: context.subStyle),
-                ],
+              Expanded(
+                child: Text('start_date'.tr, style: context.titleTextStyle),
               ),
-              Row(
-                children: [
-                  Text('pouse_day'.tr, style: context.subTitleTextStyle),
-                  const Spacer(),
-                  SimpleAppButton(
-                    text: widget.remind.pauseVal.toString(),
-                    onTap: () {
+
+              SimpleAppButton(
+                text: Formatter.dayMonthBy(
+                  remind.startDate,
+                  atribut: ' ',
+                ).capitalizeWords,
+                splashColor: Colors.transparent,
+                height: 35.w / 1.h,
+                // width: 100,
+                bordercolor: borderColor,
+                color: context.primaryColor,
+                borderRadius: 10.r,
+                // borderRadius: iteamCardborderRadVal,
+                padding: EdgeInsets.symmetric(horizontal: paddingVal).scaled,
+                style: context.subTitleTextStyle.copyWith(
+                  color: white,
+                  fontSize: 12.sp,
+                ),
+                onTap: () {
+                  var now = DateTime.now();
+                  Helper.showDateTimeModal(
+                    context,
+                    // title: 'starting_at'.tr,
+                    initial: remind.startDate,
+                    minDate: DateTime(now.year, now.month, now.day),
+                    mode: CupertinoDatePickerMode.date,
+                    onTap: (tm) {
                       context.read<CreatorBloc>().add(
                         CreatorEvent.updateData(
-                          data: widget.remind.copyWith(enableInterval: 2),
+                          data: remind.copyWith(startDate: tm),
                         ),
                       );
-                      WidgetsBinding.instance.addPostFrameCallback(
-                        (_) => jumpToIndex(
-                          intervalValues.indexOf(widget.remind.pauseVal),
-                        ),
-                      );
+                      navigatorKey.currentState?.maybePop();
                     },
-                    height: 22.h,
-                    width: 22.w,
-                    color: widget.remind.enableInterval == 2
-                        ? context.primaryColor
-                        : white,
-                    textColor: widget.remind.enableInterval == 2
-                        ? white
-                        : context.primaryColor,
-                    borderRadius: 7,
-                    fontSize: 12,
-                    bordercolor: context.secondaryColor,
-                    padding: EdgeInsets.all(3).scaled,
-                    margin: EdgeInsets.only(right: 5).scaled,
-                  ),
-                  Text('day'.tr.replaceAll('X', ''), style: context.subStyle),
-                ],
+                  );
+                },
               ),
             ],
           ),
         ),
-        Visibility(
-          visible: widget.remind.enableInterval != 0,
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Column(
+            children: remind.times
+                .map(
+                  (time) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: horizantPadVal),
+                        child: Divider(height: 0, color: context.borderColor),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: horizantPadVal,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SimpleAppButton(
+                              text: Formatter.timeFormat(time),
+                              splashColor: Colors.transparent,
+                              height: 35.w / 1.h,
+                              // width: 100,
+                              bordercolor: borderColor,
+                              color: context.primaryColor,
+                              borderRadius: 10.r,
+                              // borderRadius: iteamCardborderRadVal,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: paddingVal,
+                              ).scaled,
+                              style: context.subTitleTextStyle.copyWith(
+                                color: white,
+                                fontSize: 12.sp,
+                              ),
+                              onTap: () => Helper.showDateTimeModal(
+                                title: 'Select Time',
+                                initial: time,
+                                context,
+                                onTap: (tm) {
+                                  final updatedTimes = List<DateTime>.from(
+                                    remind.times,
+                                  );
+                                  final index = updatedTimes.indexOf(time);
+                                  if (index != -1) {
+                                    updatedTimes[index] = tm;
+                                  }
+                                  context.read<CreatorBloc>().add(
+                                    CreatorEvent.updateData(
+                                      data: remind.copyWith(
+                                        times: updatedTimes,
+                                      ),
+                                    ),
+                                  );
+                                  navigatorKey.currentState?.maybePop();
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: remind.times.length != 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  remind.times.remove(time);
+                                  context.read<CreatorBloc>().add(
+                                    CreatorEvent.updateData(
+                                      data: remind.copyWith(
+                                        times: remind.times,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Icon(CupertinoIcons.delete),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: horizantPadVal, bottom: 12),
+          child: Divider(height: 0, color: context.borderColor),
+        ),
+        GestureDetector(
+          onTap: () {
+            List<DateTime> times = remind.times;
+            times.add(times.last.copyWith(hour: times.last.hour + 2));
+            context.read<CreatorBloc>().add(
+              CreatorEvent.updateData(data: remind.copyWith(times: times)),
+            );
+          },
           child: Container(
-            width: appSize.width,
-            padding: EdgeInsets.symmetric(
-              // vertical: paddingVal,
-              horizontal: horizantPadVal,
-            ).scaled,
-            child: SizedBox(
-              height: 160.w / 1.h,
-              child: CupertinoPicker(
-                itemExtent: 35,
-                scrollController: scrollController,
-                children: intervalValues
-                    .map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.only(top: 6).scaled,
-                        child: Text(
-                          e.toString(),
-                          textAlign: TextAlign.start,
-                          style: context.titleTextStyle.copyWith(
-                            // fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onSelectedItemChanged: (index) =>
-                    context.read<CreatorBloc>().add(
-                      CreatorEvent.updateData(
-                        data: widget.remind.copyWith(
-                          activeVal: widget.remind.enableInterval == 1
-                              ? intervalValues[index]
-                              : widget.remind.activeVal,
-                          pauseVal: widget.remind.enableInterval == 2
-                              ? intervalValues[index]
-                              : widget.remind.pauseVal,
-                        ),
-                      ),
-                    ),
-              ),
+            decoration: BoxDecoration(color: Colors.transparent),
+            padding: EdgeInsets.only(left: horizantPadVal),
+            child: Row(
+              children: [
+                Icon(Icons.add_circle),
+                Text(' Add Remind time'.tr, style: context.titleTextStyle),
+              ],
             ),
           ),
         ),

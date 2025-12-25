@@ -6,9 +6,11 @@ class CyclicRemindModel extends RemindModel {
   int activeVal;
   int pauseVal;
   int enableInterval;
+  List<DateTime> times;
 
   CyclicRemindModel({
     required super.id,
+    required this.times,
     super.title,
     super.body,
     super.type = RemindType.cyclic,
@@ -28,11 +30,13 @@ class CyclicRemindModel extends RemindModel {
     int? activeVal,
     int? pauseVal,
     int? enableInterval,
+    List<DateTime>? times,
   }) {
     return CyclicRemindModel(
       id: id,
       title: title ?? this.title,
       body: body ?? this.body,
+      times: times ?? this.times,
       startDate: startDate ?? this.startDate,
       activeVal: activeVal ?? this.activeVal,
       pauseVal: pauseVal ?? this.pauseVal,
@@ -40,9 +44,12 @@ class CyclicRemindModel extends RemindModel {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() => {
+    ...super.toJson(),
     "start_date": startDate.toIso8601String(),
     "cycle_on": activeVal.toInt(),
     "cycle_off": pauseVal.toInt(),
+    "times": times.map((time) => time.toIso8601String()).toList(),
   };
 }

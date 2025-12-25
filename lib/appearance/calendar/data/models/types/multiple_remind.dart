@@ -4,7 +4,7 @@ import '../remind_model.dart';
 class MultipleRemindModel extends RemindModel {
   int amount;
   List<DateTime> times;
-  bool enableInterval;
+  bool enable;
 
   MultipleRemindModel({
     required super.id,
@@ -16,7 +16,7 @@ class MultipleRemindModel extends RemindModel {
     super.remindMe,
     super.isPaused,
     this.amount = 1,
-    this.enableInterval = false,
+    this.enable = false,
   });
 
   MultipleRemindModel copyWith({
@@ -24,7 +24,7 @@ class MultipleRemindModel extends RemindModel {
     String? title,
     String? body,
     List<DateTime>? times,
-    bool? enableInterval,
+    bool? enable,
   }) {
     return MultipleRemindModel(
       id: id,
@@ -32,11 +32,16 @@ class MultipleRemindModel extends RemindModel {
       body: body ?? this.body,
       times: times ?? this.times,
       amount: amount ?? this.amount,
-      enableInterval: enableInterval ?? this.enableInterval,
+      enable: enable ?? this.enable,
     );
   }
 
-  Map<String, dynamic> toJson() => {"amount": amount, "type": type?.name};
+  @override
+  Map<String, dynamic> toJson() => {
+    ...super.toJson(),
+    "amount": amount,
+    "times": times.map((time) => time.toIso8601String()).toList(),
+  };
 
   // factory MultipleRemindModel.fromOrder(TimeDeteilModel time) {
   //   return MultipleRemindModel(

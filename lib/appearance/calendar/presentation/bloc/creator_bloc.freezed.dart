@@ -55,12 +55,13 @@ extension CreatorEventPatterns on CreatorEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _UpdateData value)?  updateData,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _UpdateData value)?  updateData,TResult Function( _Creat value)?  creat,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _UpdateData() when updateData != null:
-return updateData(_that);case _:
+return updateData(_that);case _Creat() when creat != null:
+return creat(_that);case _:
   return orElse();
 
 }
@@ -78,12 +79,13 @@ return updateData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _UpdateData value)  updateData,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _UpdateData value)  updateData,required TResult Function( _Creat value)  creat,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _UpdateData():
-return updateData(_that);case _:
+return updateData(_that);case _Creat():
+return creat(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -100,12 +102,13 @@ return updateData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _UpdateData value)?  updateData,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _UpdateData value)?  updateData,TResult? Function( _Creat value)?  creat,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _UpdateData() when updateData != null:
-return updateData(_that);case _:
+return updateData(_that);case _Creat() when creat != null:
+return creat(_that);case _:
   return null;
 
 }
@@ -122,11 +125,12 @@ return updateData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( RemindModel data)?  updateData,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( RemindModel data)?  updateData,TResult Function()?  creat,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _UpdateData() when updateData != null:
-return updateData(_that.data);case _:
+return updateData(_that.data);case _Creat() when creat != null:
+return creat();case _:
   return orElse();
 
 }
@@ -144,11 +148,12 @@ return updateData(_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( RemindModel data)  updateData,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( RemindModel data)  updateData,required TResult Function()  creat,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _UpdateData():
-return updateData(_that.data);case _:
+return updateData(_that.data);case _Creat():
+return creat();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +170,12 @@ return updateData(_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( RemindModel data)?  updateData,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( RemindModel data)?  updateData,TResult? Function()?  creat,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _UpdateData() when updateData != null:
-return updateData(_that.data);case _:
+return updateData(_that.data);case _Creat() when creat != null:
+return creat();case _:
   return null;
 
 }
@@ -274,5 +280,37 @@ as RemindModel,
 
 
 }
+
+/// @nodoc
+
+
+class _Creat implements CreatorEvent {
+  const _Creat();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Creat);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'CreatorEvent.creat()';
+}
+
+
+}
+
+
+
 
 // dart format on

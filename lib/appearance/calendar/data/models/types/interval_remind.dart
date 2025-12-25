@@ -5,7 +5,7 @@ class IntervalRemindModel extends RemindModel {
   bool isHourly;
   bool enableInterval;
   double interval;
-  DateTime? startDate;
+  DateTime startDate;
   DateTime? endDate;
   List<DateTime> times;
 
@@ -21,7 +21,7 @@ class IntervalRemindModel extends RemindModel {
     this.isHourly = true,
     this.enableInterval = false,
     this.interval = 0.5,
-    this.startDate,
+    required this.startDate,
     this.endDate,
   });
 
@@ -50,9 +50,14 @@ class IntervalRemindModel extends RemindModel {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() => {
-    "start_date": startDate?.toIso8601String(),
-    "end_date": startDate?.toIso8601String(),
+    ...super.toJson(),
+    "is_hourly": isHourly,
+    "interval": interval,
+    "start_date": startDate.toIso8601String(),
+    "end_date": endDate?.toIso8601String(),
+    "times": times.map((time) => time.toIso8601String()).toList(),
   };
 
   // factory IntervalRemindModel.fromOrder(TimeDeteilModel time) {

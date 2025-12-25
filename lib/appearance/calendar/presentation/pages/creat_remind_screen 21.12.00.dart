@@ -1,7 +1,6 @@
 import '../bloc/creator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../../data/models/remind_model.dart';
 import '../widgets/options/cyclic_options.dart';
 import '../widgets/options/weekly_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -201,15 +200,6 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
       ),
     );
   }
-}
-
-RemindModel getModel(RemindType type) {
-  return switch (type) {
-    RemindType.interval => intervalModel,
-    RemindType.multiple => multipleRemindModel,
-    RemindType.weekly => weeklyRemindModel,
-    RemindType.cyclic => cyclicRemindModel,
-  };
 }
 
 String getTitle(RemindType type) {

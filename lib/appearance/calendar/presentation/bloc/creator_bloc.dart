@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:reminder/appearance/calendar/data/models/types/cyclic_remind.dart';
+import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/core/storage/app_storage.dart';
+import '../../../../core/constants/enums/remind_type.dart';
 import '../../data/models/remind_model.dart';
+import '../../data/models/types/cyclic_remind.dart';
 import '../../data/models/types/weekly_remind.dart';
 import '../../data/models/types/multiple_remind.dart';
 import '../../data/models/types/interval_remind.dart';
@@ -15,6 +18,7 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
   CreatorBloc() : super(InitialCreatorState(remind: defaultModel)) {
     on<_Started>(_onStrated);
     on<_UpdateData>(_onUpdateData);
+    on<_Creat>(_onCreat);
   }
 
   //Functions
@@ -24,29 +28,68 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
 
   void _onUpdateData(_UpdateData event, emit) =>
       emit(InitialCreatorState(remind: event.data));
+
+  void _onCreat(_Creat event, emit) async {
+    List<RemindModel> reminders = AppStorage.reminders;
+    if (!reminders.any((elm) => elm.id == state.remind.id)) {
+      reminders.add(state.remind);
+      await AppStorage.write.reminders(reminders);
+      // await AppStorage.remove.reminders;
+      await navigatorKey.currentState?.maybePop();
+      add(CreatorEvent.updateData(data: defaultModel));
+    }
+  }
 }
 
-DateTime now = DateTime.now();
-final intervalModel = IntervalRemindModel(
-  id: UniqueKey().toString(),
-  startDate: now.copyWith(hour: 6, minute: 0, second: 0, millisecond: 0),
-  endDate: now.copyWith(hour: 22, minute: 0, second: 0, millisecond: 0),
-  times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
-);
+RemindModel getModel(RemindType? type) {
+  DateTime now = DateTime.now();
 
-final multipleRemindModel = MultipleRemindModel(
-  id: UniqueKey().toString(),
-  times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
-);
+  return switch (type) {
+    RemindType.interval => IntervalRemindModel(
+      id: UniqueKey().toString(),
+      startDate: now.copyWith(hour: 6, minute: 0, second: 0, millisecond: 0),
+      endDate: now.copyWith(hour: 22, minute: 0, second: 0, millisecond: 0),
+      times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+    ),
+    RemindType.multiple => MultipleRemindModel(
+      id: UniqueKey().toString(),
+      times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+    ),
+    RemindType.weekly => WeeklyRemindModel(
+      id: UniqueKey().toString(),
+      days: [0, 2, 4],
+      times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+    ),
+    RemindType.cyclic => CyclicRemindModel(
+      id: UniqueKey().toString(),
+      startDate: now,
+      times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+    ),
+    null => defaultModel,
+  };
+}
+// final intervalModel = IntervalRemindModel(
+//   id: UniqueKey().toString(),
+//   startDate: now.copyWith(hour: 6, minute: 0, second: 0, millisecond: 0),
+//   endDate: now.copyWith(hour: 22, minute: 0, second: 0, millisecond: 0),
+//   times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+// );
 
-final weeklyRemindModel = WeeklyRemindModel(
-  id: UniqueKey().toString(),
-  days: [0, 2, 4],
-);
+// final multipleRemindModel = MultipleRemindModel(
+//   id: UniqueKey().toString(),
+//   times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+// );
 
-final cyclicRemindModel = CyclicRemindModel(
-  id: UniqueKey().toString(),
-  startDate: DateTime.now(),
-);
+// final weeklyRemindModel = WeeklyRemindModel(
+//   id: UniqueKey().toString(),
+//   days: [0, 2, 4],
+//   times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+// );
+
+// final cyclicRemindModel = CyclicRemindModel(
+//   id: UniqueKey().toString(),
+//   startDate: now,
+//   times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
+// );
 
 final defaultModel = RemindModel(id: UniqueKey().toString());

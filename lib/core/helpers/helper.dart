@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/core/UI/widgets/simple_app_button.dart';
-
-import '../../utils/theme/responsive_size.dart';
 import '../constants/const_data.dart';
 import 'package:flutter/cupertino.dart';
+import '../../utils/theme/responsive_size.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
+import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 
 class Helper {
   static Future<void> showBottomModel({
@@ -19,7 +18,6 @@ class Helper {
       builder: (context) => Container(
         decoration: BoxDecoration(
           color: white.withOpacity(0.75),
-          // color: context.primaryColor.withOpacity(0.75),
           border: Border.all(
             width: borderWidth,
             color: context.borderColor.withOpacity(0.08),
@@ -30,7 +28,6 @@ class Helper {
           spacing: spacingVal,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // if (title.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(top: title.isEmpty ? 0 : 16),
               child: Text(
@@ -45,7 +42,6 @@ class Helper {
               visible: onConfirm != null,
               child: SimpleAppButton(
                 text: 'Confirm',
-                // height: 55,
                 borderRadius: borderRadVal.r,
                 margin: const EdgeInsets.symmetric(
                   horizontal: cardMarginVal,
@@ -60,9 +56,10 @@ class Helper {
     );
   }
 
-  static void showTime(
+  static void showDateTimeModal(
     BuildContext cxt, {
     required Function(DateTime) onTap,
+    CupertinoDatePickerMode mode = CupertinoDatePickerMode.time,
     DateTime? initial,
     String? title,
     DateTime? minDate,
@@ -99,14 +96,17 @@ class Helper {
                 children: [
                   CupertinoTheme(
                     data: CupertinoThemeData(
+                      applyThemeToAll: true,
+                      textTheme: CupertinoTextThemeData(
+                        textStyle: cxt.subStyle,
+                      ),
                       brightness: Theme.of(context).brightness,
                     ),
                     child: CupertinoDatePicker(
                       backgroundColor: white,
-                      // backgroundColor: context.cardColor,
                       minimumDate: minDate,
                       initialDateTime: val,
-                      mode: CupertinoDatePickerMode.time,
+                      mode: mode,
                       use24hFormat: true,
                       onDateTimeChanged: (DateTime newDate) {
                         // print("dattime  $newDate");
@@ -118,17 +118,10 @@ class Helper {
                 ],
               ),
             ),
-            // const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: horizantPadVal),
-              child: SimpleAppButton(
-                text: "confirm",
-                // color: white,
-                // textColor: context.primaryColor,
-                onTap: () => onTap(val),
-              ),
+              child: SimpleAppButton(text: "confirm", onTap: () => onTap(val)),
             ),
-            // SizedBox(height: bottomPadVal),
           ],
         ),
       ),

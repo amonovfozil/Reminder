@@ -5,4 +5,5 @@ class CreatorEvent with _$CreatorEvent {
   const factory CreatorEvent.started() = _Started;
   const factory CreatorEvent.updateData({required RemindModel data}) =
       _UpdateData;
+  const factory CreatorEvent.creat() = _Creat;
 }

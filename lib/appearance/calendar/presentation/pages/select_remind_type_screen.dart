@@ -126,14 +126,7 @@ class _SelectRemindTypeScreenState extends State<SelectRemindTypeScreen> {
   }
 }
 
-RemindModel getModel(RemindType type) {
-  return switch (type) {
-    RemindType.interval => intervalModel,
-    RemindType.multiple => multipleRemindModel,
-    RemindType.weekly => weeklyRemindModel,
-    RemindType.cyclic => cyclicRemindModel,
-  };
-}
+
 
 Widget getOptions(RemindModel remind) {
   return switch (remind.type) {
@@ -145,7 +138,7 @@ Widget getOptions(RemindModel remind) {
     ),
     RemindType.weekly => WeeklyOptions(remind: remind as WeeklyRemindModel),
     RemindType.cyclic => CyclicOptions(remind: remind as CyclicRemindModel),
-    null => throw const SizedBox(),
+    null => const SizedBox(),
   };
 }
 

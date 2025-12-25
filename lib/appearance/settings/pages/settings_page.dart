@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
   }
 
-  Future<void> _InAppReview() async {
+  Future<void> _onInAppReview() async {
     final InAppReview inAppReview = InAppReview.instance;
     if (await inAppReview.isAvailable()) {
       inAppReview.requestReview();
@@ -170,7 +170,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             size: cardMarginVal.w,
                           ),
                           suffix: SizedBox(),
-                          onTap: _InAppReview,
+                          onTap: _onInAppReview,
                         ),
                       ],
                     ),

@@ -5,6 +5,7 @@ List<String> weekDays = ["mon", "tue", "wed", "thur", "fri", "sat", "sun"];
 
 class WeeklyRemindModel extends RemindModel {
   List<int> days;
+  List<DateTime> times;
 
   WeeklyRemindModel({
     required super.id,
@@ -15,7 +16,7 @@ class WeeklyRemindModel extends RemindModel {
     super.remindMe,
     super.isPaused,
     required this.days,
-
+    required this.times,
   });
 
   WeeklyRemindModel copyWith({
@@ -23,14 +24,21 @@ class WeeklyRemindModel extends RemindModel {
     String? title,
     String? body,
     List<int>? days,
+    List<DateTime>? times,
   }) {
     return WeeklyRemindModel(
       id: id,
       title: title ?? this.title,
       body: body ?? this.body,
       days: days ?? this.days,
+      times: times ?? this.times,
     );
   }
 
-  Map<String, dynamic> toJson() => {"amount": days, "type": type?.name};
+  @override
+  Map<String, dynamic> toJson() => {
+        ...super.toJson(),
+        "days": days,
+        "times": times.map((time) => time.toIso8601String()).toList(),
+      };
 }

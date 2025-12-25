@@ -48,8 +48,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         noteSound: state.noteSound,
       ),
     );
-    await AppStorage.writeThemeColor(event.color);
-    await AppStorage.writeThemeSecondColor(event.secondary);
+    await AppStorage.write.themeColor(event.color);
+    await AppStorage.write.themeSecondColor(event.secondary);
   }
 
   Future<void> _onSetFont(_SetFont event, emit) async {
@@ -66,7 +66,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       ),
     );
     Navigator.of(event.ctx).maybePop();
-    await AppStorage.writeThemeFont(event.font);
+    await AppStorage.write.themeFont(event.font);
   }
 
   Future<void> _onSetSound(_SetSound event, emit) async {
@@ -78,7 +78,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       ),
     );
     Navigator.of(event.ctx).maybePop();
-    await AppStorage.writeNoteSound(event.sound);
+    await AppStorage.write.noteSound(event.sound);
   }
 
   Future<void> _onToggleStatus(_ToggleStatus event, emit) async {
@@ -89,13 +89,13 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         noteStatus: event.status,
       ),
     );
-    await AppStorage.writeNoteStatus(event.status);
+    await AppStorage.write.noteStatus(event.status);
   }
 
   void _onChangeLocale(_ChangeLocale event, emit) async {
     LocaleNotifier.of(event.ctx)?.change(event.code);
     Navigator.of(event.ctx).maybePop();
-    await AppStorage.writeLocale(event.code);
+    await AppStorage.write.locale(event.code);
     emit(SettingInitState(theme: state.theme, noteStatus: state.noteStatus));
   }
 }

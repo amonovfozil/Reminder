@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'appearance/settings/bloc/setting_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'appearance/home/presentation/pages/main_page.dart';
+import 'package:reminder/core/localizations/uppercase_month_cupertino_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
               navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,
               onGenerateRoute: AppRouter.generateRoute,
-              localizationsDelegates: Locales.delegates,
+              localizationsDelegates: [
+                const UpperCaseMonthCupertinoDelegate(),
+                ...Locales.delegates,
+              ],
               supportedLocales: Locales.supportedLocales,
               home: const MainPage(),
             ),

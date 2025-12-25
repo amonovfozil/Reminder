@@ -39,6 +39,8 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
+    // titleCtrl.clear();
+    // noteCtrl.clear();
     super.initState();
   }
 
@@ -113,6 +115,9 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                                 hintText: 'Title',
                                 controller: titleCtrl,
                                 validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'is Empty';
+                                  }
                                   return null;
                                 },
                                 onChanged: (val) =>
@@ -129,7 +134,12 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                                 hintText: 'Note (Optional)',
                                 minLines: 3,
                                 controller: noteCtrl,
-                                validator: (val) => null,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'is Empty';
+                                  }
+                                  return null;
+                                },
                                 onChanged: (val) =>
                                     context.read<CreatorBloc>().add(
                                       CreatorEvent.updateData(
@@ -169,25 +179,9 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
                       splashColor: context.secondaryColor.withOpacity(0.15),
                       color: white,
                       onTap: () {
-                        _formKey.currentState?.validate();
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: SimpleAppButton(
-                      text: 'clear',
-                      width: double.infinity,
-                      textColor: context.secondaryColor,
-                      splashColor: context.secondaryColor.withOpacity(0.15),
-                      color: white,
-                      onTap: () {
-                        titleCtrl.clear();
-                        noteCtrl.clear();
-                        context.read<CreatorBloc>().add(
-                          CreatorEvent.updateData(
-                            data: getdefaultModel(state.remind),
-                          ),
-                        );
+                        if (_formKey.currentState?.validate() ?? false) {
+                          context.read<CreatorBloc>().add(CreatorEvent.creat());
+                        }
                       },
                     ),
                   ),
@@ -201,31 +195,13 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
   }
 }
 
-RemindModel getdefaultModel(RemindModel model) {
-  DateTime now = DateTime.now();
-
-  return switch (model.type) {
-    RemindType.interval => intervalModel.copyWith(
-      isHourly: (model as IntervalRemindModel).isHourly,
-      interval: model.interval,
-      // title: '',
-      // body: '',
-      times: [now.copyWith(hour: 8, minute: 0, second: 0, millisecond: 0)],
-    ),
-    RemindType.multiple => multipleRemindModel,
-    RemindType.weekly => weeklyRemindModel,
-    RemindType.cyclic => cyclicRemindModel,
-    null => throw model,
-  };
-}
-
 getCurrentModel(RemindModel model) {
   return switch (model.type) {
     RemindType.interval => model as IntervalRemindModel,
     RemindType.multiple => model as MultipleRemindModel,
     RemindType.weekly => model as WeeklyRemindModel,
     RemindType.cyclic => model as CyclicRemindModel,
-    null => throw model,
+    null => model,
   };
 }
 
@@ -239,7 +215,7 @@ Widget getOptionBody(RemindModel remind) {
     ),
     RemindType.weekly => WeeklyOptionBody(remind: remind as WeeklyRemindModel),
     RemindType.cyclic => CyclicOptionBody(remind: remind as CyclicRemindModel),
-    null => throw const SizedBox(),
+    null => const SizedBox(),
   };
 }
 
@@ -249,6 +225,6 @@ String getTitle(RemindType? type) {
     RemindType.multiple => 'Multiple',
     RemindType.weekly => 'Weekly',
     RemindType.cyclic => 'Cyclic',
-    null => throw '',
+    null => '',
   };
 }

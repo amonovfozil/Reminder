@@ -15,11 +15,26 @@ class MultipleOptions extends StatefulWidget {
   final MultipleRemindModel remind;
 
   @override
-  State<MultipleOptions> createState() => _MultipleOptionsState();
+  State<MultipleOptions> createState() => MultipleOptionsState();
 }
 
-class _MultipleOptionsState extends State<MultipleOptions> {
-  List<int> intervalValues = List.generate(10 - 2 + 1, (index) => (2 + index));
+class MultipleOptionsState extends State<MultipleOptions> {
+  static late FixedExtentScrollController scrollController;
+
+  List<int> intervalValues = List.generate(10, (index) => (1 + index));
+  @override
+  void initState() {
+    scrollController = FixedExtentScrollController(initialItem: 0);
+    super.initState();
+  }
+
+  static jumpToIndex(int index) {
+    scrollController.animateToItem(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +59,14 @@ class _MultipleOptionsState extends State<MultipleOptions> {
                     onTap: () => context.read<CreatorBloc>().add(
                       CreatorEvent.updateData(
                         data: widget.remind.copyWith(
-                          enableInterval: !widget.remind.enableInterval,
+                          enable: !widget.remind.enable,
                         ),
                       ),
                     ),
                     height: 22.h,
                     width: 22.w,
-                    color: widget.remind.enableInterval
-                        ? context.primaryColor
-                        : white,
-                    textColor: widget.remind.enableInterval
+                    color: widget.remind.enable ? context.primaryColor : white,
+                    textColor: widget.remind.enable
                         ? white
                         : context.primaryColor,
                     borderRadius: 7,
@@ -75,7 +88,7 @@ class _MultipleOptionsState extends State<MultipleOptions> {
           ),
         ),
         Visibility(
-          visible: widget.remind.enableInterval,
+          visible: widget.remind.enable,
           child: Container(
             width: appSize.width,
             padding: EdgeInsets.symmetric(
@@ -86,6 +99,7 @@ class _MultipleOptionsState extends State<MultipleOptions> {
               height: 160.w / 1.h,
               child: CupertinoPicker(
                 itemExtent: 35,
+                scrollController: scrollController,
                 children: intervalValues
                     .map(
                       (e) => Padding(

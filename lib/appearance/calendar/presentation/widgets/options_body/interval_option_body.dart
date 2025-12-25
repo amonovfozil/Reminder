@@ -73,7 +73,7 @@ class HoursInterval extends StatelessWidget {
               ),
 
               SimpleAppButton(
-                text: Formatter.timeFormat(remind.startDate ?? DateTime.now()),
+                text: Formatter.timeFormat(remind.startDate),
                 splashColor: Colors.transparent,
                 height: 35.w / 1.h,
                 bordercolor: borderColor,
@@ -86,7 +86,7 @@ class HoursInterval extends StatelessWidget {
                   color: !remind.isHourly ? white : context.primaryColor,
                   fontSize: 12.sp,
                 ),
-                onTap: () => Helper.showTime(
+                onTap: () => Helper.showDateTimeModal(
                   // title: 'starting_at'.tr,
                   initial: remind.startDate,
                   context,
@@ -130,7 +130,7 @@ class HoursInterval extends StatelessWidget {
                   color: !remind.isHourly ? white : context.primaryColor,
                   fontSize: 12.sp,
                 ),
-                onTap: () => Helper.showTime(
+                onTap: () => Helper.showDateTimeModal(
                   // title: 'starting_at'.tr,
                   initial: remind.endDate,
                   context,
@@ -171,7 +171,7 @@ class DaysInterval extends StatelessWidget {
 
               SimpleAppButton(
                 text: Formatter.dayMonthBy(
-                  remind.startDate!,
+                  remind.startDate,
                   atribut: ' ',
                 ).capitalizeWords,
                 splashColor: Colors.transparent,
@@ -188,7 +188,24 @@ class DaysInterval extends StatelessWidget {
                   color: !remind.isHourly ? white : context.primaryColor,
                   fontSize: 12.sp,
                 ),
-                onTap: () {},
+                onTap: () {
+                  var now = DateTime.now();
+                  Helper.showDateTimeModal(
+                    context,
+                    // title: 'starting_at'.tr,
+                    initial: remind.startDate,
+                    minDate: DateTime(now.year, now.month, now.day),
+                    mode: CupertinoDatePickerMode.date,
+                    onTap: (tm) {
+                      context.read<CreatorBloc>().add(
+                        CreatorEvent.updateData(
+                          data: remind.copyWith(startDate: tm),
+                        ),
+                      );
+                      navigatorKey.currentState?.maybePop();
+                    },
+                  );
+                },
               ),
             ],
           ),
@@ -233,7 +250,7 @@ class DaysInterval extends StatelessWidget {
                                     : context.primaryColor,
                                 fontSize: 12.sp,
                               ),
-                              onTap: () => Helper.showTime(
+                              onTap: () => Helper.showDateTimeModal(
                                 title: 'Select Time',
                                 initial: time,
                                 context,
