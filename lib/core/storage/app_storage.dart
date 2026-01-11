@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/constants/const_data.dart';
 import 'package:reminder/appearance/remind/data/models/remind_model.dart';
+import 'package:reminder/appearance/todo/data/models/todo_day_model.dart';
 
 class AppStorage {
   //App Storage box
@@ -32,6 +33,12 @@ class AppStorage {
         .map((elm) => RemindModel.fromJson(elm))
         .toList();
   }
+
+  static List<TodoDayModel> get todoDays {
+    return ((box.read(todoDaysKey) ?? []) as List)
+        .map((elm) => TodoDayModel.fromJson(elm))
+        .toList();
+  }
 }
 
 //Write  Storage
@@ -53,6 +60,10 @@ class WriteStorage {
     log("SAVE REMINDERS ${list.map((e) => e.toJson()).toList()}");
     await box.write(reminderKey, list.map((e) => e.toJson()).toList());
   }
+
+  Future<void> todoDays(List<TodoDayModel> list) async {
+    await box.write(todoDaysKey, list.map((e) => e.toJson()).toList());
+  }
 }
 
 //Edit  Storage
@@ -63,6 +74,7 @@ class RemoveStorage {
   Future<void> get erase async => await box.erase();
   Future<void> get token async => await box.remove(tokenKey);
   Future<void> get reminders async => await box.remove(reminderKey);
+  Future<void> get todoDays async => await box.remove(todoDaysKey);
 }
 
 //keys of storage
@@ -74,3 +86,4 @@ const String themeFontKey = 'theme_font';
 const String noteSoundKey = 'note_sound';
 const String noteStatusKey = 'note_status';
 const String reminderKey = 'all_reminders';
+const String todoDaysKey = 'todo_days';

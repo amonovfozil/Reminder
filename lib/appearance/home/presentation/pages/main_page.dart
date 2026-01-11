@@ -7,7 +7,7 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
 import 'package:reminder/core/UI/widgets/backgraund_font.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
-import 'package:reminder/appearance/remind/presentation/pages/calendar_page.dart';
+import 'package:reminder/appearance/todo/presentation/pages/todo_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -17,12 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Widget> pages = const [
-    HomePage(),
-    // AlarmsPage(),
-    CalendarPage(),
-    SettingsPage(),
-  ];
+  List<Widget> pages = const [HomePage(), TodoPage(), SettingsPage()];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(

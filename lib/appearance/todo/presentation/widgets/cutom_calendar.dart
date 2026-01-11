@@ -10,6 +10,8 @@ class CustomCalendar extends StatefulWidget {
   final Color? primaryColor; // Tanlangan sana rangi
   final Color? todayColor; // Bugungi sana konturi
   final bool showWeekDays; // Hafta kunlari headerini ko‘rsatish
+  final Color? Function(DateTime day)? dayMarkerColorBuilder;
+  final Color? Function(DateTime day)? dayBackgroundColorBuilder;
 
   const CustomCalendar({
     super.key,
@@ -20,6 +22,8 @@ class CustomCalendar extends StatefulWidget {
     this.primaryColor,
     this.todayColor,
     this.showWeekDays = true,
+    this.dayMarkerColorBuilder,
+    this.dayBackgroundColorBuilder,
   });
 
   @override
@@ -144,6 +148,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
         Color textColor = isDisabled
             ? theme.disabledColor
             : theme.textTheme.bodyMedium!.color ?? Colors.black;
+        final bgColor = widget.dayBackgroundColorBuilder?.call(day);
+        final markerColor = widget.dayMarkerColorBuilder?.call(day);
 
         BoxBorder? border;
         if (isToday && !isSelected) {
@@ -152,6 +158,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
         if (isSelected) {
           bg = primary;
           textColor = Colors.white;
+        } else if (bgColor != null) {
+          bg = bgColor.withOpacity(0.18);
         }
 
         return GestureDetector(
@@ -172,13 +180,30 @@ class _CustomCalendarState extends State<CustomCalendar> {
               borderRadius: BorderRadius.circular(10.r),
             ),
             alignment: Alignment.center,
-            child: Text(
-              '${day.day}',
-              style: theme.textTheme.bodyMedium!.copyWith(
-                color: textColor,
-                fontSize: 13.sp,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${day.day}',
+                  style: theme.textTheme.bodyMedium!.copyWith(
+                    color: textColor,
+                    fontSize: 13.sp,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  ),
+                ),
+                if (markerColor != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.h),
+                    child: Container(
+                      width: 16.w,
+                      height: 4.h,
+                      decoration: BoxDecoration(
+                        color: markerColor,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         );
