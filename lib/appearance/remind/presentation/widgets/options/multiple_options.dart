@@ -11,8 +11,13 @@ import '../../../../../utils/extension/string_extension.dart';
 import '../../../../../core/UI/widgets/simple_app_button.dart';
 
 class MultipleOptions extends StatefulWidget {
-  const MultipleOptions({super.key, required this.remind});
+  const MultipleOptions({
+    super.key,
+    required this.remind,
+    this.useBottomSheet = false,
+  });
   final MultipleRemindModel remind;
+  final bool useBottomSheet;
 
   @override
   State<MultipleOptions> createState() => MultipleOptionsState();
@@ -39,13 +44,15 @@ class MultipleOptionsState extends State<MultipleOptions> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: spacingVal,
+      spacing: widget.useBottomSheet ? 0 : spacingVal,
       children: [
-        Divider(height: 0, color: context.secondaryColor),
-
         Container(
           width: appSize.width,
-          padding: EdgeInsets.symmetric(horizontal: horizantPadVal),
+          padding: EdgeInsets.only(
+            bottom: widget.useBottomSheet ? 0 : verticalPadVal / 2,
+            right: horizantPadVal,
+            left: horizantPadVal,
+          ),
           child: Column(
             spacing: spacingVal,
             mainAxisSize: MainAxisSize.min,
@@ -56,13 +63,24 @@ class MultipleOptionsState extends State<MultipleOptions> {
                   const Spacer(),
                   SimpleAppButton(
                     text: widget.remind.amount.toString(),
-                    onTap: () => context.read<CreatorBloc>().add(
-                      CreatorEvent.updateData(
-                        data: widget.remind.copyWith(
-                          enable: !widget.remind.enable,
+                    onTap: () {
+                      if (widget.useBottomSheet) {
+                        context.read<CreatorBloc>().add(
+                          CreatorEvent.updateData(
+                            data: widget.remind.copyWith(enable: true),
+                          ),
+                        );
+                        _showAmountPicker(context);
+                        return;
+                      }
+                      context.read<CreatorBloc>().add(
+                        CreatorEvent.updateData(
+                          data: widget.remind.copyWith(
+                            enable: !widget.remind.enable,
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                     height: 22.h,
                     width: 22.w,
                     color: widget.remind.enable ? context.primaryColor : white,
@@ -89,44 +107,92 @@ class MultipleOptionsState extends State<MultipleOptions> {
         ),
         Visibility(
           visible: widget.remind.enable,
-          child: Container(
-            width: appSize.width,
-            padding: EdgeInsets.symmetric(
-              // vertical: paddingVal,
-              // horizontal: horizantPadVal,
-            ).scaled,
-            child: SizedBox(
-              height: 160.w / 1.h,
-              child: CupertinoPicker(
-                itemExtent: 35,
-                scrollController: scrollController,
-                children: intervalValues
-                    .map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.only(top: 6).scaled,
-                        child: Text(
-                          e.toString(),
-                          textAlign: TextAlign.start,
-                          style: context.titleTextStyle.copyWith(
-                            // fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onSelectedItemChanged: (index) =>
-                    context.read<CreatorBloc>().add(
-                      CreatorEvent.updateData(
-                        data: widget.remind.copyWith(
-                          amount: intervalValues[index],
-                        ),
+          child:
+              widget.useBottomSheet
+                  ? const SizedBox()
+                  : Container(
+                    width: appSize.width,
+                    padding: EdgeInsets.symmetric(
+                      // vertical: paddingVal,
+                      // horizontal: horizantPadVal,
+                    ).scaled,
+                    child: SizedBox(
+                      height: 160.w / 1.h,
+                      child: CupertinoPicker(
+                        itemExtent: 35,
+                        scrollController: scrollController,
+                        children: intervalValues
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.only(top: 6).scaled,
+                                child: Text(
+                                  e.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: context.titleTextStyle.copyWith(
+                                    // fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        onSelectedItemChanged: (index) =>
+                            context.read<CreatorBloc>().add(
+                              CreatorEvent.updateData(
+                                data: widget.remind.copyWith(
+                                  amount: intervalValues[index],
+                                ),
+                              ),
+                            ),
                       ),
                     ),
-              ),
-            ),
-          ),
+                  ),
         ),
       ],
+    );
+  }
+
+  void _showAmountPicker(BuildContext context) {
+    final currentIndex = intervalValues.indexOf(widget.remind.amount);
+    final controller = FixedExtentScrollController(
+      initialItem: currentIndex < 0 ? 0 : currentIndex,
+    );
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(borderRadVal.r),
+        ),
+      ),
+      builder: (context) {
+        return SizedBox(
+          height: 220.h,
+          child: CupertinoPicker(
+            itemExtent: 35,
+            scrollController: controller,
+            children: intervalValues
+                .map(
+                  (e) => Padding(
+                    padding: const EdgeInsets.only(top: 6).scaled,
+                    child: Text(
+                      e.toString(),
+                      textAlign: TextAlign.start,
+                      style: context.titleTextStyle.copyWith(),
+                    ),
+                  ),
+                )
+                .toList(),
+            onSelectedItemChanged: (index) =>
+                context.read<CreatorBloc>().add(
+                  CreatorEvent.updateData(
+                    data: widget.remind.copyWith(
+                      amount: intervalValues[index],
+                    ),
+                  ),
+                ),
+          ),
+        );
+      },
     );
   }
 }

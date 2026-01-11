@@ -11,8 +11,13 @@ import '../../../../../utils/extension/string_extension.dart';
 import '../../../../../core/UI/widgets/simple_app_button.dart';
 
 class CyclicOptions extends StatefulWidget {
-  const CyclicOptions({super.key, required this.remind});
+  const CyclicOptions({
+    super.key,
+    required this.remind,
+    this.useBottomSheet = false,
+  });
   final CyclicRemindModel remind;
+  final bool useBottomSheet;
 
   @override
   State<CyclicOptions> createState() => _CyclicOptionsState();
@@ -46,8 +51,6 @@ class _CyclicOptionsState extends State<CyclicOptions> {
     return Column(
       spacing: spacingVal,
       children: [
-        Divider(height: 0, color: context.secondaryColor),
-
         Container(
           width: appSize.width,
           padding: EdgeInsets.symmetric(horizontal: horizantPadVal),
@@ -67,11 +70,15 @@ class _CyclicOptionsState extends State<CyclicOptions> {
                           data: widget.remind.copyWith(enableInterval: 1),
                         ),
                       );
-                      WidgetsBinding.instance.addPostFrameCallback(
-                        (_) => jumpToIndex(
-                          intervalValues.indexOf(widget.remind.activeVal),
-                        ),
-                      );
+                      if (widget.useBottomSheet) {
+                        _showIntervalPicker(context, 1);
+                      } else {
+                        WidgetsBinding.instance.addPostFrameCallback(
+                          (_) => jumpToIndex(
+                            intervalValues.indexOf(widget.remind.activeVal),
+                          ),
+                        );
+                      }
                     },
                     height: 22.h,
                     width: 22.w,
@@ -102,11 +109,15 @@ class _CyclicOptionsState extends State<CyclicOptions> {
                           data: widget.remind.copyWith(enableInterval: 2),
                         ),
                       );
-                      WidgetsBinding.instance.addPostFrameCallback(
-                        (_) => jumpToIndex(
-                          intervalValues.indexOf(widget.remind.pauseVal),
-                        ),
-                      );
+                      if (widget.useBottomSheet) {
+                        _showIntervalPicker(context, 2);
+                      } else {
+                        WidgetsBinding.instance.addPostFrameCallback(
+                          (_) => jumpToIndex(
+                            intervalValues.indexOf(widget.remind.pauseVal),
+                          ),
+                        );
+                      }
                     },
                     height: 22.h,
                     width: 22.w,
@@ -128,51 +139,105 @@ class _CyclicOptionsState extends State<CyclicOptions> {
             ],
           ),
         ),
-        Visibility(
-          visible: widget.remind.enableInterval != 0,
-          child: Container(
-            width: appSize.width,
-            padding: EdgeInsets.symmetric(
-              // vertical: paddingVal,
-              horizontal: horizantPadVal,
-            ).scaled,
-            child: SizedBox(
-              height: 160.w / 1.h,
-              child: CupertinoPicker(
-                itemExtent: 35,
-                scrollController: scrollController,
-                children: intervalValues
-                    .map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.only(top: 6).scaled,
-                        child: Text(
-                          e.toString(),
-                          textAlign: TextAlign.start,
-                          style: context.titleTextStyle.copyWith(
-                            // fontSize: 20,
+        if (!widget.useBottomSheet)
+          Visibility(
+            visible: widget.remind.enableInterval != 0,
+            child: Container(
+              width: appSize.width,
+              padding: EdgeInsets.symmetric(
+                // vertical: paddingVal,
+                horizontal: horizantPadVal,
+              ).scaled,
+              child: SizedBox(
+                height: 160.w / 1.h,
+                child: CupertinoPicker(
+                  itemExtent: 35,
+                  scrollController: scrollController,
+                  children: intervalValues
+                      .map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.only(top: 6).scaled,
+                          child: Text(
+                            e.toString(),
+                            textAlign: TextAlign.start,
+                            style: context.titleTextStyle.copyWith(
+                              // fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onSelectedItemChanged: (index) =>
+                      context.read<CreatorBloc>().add(
+                        CreatorEvent.updateData(
+                          data: widget.remind.copyWith(
+                            activeVal: widget.remind.enableInterval == 1
+                                ? intervalValues[index]
+                                : widget.remind.activeVal,
+                            pauseVal: widget.remind.enableInterval == 2
+                                ? intervalValues[index]
+                                : widget.remind.pauseVal,
                           ),
                         ),
                       ),
-                    )
-                    .toList(),
-                onSelectedItemChanged: (index) =>
-                    context.read<CreatorBloc>().add(
-                      CreatorEvent.updateData(
-                        data: widget.remind.copyWith(
-                          activeVal: widget.remind.enableInterval == 1
-                              ? intervalValues[index]
-                              : widget.remind.activeVal,
-                          pauseVal: widget.remind.enableInterval == 2
-                              ? intervalValues[index]
-                              : widget.remind.pauseVal,
-                        ),
-                      ),
-                    ),
+                ),
               ),
             ),
           ),
-        ),
       ],
+    );
+  }
+
+  void _showIntervalPicker(BuildContext context, int mode) {
+    final currentValue = mode == 1
+        ? widget.remind.activeVal
+        : widget.remind.pauseVal;
+    final currentIndex = intervalValues.indexOf(currentValue);
+    final controller = FixedExtentScrollController(
+      initialItem: currentIndex < 0 ? 0 : currentIndex,
+    );
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(borderRadVal.r),
+        ),
+      ),
+      builder: (context) {
+        return SizedBox(
+          height: 220.h,
+          child: CupertinoPicker(
+            itemExtent: 35,
+            scrollController: controller,
+            children: intervalValues
+                .map(
+                  (e) => Padding(
+                    padding: const EdgeInsets.only(top: 6).scaled,
+                    child: Text(
+                      e.toString(),
+                      textAlign: TextAlign.start,
+                      style: context.titleTextStyle.copyWith(),
+                    ),
+                  ),
+                )
+                .toList(),
+            onSelectedItemChanged: (index) =>
+                context.read<CreatorBloc>().add(
+                  CreatorEvent.updateData(
+                    data: widget.remind.copyWith(
+                      activeVal: mode == 1
+                          ? intervalValues[index]
+                          : widget.remind.activeVal,
+                      pauseVal: mode == 2
+                          ? intervalValues[index]
+                          : widget.remind.pauseVal,
+                    ),
+                  ),
+                ),
+          ),
+        );
+      },
     );
   }
 }

@@ -31,13 +31,18 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
 
   void _onCreat(_Creat event, emit) async {
     List<RemindModel> reminders = AppStorage.reminders;
-    if (!reminders.any((elm) => elm.id == state.remind.id)) {
+    final existingIndex = reminders.indexWhere(
+      (elm) => elm.id == state.remind.id,
+    );
+    if (existingIndex == -1) {
       reminders.add(state.remind);
-      await AppStorage.write.reminders(reminders);
-      // await AppStorage.remove.reminders;
-      await navigatorKey.currentState?.maybePop();
-      add(CreatorEvent.updateData(data: defaultModel));
+    } else {
+      reminders[existingIndex] = state.remind;
     }
+    await AppStorage.write.reminders(reminders);
+    // await AppStorage.remove.reminders;
+    await navigatorKey.currentState?.maybePop();
+    add(CreatorEvent.updateData(data: defaultModel));
   }
 }
 

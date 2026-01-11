@@ -11,8 +11,13 @@ import '../../../../../core/UI/widgets/simple_app_button.dart';
 import 'package:reminder/appearance/remind/data/models/types/interval_remind.dart';
 
 class IntervalOptions extends StatefulWidget {
-  const IntervalOptions({super.key, required this.remind});
+  const IntervalOptions({
+    super.key,
+    required this.remind,
+    this.useBottomSheet = false,
+  });
   final IntervalRemindModel remind;
+  final bool useBottomSheet;
 
   @override
   State<IntervalOptions> createState() => _IntervalOptionsState();
@@ -49,11 +54,6 @@ class _IntervalOptionsState extends State<IntervalOptions> {
     return Column(
       spacing: spacingVal,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 0),
-          child: Divider(height: 0, color: context.secondaryColor),
-        ),
-
         Container(
           width: appSize.width,
           padding: EdgeInsets.symmetric(horizontal: horizantPadVal),
@@ -102,6 +102,9 @@ class _IntervalOptionsState extends State<IntervalOptions> {
                           ),
                         );
                         _jumpToIndex(0);
+                        if (widget.useBottomSheet) {
+                          _showIntervalPicker(context, timeInterval);
+                        }
                       },
                     ),
                   ),
@@ -145,6 +148,9 @@ class _IntervalOptionsState extends State<IntervalOptions> {
                           ),
                         );
                         _jumpToIndex(0);
+                        if (widget.useBottomSheet) {
+                          _showIntervalPicker(context, dayInterval);
+                        }
                       },
                     ),
                   ),
@@ -153,39 +159,87 @@ class _IntervalOptionsState extends State<IntervalOptions> {
             ],
           ),
         ),
-        Container(
-          width: appSize.width,
-          padding: EdgeInsets.symmetric(horizontal: horizantPadVal).scaled,
-          child: SizedBox(
-            height: 160.w / 1.h,
-            child: CupertinoPicker(
-              itemExtent: 35,
-              scrollController: scrollController,
-              children: intervalValues
-                  .map(
-                    (e) => Padding(
-                      padding: const EdgeInsets.only(top: 6).scaled,
-                      child: Text(
-                        e.toString(),
-                        textAlign: TextAlign.start,
-                        style: context.titleTextStyle.copyWith(
-                          // fontSize: 20,
+        if (!widget.useBottomSheet)
+          Container(
+            width: appSize.width,
+            padding: EdgeInsets.symmetric(horizontal: horizantPadVal).scaled,
+            child: SizedBox(
+              height: 160.w / 1.h,
+              child: CupertinoPicker(
+                itemExtent: 35,
+                scrollController: scrollController,
+                children: intervalValues
+                    .map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.only(top: 6).scaled,
+                        child: Text(
+                          e.toString(),
+                          textAlign: TextAlign.start,
+                          style: context.titleTextStyle.copyWith(
+                            // fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onSelectedItemChanged: (index) =>
+                    context.read<CreatorBloc>().add(
+                      CreatorEvent.updateData(
+                        data: widget.remind.copyWith(
+                          interval: intervalValues[index].toDouble(),
                         ),
                       ),
                     ),
-                  )
-                  .toList(),
-              onSelectedItemChanged: (index) => context.read<CreatorBloc>().add(
-                CreatorEvent.updateData(
-                  data: widget.remind.copyWith(
-                    interval: intervalValues[index].toDouble(),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _showIntervalPicker(BuildContext context, List intervalValues) {
+    final currentIndex = intervalValues.indexWhere(
+      (val) => val.toDouble() == widget.remind.interval.toDouble(),
+    );
+    final controller = FixedExtentScrollController(
+      initialItem: currentIndex < 0 ? 0 : currentIndex,
+    );
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(borderRadVal.r),
+        ),
+      ),
+      builder: (context) {
+        return SizedBox(
+          height: 220.h,
+          child: CupertinoPicker(
+            itemExtent: 35,
+            scrollController: controller,
+            children: intervalValues
+                .map(
+                  (e) => Padding(
+                    padding: const EdgeInsets.only(top: 6).scaled,
+                    child: Text(
+                      e.toString(),
+                      textAlign: TextAlign.start,
+                      style: context.titleTextStyle.copyWith(),
+                    ),
                   ),
+                )
+                .toList(),
+            onSelectedItemChanged: (index) => context.read<CreatorBloc>().add(
+              CreatorEvent.updateData(
+                data: widget.remind.copyWith(
+                  interval: intervalValues[index].toDouble(),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

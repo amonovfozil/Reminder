@@ -3,7 +3,9 @@ import 'package:reminder/appearance/settings/pages/settings_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
 import 'package:reminder/appearance/home/presentation/pages/main_page.dart';
 import 'package:reminder/appearance/settings/pages/parties/display_theme_page.dart';
+import 'package:reminder/appearance/remind/data/models/remind_model.dart';
 import '../../appearance/remind/presentation/pages/creat_remind_screen.dart';
+import '../../appearance/remind/presentation/pages/edit_remind_screen.dart';
 import '../../appearance/remind/presentation/pages/select_remind_type_screen.dart';
 
 class AppRouter {
@@ -16,6 +18,7 @@ class AppRouter {
   //Remind moduls
   static const String selectRemindTypeScreen = '/select_remind_type_screen';
   static const String creatRemindScreen = '/creat_remind_screen';
+  static const String editRemindScreen = '/edit_remind_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -37,6 +40,11 @@ class AppRouter {
         );
       case creatRemindScreen:
         return MaterialPageRoute(builder: (ctx) => const CreatRemindScreen());
+      case editRemindScreen:
+        final remind = settings.arguments as RemindModel;
+        return MaterialPageRoute(
+          builder: (ctx) => EditRemindScreen(remind: remind),
+        );
 
       default:
         return MaterialPageRoute(

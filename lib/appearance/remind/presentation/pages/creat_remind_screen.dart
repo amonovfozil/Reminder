@@ -1,24 +1,16 @@
 import '../bloc/creator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../../data/models/remind_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../utils/theme/app_colors.dart';
 import '../../../../core/constants/const_data.dart';
-import '../../data/models/types/cyclic_remind.dart';
-import '../../data/models/types/weekly_remind.dart';
 import '../../../../utils/theme/responsive_size.dart';
-import '../../data/models/types/interval_remind.dart';
-import '../../data/models/types/multiple_remind.dart';
-import '../widgets/options_body/cyclic_option_body.dart';
-import '../widgets/options_body/weekly_option_body.dart';
 import '../../../../utils/extension/string_extension.dart';
-import '../widgets/options_body/interval_option_body.dart';
-import '../widgets/options_body/multiple_option_body.dart';
 import '../../../../core/UI/widgets/simple_app_button.dart';
 import 'package:reminder/core/constants/enums/remind_type.dart';
 import 'package:reminder/core/UI/widgets/custom_text_feild.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
+import 'remind_form_helpers.dart';
 
 class CreatRemindScreen extends StatefulWidget {
   const CreatRemindScreen({super.key});
@@ -193,38 +185,4 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
       ),
     );
   }
-}
-
-getCurrentModel(RemindModel model) {
-  return switch (model.type) {
-    RemindType.interval => model as IntervalRemindModel,
-    RemindType.multiple => model as MultipleRemindModel,
-    RemindType.weekly => model as WeeklyRemindModel,
-    RemindType.cyclic => model as CyclicRemindModel,
-    null => model,
-  };
-}
-
-Widget getOptionBody(RemindModel remind) {
-  return switch (remind.type) {
-    RemindType.interval => IntervalOptionBody(
-      remind: remind as IntervalRemindModel,
-    ),
-    RemindType.multiple => MultipleOptionBody(
-      remind: remind as MultipleRemindModel,
-    ),
-    RemindType.weekly => WeeklyOptionBody(remind: remind as WeeklyRemindModel),
-    RemindType.cyclic => CyclicOptionBody(remind: remind as CyclicRemindModel),
-    null => const SizedBox(),
-  };
-}
-
-String getTitle(RemindType? type) {
-  return switch (type) {
-    RemindType.interval => 'Interval',
-    RemindType.multiple => 'Multiple',
-    RemindType.weekly => 'Weekly',
-    RemindType.cyclic => 'Cyclic',
-    null => '',
-  };
 }

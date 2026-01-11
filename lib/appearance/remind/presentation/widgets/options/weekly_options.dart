@@ -22,11 +22,10 @@ class _WeeklyOptionsState extends State<WeeklyOptions> {
     return Column(
       spacing: spacingVal,
       children: [
-        Divider(height: 0, color: context.secondaryColor),
         Container(
           width: appSize.width,
           padding: EdgeInsets.only(
-            bottom: paddingVal,
+            bottom: verticalPadVal / 2,
             right: horizantPadVal,
             left: horizantPadVal,
           ),

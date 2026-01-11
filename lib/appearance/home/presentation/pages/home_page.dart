@@ -58,7 +58,9 @@ class _HomePageState extends State<HomePage> {
                         color: context.primaryColor,
                         size: 32.w,
                       ),
-                      onTap: () {},
+                      onTap: () => Navigator.of(
+                        context,
+                      ).pushNamed(AppRouter.editRemindScreen, arguments: elm),
                     ),
                   )
                   .toList(),
