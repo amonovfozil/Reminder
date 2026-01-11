@@ -1,24 +1,17 @@
 import '../bloc/creator_bloc.dart';
 import 'package:flutter/material.dart';
+import '../../data/models/models.dart';
 import 'package:flutter/cupertino.dart';
-import '../../data/models/remind_model.dart';
-import '../widgets/options/cyclic_options.dart';
-import '../widgets/options/weekly_options.dart';
+import '../widgets/options/options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../utils/theme/app_colors.dart';
 import 'package:reminder/core/routes/routes.dart';
-import '../widgets/options/multiple_options.dart';
-import '../widgets/options/interval_options.dart';
-import '../../../../core/constants/const_data.dart';
-import '../../data/models/types/cyclic_remind.dart';
-import '../../data/models/types/weekly_remind.dart';
-import '../../../../utils/theme/responsive_size.dart';
-import '../../data/models/types/multiple_remind.dart';
-import '../../data/models/types/interval_remind.dart';
-import '../../../../utils/extension/string_extension.dart';
-import '../../../../core/UI/widgets/simple_app_button.dart';
+import 'package:reminder/utils/theme/app_colors.dart';
+import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/utils/theme/responsive_size.dart';
 import '../../../settings/widgets/custom_menu_item_card.dart';
 import 'package:reminder/core/constants/enums/remind_type.dart';
+import 'package:reminder/utils/extension/string_extension.dart';
+import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
 
 class SelectRemindTypeScreen extends StatefulWidget {
@@ -125,8 +118,6 @@ class _SelectRemindTypeScreenState extends State<SelectRemindTypeScreen> {
     );
   }
 }
-
-
 
 Widget getOptions(RemindModel remind) {
   return switch (remind.type) {

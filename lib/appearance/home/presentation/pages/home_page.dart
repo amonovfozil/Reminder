@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/now_remind_card.dart';
+import '../../../../core/routes/routes.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
+import 'package:reminder/core/storage/app_storage.dart';
 import 'package:reminder/core/constants/const_data.dart';
+import '../../../../utils/extension/string_extension.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
 import '../../../../core/UI/widgets/custom_card_button.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
@@ -19,59 +22,47 @@ class _HomePageState extends State<HomePage> {
     return CustomBackgraundStyle(
       title: 'Reminder',
       bodyColor: white,
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add, size: 30, color: white),
+          onPressed: () =>
+              Navigator.of(context).pushNamed(AppRouter.selectRemindTypeScreen),
+        ),
+      ],
       headBody: NowRemindCard(),
       body: SingleChildScrollView(
         child: Column(
           spacing: spacingVal.h,
           children: [
-            SizedBox(height: 50.h),
-            CustomCardButton(
-              title: "Interview",
-              subtitle: '03 June, 2024  07:00PM',
-              suffix: ImageIcon(
-                AssetImage('assets/images/home/users.png'),
-                color: context.primaryColor,
-                size: 32.w,
-              ),
-              onTap: () {},
+            SizedBox(height: 40.h),
+            Column(
+              children: AppStorage.reminders
+                  .map(
+                    (elm) => CustomCardButton(
+                      title: elm.title,
+                      // subtitle: (elm as IntervalRemindModel).times
+                      //     .map((time) => Formatter.timeFormat(time))
+                      //     .toList()
+                      //     .join(', '),
+                      // subtitle: (elm as IntervalRemindModel).isHourly
+                      // .toString(),
+                      subtitle: elm.type?.name.capitalizeFirst ?? '',
+                      // subtitle: '03 June, 2024  07:00PM',
+                      margin: EdgeInsets.only(
+                        bottom: 10,
+                        left: marginVal,
+                        right: marginVal,
+                      ).scaled,
+                      suffix: ImageIcon(
+                        AssetImage('assets/images/home/users.png'),
+                        color: context.primaryColor,
+                        size: 32.w,
+                      ),
+                      onTap: () {},
+                    ),
+                  )
+                  .toList(),
             ),
-            CustomCardButton(
-              title: "Birthday",
-              subtitle: '03 June, 2024  07:00PM',
-              suffix: ImageIcon(
-                AssetImage('assets/images/home/calendar_edit.png'),
-                color: context.primaryColor,
-                size: 32.w,
-              ),
-            ),
-            CustomCardButton(
-              title: "Meeting",
-              subtitle: '03 June, 2024  07:00PM',
-              suffix: ImageIcon(
-                AssetImage('assets/images/home/emails.png'),
-                color: context.primaryColor,
-                size: 32.w,
-              ),
-            ),
-            CustomCardButton(
-              title: "Checkup",
-              subtitle: '03 June, 2024  07:00PM',
-              suffix: ImageIcon(
-                AssetImage('assets/images/home/docUser.png'),
-                color: context.primaryColor,
-                size: 32.w,
-              ),
-            ),
-            CustomCardButton(
-              title: "Shopping",
-              subtitle: '03 June, 2024  07:00PM',
-              suffix: ImageIcon(
-                AssetImage('assets/images/home/bag.png'),
-                color: context.primaryColor,
-                size: 32.w,
-              ),
-            ),
-
             SizedBox(height: bottomHeightVal.h),
           ],
         ),

@@ -17,6 +17,7 @@ class CustomBackgraundStyle extends StatelessWidget {
   final double? toolbarHeight;
   final double? leadingWidth;
   final double headTopPosetionVal;
+  final List<Widget>? actions;
   const CustomBackgraundStyle({
     super.key,
     required this.title,
@@ -28,6 +29,7 @@ class CustomBackgraundStyle extends StatelessWidget {
     this.bottomNavigationBar,
     this.headTopPosetionVal = 125,
     this.toolbarHeight,
+    this.actions,
     this.leadingWidth,
     this.bottomSheet,
   });
@@ -48,6 +50,7 @@ class CustomBackgraundStyle extends StatelessWidget {
               leading: leadingAppbar,
               backgroundColor: Colors.transparent,
               title: Text(title.toUpperCase(), style: context.headerTextStyle),
+              actions: actions,
             ),
           ),
           Container(

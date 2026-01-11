@@ -1,22 +1,31 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:reminder/core/helpers/helper.dart';
+import '../../../calendar/data/models/models.dart';
+import '../../../../core/constants/const_data.dart';
+import 'package:reminder/core/helpers/formatter.dart';
 import '../../../../core/UI/widgets/custom_card.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
-import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
-
-import '../../../../core/constants/const_data.dart';
+import 'package:reminder/utils/extension/string_extension.dart';
+import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 
 class NowRemindCard extends StatelessWidget {
   const NowRemindCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    RemindModel? firstRemind = Helper.sortRemindByDate;
+    DateTime timeNow = Helper.sortRemindTime ?? DateTime.now();
+    log("message DATE $timeNow");
     return CustomCard(
       height: 130,
       margin: const EdgeInsets.symmetric(horizontal: 40),
-      title: "Youth\n Meeting",
-      subtitle: '⏰ 10:00 AM',
+      title: firstRemind?.title ?? '',
+      subtitle:
+          '⏰ ${firstRemind?.type?.name.capitalizeFirst} ${Formatter.timeFormat(timeNow)} ',
       suffix: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -42,7 +51,9 @@ class NowRemindCard extends StatelessWidget {
                     ],
                   ).createShader(bounds),
                   child: Text(
-                    '3',
+                    (timeNow.day > 10 ? (timeNow.day / 10) : 0)
+                        .toInt()
+                        .toString(),
                     style: context.headerTextStyle.copyWith(fontSize: 35.sp),
                   ),
                 ),
@@ -65,7 +76,8 @@ class NowRemindCard extends StatelessWidget {
                     ],
                   ).createShader(bounds),
                   child: Text(
-                    '0',
+                    // '0',
+                    (timeNow.day % 10).toString(),
                     style: context.headerTextStyle.copyWith(fontSize: 35.sp),
                   ),
                 ),
@@ -73,7 +85,7 @@ class NowRemindCard extends StatelessWidget {
             ],
           ),
           Text(
-            'April , 2024',
+            Formatter.monthYear(timeNow).capitalizeWords,
             style: context.subStyle.copyWith(fontSize: 12.sp, height: 1.5),
           ),
         ],

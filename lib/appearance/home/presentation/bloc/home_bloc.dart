@@ -16,4 +16,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onSwitchScreen(_SwitchScreen event, emit) =>
       emit(ContuneHomeState(currentIndex: event.index));
+
+      
 }

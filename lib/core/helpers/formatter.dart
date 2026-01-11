@@ -9,6 +9,8 @@ class Formatter {
     "dd${atribut}MMM${atribut}yyyy",
     AppStorage.appLocale,
   ).format(date);
+  static String monthYear(DateTime date) =>
+      DateFormat("MMMM, yyyy", AppStorage.appLocale).format(date);
 
   // static MaskTextInputFormatter dateInputFormatter = MaskTextInputFormatter(
   //   mask: '##/##/####',
