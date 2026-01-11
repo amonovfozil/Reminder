@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/constants/const_data.dart';
-import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
+import 'package:reminder/appearance/remind/data/models/remind_model.dart';
 
 class AppStorage {
   //App Storage box

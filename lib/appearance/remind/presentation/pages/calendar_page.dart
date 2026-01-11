@@ -6,7 +6,7 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
 import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 import '../../../../core/UI/screens/custom_backgraund_style.dart';
-import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
+import 'package:reminder/appearance/remind/data/models/remind_model.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});

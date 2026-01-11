@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_cyclic_imports
 
-import 'package:reminder/appearance/calendar/data/models/types/cyclic_remind.dart';
-import 'package:reminder/appearance/calendar/data/models/types/interval_remind.dart';
-import 'package:reminder/appearance/calendar/data/models/types/multiple_remind.dart';
-import 'package:reminder/appearance/calendar/data/models/types/weekly_remind.dart';
+import 'package:reminder/appearance/remind/data/models/types/cyclic_remind.dart';
+import 'package:reminder/appearance/remind/data/models/types/interval_remind.dart';
+import 'package:reminder/appearance/remind/data/models/types/multiple_remind.dart';
+import 'package:reminder/appearance/remind/data/models/types/weekly_remind.dart';
 import 'package:reminder/core/constants/enums/remind_type.dart';
 
 class RemindModel {

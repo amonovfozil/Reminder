@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:reminder/core/helpers/helper.dart';
-import '../../../calendar/data/models/models.dart';
+import '../../../remind/data/models/models.dart';
 import '../../../../core/constants/const_data.dart';
 import 'package:reminder/core/helpers/formatter.dart';
 import '../../../../core/UI/widgets/custom_card.dart';

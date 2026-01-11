@@ -6,7 +6,7 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 import 'package:reminder/core/storage/app_storage.dart';
-import 'package:reminder/appearance/calendar/data/models/models.dart';
+import 'package:reminder/appearance/remind/data/models/models.dart';
 
 class Helper {
   static Future<void> showBottomModel({

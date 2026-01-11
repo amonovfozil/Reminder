@@ -1,5 +1,5 @@
 import '../../../../../core/constants/enums/remind_type.dart';
-import 'package:reminder/appearance/calendar/data/models/remind_model.dart';
+import 'package:reminder/appearance/remind/data/models/remind_model.dart';
 
 class IntervalRemindModel extends RemindModel {
   bool isHourly;

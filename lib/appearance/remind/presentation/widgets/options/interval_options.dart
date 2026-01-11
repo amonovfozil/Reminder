@@ -8,7 +8,7 @@ import '../../../../../core/constants/const_data.dart';
 import '../../../../../utils/theme/responsive_size.dart';
 import '../../../../../utils/extension/string_extension.dart';
 import '../../../../../core/UI/widgets/simple_app_button.dart';
-import 'package:reminder/appearance/calendar/data/models/types/interval_remind.dart';
+import 'package:reminder/appearance/remind/data/models/types/interval_remind.dart';
 
 class IntervalOptions extends StatefulWidget {
   const IntervalOptions({super.key, required this.remind});

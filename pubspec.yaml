@@ -64,7 +64,7 @@ flutter:
     - assets/images/
     - assets/images/home/
     - assets/images/setting/
-    - assets/images/calendar/
+    - assets/images/remind/
 
   # fonts
     - assets/fonts/

@@ -1,15 +1,15 @@
 // import 'package:fpdart/fpdart.dart';
 // import '../../../../core/providers/error/failures.dart';
 // import 'package:reminder/appearance/home/data/datasources/home_data_source.dart';
-import 'package:reminder/appearance/calendar/data/datasources/calendar_data_source.dart';
+import 'package:reminder/appearance/remind/data/datasources/remind_data_source.dart';
 
-abstract class CalendarRepository {
+abstract class RemindRepository {
   // Future<Either<Failure, ServiceSettingModel>> checkStatusService();
 }
 
-class CalendarRepositoryImpl implements CalendarRepository {
-  final CalendarDataSource dataSource;
-  CalendarRepositoryImpl({required this.dataSource});
+class RemindRepositoryImpl implements RemindRepository {
+  final RemindDataSource dataSource;
+  RemindRepositoryImpl({required this.dataSource});
 
   // @override
   // Future<Either<Failure, ServiceSettingModel>> checkStatusService() async {

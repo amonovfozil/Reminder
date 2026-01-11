@@ -6,7 +6,7 @@ import 'package:reminder/utils/theme/responsive_size.dart';
 import '../../../../core/constants/enums/remind_type.dart';
 import '../../../../utils/extension/string_extension.dart';
 import '../../../settings/widgets/custom_menu_item_card.dart';
-import 'package:reminder/appearance/calendar/presentation/bloc/creator_bloc.dart';
+import 'package:reminder/appearance/remind/presentation/bloc/creator_bloc.dart';
 
 class RemindTypesModal extends StatefulWidget {
   const RemindTypesModal({super.key});
