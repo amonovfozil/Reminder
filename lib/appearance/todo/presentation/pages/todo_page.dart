@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder/core/constants/const_data.dart';
 import 'package:reminder/core/helpers/formatter.dart';
-import 'package:reminder/core/UI/widgets/simple_app_button.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
@@ -17,15 +16,12 @@ import 'package:reminder/appearance/todo/presentation/widgets/todo_task_editor_s
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
 
-  @override
-  State<TodoPage> createState() => _TodoPageState();
-}
-
-class _TodoPageState extends State<TodoPage> {
-  final Color _doneColor = green;
-  final Color _lateColor = Colors.amber;
-  final Color _notDoneColor = Colors.redAccent;
-  final List<TodoTypeOption> _typeOptions = const [
+  static const List<TodoTypeOption> typeOptions = [
+    TodoTypeOption(
+      key: 'work',
+      label: 'Work',
+      assetPath: 'assets/images/home/remind.png',
+    ),
     TodoTypeOption(
       key: 'meeting',
       label: 'Meeting',
@@ -46,17 +42,22 @@ class _TodoPageState extends State<TodoPage> {
       label: 'Shopping',
       assetPath: 'assets/images/home/bag.png',
     ),
-    TodoTypeOption(
-      key: 'work',
-      label: 'Work',
-      assetPath: 'assets/images/home/remind.png',
-    ),
+
     TodoTypeOption(
       key: 'study',
       label: 'Study',
       assetPath: 'assets/images/home/calendar_edit.png',
     ),
   ];
+
+  @override
+  State<TodoPage> createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  final Color _doneColor = green;
+  final Color _lateColor = Colors.amber;
+  final Color _notDoneColor = Colors.redAccent;
 
   @override
   void initState() {
@@ -84,7 +85,7 @@ class _TodoPageState extends State<TodoPage> {
           child: TodoTaskEditorSheet(
             task: task,
             selectedDate: selectedDate,
-            typeOptions: _typeOptions,
+            typeOptions: TodoPage.typeOptions,
             onSave: (title, note, plannedAt, iconKey, typeLabel) {
               context.read<TodoBloc>().add(
                 TodoAddOrUpdateTask(
@@ -294,20 +295,6 @@ class _TodoPageState extends State<TodoPage> {
                                       ),
                                     ),
                                   ),
-                                  if (canEdit) ...[
-                                    SizedBox(height: 10.h),
-                                    SimpleAppButton(
-                                      text: 'Bugun uchun reja qo\'shish',
-                                      textColor: context.primaryColor,
-                                      color: white,
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: 6.h,
-                                      ),
-                                      onTap: () => _openTaskEditor(
-                                        selectedDate: state.selectedDate,
-                                      ),
-                                    ),
-                                  ],
                                 ],
                               ),
                             ),

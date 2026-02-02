@@ -8,6 +8,9 @@ import 'package:reminder/utils/theme/responsive_size.dart';
 import 'package:reminder/core/UI/widgets/backgraund_font.dart';
 import 'package:reminder/appearance/home/presentation/pages/home_page.dart';
 import 'package:reminder/appearance/todo/presentation/pages/todo_page.dart';
+import 'package:reminder/appearance/todo/presentation/bloc/todo_bloc.dart';
+import 'package:reminder/appearance/todo/presentation/helpers/todo_helper.dart';
+import 'package:reminder/appearance/todo/presentation/widgets/todo_task_editor_sheet.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -18,6 +21,42 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   List<Widget> pages = const [HomePage(), TodoPage(), SettingsPage()];
+
+  Future<void> _openTodoEditorFromNav() async {
+    final todoBloc = context.read<TodoBloc>();
+    final selectedDate = todoBloc.state.selectedDate;
+    if (TodoHelper.isPast(selectedDate)) return;
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom,
+          ),
+          child: TodoTaskEditorSheet(
+            selectedDate: selectedDate,
+            typeOptions: TodoPage.typeOptions,
+            onSave: (title, note, plannedAt, iconKey, typeLabel) {
+              todoBloc.add(
+                TodoAddOrUpdateTask(
+                  title: title,
+                  note: note,
+                  plannedAt: plannedAt,
+                  iconKey: iconKey,
+                  typeLabel: typeLabel,
+                ),
+              );
+              Navigator.of(ctx).pop();
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
@@ -33,7 +72,12 @@ class _MainPageState extends State<MainPage> {
               children: [
                 BackgraundFont(),
                 TabBarView(children: pages),
-                Positioned(bottom: 32.h, child: CutomBottomNavigationBar()),
+                Positioned(
+                  bottom: 32.h,
+                  child: CutomBottomNavigationBar(
+                    onAddTodo: _openTodoEditorFromNav,
+                  ),
+                ),
               ],
             ),
           ),

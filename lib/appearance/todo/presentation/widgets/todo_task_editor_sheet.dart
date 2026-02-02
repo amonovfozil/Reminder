@@ -52,6 +52,7 @@ class _TodoTaskEditorSheetState extends State<TodoTaskEditorSheet> {
   late DateTime _plannedAt;
   String _iconKey = '';
   String _typeLabel = '';
+  late final List<IconPickerItem> _iconItems;
 
   @override
   void initState() {
@@ -70,6 +71,15 @@ class _TodoTaskEditorSheetState extends State<TodoTaskEditorSheet> {
         );
     _iconKey = widget.task?.iconKey ?? '';
     _typeLabel = widget.task?.typeLabel ?? '';
+    _iconItems = [
+      ...widget.typeOptions.map(
+        (option) => IconPickerItem(
+          key: option.key,
+          label: option.label,
+          assetPath: option.assetPath,
+        ),
+      ),
+    ];
   }
 
   @override
@@ -96,13 +106,30 @@ class _TodoTaskEditorSheetState extends State<TodoTaskEditorSheet> {
             style: context.subTitleTextStyle,
           ),
           SizedBox(height: 12.h),
-          CustomTextField(
-            controller: _titleCtrl,
-            validator: (val) => (val == null || val.trim().isEmpty)
-                ? 'Sarlavha kiriting'
-                : null,
-            labelText: 'Nomi',
-            hintText: 'Bugungi ish',
+          Row(
+            spacing: 10,
+            children: [
+              CustomScrollDown(
+                items: _iconItems,
+                selectedKey: _iconKey,
+                onSelected: (picked) {
+                  setState(() {
+                    _iconKey = picked.key;
+                    _typeLabel = picked.key.isEmpty ? '' : picked.label;
+                  });
+                },
+              ),
+              Expanded(
+                child: CustomTextField(
+                  controller: _titleCtrl,
+                  validator: (val) => (val == null || val.trim().isEmpty)
+                      ? 'Sarlavha kiriting'
+                      : null,
+                  labelText: 'Nomi',
+                  hintText: 'Bugungi ish',
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 10.h),
           CustomTextField(
@@ -112,10 +139,10 @@ class _TodoTaskEditorSheetState extends State<TodoTaskEditorSheet> {
             hintText: 'Ixtiyoriy izoh',
             maxLines: 2,
           ),
-          SizedBox(height: 12.h),
-          Text('Icon/Type (ixtiyoriy)', style: context.subStyle),
-          SizedBox(height: 8.h),
-          _buildTypeDropdown(context),
+
+          // SizedBox(height: 12.h),
+          // Text('Icon/Type (ixtiyoriy)', style: context.subStyle),
+          // SizedBox(height: 8.h),
           SizedBox(height: 12.h),
           Row(
             children: [
@@ -197,133 +224,197 @@ class _TodoTaskEditorSheetState extends State<TodoTaskEditorSheet> {
       ),
     );
   }
+}
 
-  Widget _buildTypeDropdown(BuildContext context) {
-    final value = _iconKey.isEmpty ? 'none' : _iconKey;
+class IconPickerItem {
+  final String key;
+  final String label;
+  final String? assetPath;
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: context.secondaryColor.withOpacity(0.06),
+  const IconPickerItem({
+    required this.key,
+    required this.label,
+    required this.assetPath,
+  });
+}
+
+class CustomScrollDown extends StatefulWidget {
+  final List<IconPickerItem> items;
+  final String selectedKey;
+  final ValueChanged<IconPickerItem> onSelected;
+
+  const CustomScrollDown({
+    super.key,
+    required this.items,
+    required this.selectedKey,
+    required this.onSelected,
+  });
+
+  @override
+  State<CustomScrollDown> createState() => _CustomScrollDownState();
+}
+
+class _CustomScrollDownState extends State<CustomScrollDown> {
+  final LayerLink _iconPickerLink = LayerLink();
+  OverlayEntry? _iconPickerEntry;
+
+  @override
+  void dispose() {
+    _removeIconPicker();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedItem = widget.items.firstWhere(
+      (item) => item.key == widget.selectedKey,
+      orElse: () => widget.items.first,
+    );
+
+    return CompositedTransformTarget(
+      link: _iconPickerLink,
+      child: InkWell(
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: context.borderColor.withOpacity(0.2)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          isExpanded: true,
-          value: value,
-          icon: Icon(Icons.expand_more, color: lightGrey),
-          selectedItemBuilder: (context) {
-            final items = [
-              (label: 'Tanlanmagan', assetPath: '', isNone: true),
-              ...widget.typeOptions.map(
-                (option) => (
-                  label: option.label,
-                  assetPath: option.assetPath,
-                  isNone: false,
-                ),
+        onTap: _toggleIconPicker,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 50.w,
+              height: 50.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                // color: context.secondaryColor.withOpacity(0.06),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: context.borderColor),
               ),
-            ];
+              child: selectedItem.assetPath == null
+                  ? Icon(
+                      Icons.remove_circle_outline,
+                      size: 20.w,
+                      color: darkBlue.withOpacity(0.7),
+                    )
+                  : ImageIcon(
+                      AssetImage(selectedItem.assetPath!),
+                      size: 20.w,
+                      color: context.primaryColor,
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-            return items
-                .map(
-                  (item) => Row(
-                    children: [
-                      Container(
-                        width: 26.w,
-                        height: 26.w,
-                        decoration: BoxDecoration(
-                          color: item.isNone
-                              ? context.secondaryColor.withOpacity(0.08)
-                              : context.primaryColor.withOpacity(0.12),
-                          shape: BoxShape.circle,
-                        ),
-                        child: item.isNone
-                            ? Icon(
-                                Icons.remove_circle_outline,
-                                size: 14.w,
-                                color: darkBlue.withOpacity(0.7),
-                              )
-                            : ImageIcon(
-                                AssetImage(item.assetPath),
-                                size: 14.w,
-                                color: context.primaryColor,
-                              ),
+  void _toggleIconPicker() {
+    if (_iconPickerEntry != null) {
+      _removeIconPicker();
+      return;
+    }
+
+    final initialIndex = widget.items.indexWhere(
+      (item) => item.key == widget.selectedKey,
+    );
+    final controller = FixedExtentScrollController(
+      initialItem: initialIndex < 0 ? 0 : initialIndex,
+    );
+
+    _iconPickerEntry = OverlayEntry(
+      builder: (context) {
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: _removeIconPicker,
+                behavior: HitTestBehavior.translucent,
+              ),
+            ),
+            CompositedTransformFollower(
+              link: _iconPickerLink,
+              showWhenUnlinked: false,
+              targetAnchor: Alignment.center,
+              followerAnchor: Alignment.center,
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: 50.w,
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                    color: context.secondaryColor.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
                       ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        item.label,
-                        style: context.subStyle.copyWith(
-                          color: item.isNone
-                              ? darkBlue.withOpacity(0.7)
-                              : context.primaryColor,
-                          fontWeight: FontWeight.w600,
+                    ],
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      NotificationListener<ScrollEndNotification>(
+                        onNotification: (_) {
+                          final index = controller.selectedItem;
+                          final picked = widget.items[index];
+                          widget.onSelected(picked);
+                          _removeIconPicker();
+                          return false;
+                        },
+                        child: ListWheelScrollView.useDelegate(
+                          controller: controller,
+                          physics: const FixedExtentScrollPhysics(),
+                          itemExtent: 50.h,
+                          perspective: 0.002,
+                          squeeze: 1,
+                          diameterRatio: 1.6,
+                          childDelegate: ListWheelChildBuilderDelegate(
+                            childCount: widget.items.length,
+                            builder: (context, index) {
+                              final item = widget.items[index];
+                              return Center(
+                                child: item.assetPath == null
+                                    ? Icon(
+                                        Icons.remove_circle_outline,
+                                        size: 20.w,
+                                        color: darkBlue.withOpacity(0.7),
+                                      )
+                                    : ImageIcon(
+                                        AssetImage(item.assetPath!),
+                                        size: 20.w,
+                                        color: white,
+                                        // color: context.primaryColor,
+                                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      IgnorePointer(
+                        child: Container(
+                          width: 50.w,
+                          height: 50.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(color: white, width: 2),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                )
-                .toList();
-          },
-          items: [
-            DropdownMenuItem(
-              value: 'none',
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.remove_circle_outline,
-                    size: 16.w,
-                    color: darkBlue.withOpacity(0.7),
-                  ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    'Tanlanmagan',
-                    style: context.subStyle.copyWith(
-                      color: darkBlue.withOpacity(0.7),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ...widget.typeOptions.map(
-              (option) => DropdownMenuItem(
-                value: option.key,
-                child: Row(
-                  children: [
-                    ImageIcon(
-                      AssetImage(option.assetPath),
-                      size: 16.w,
-                      color: darkBlue.withOpacity(0.7),
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      option.label,
-                      style: context.subStyle.copyWith(
-                        color: darkBlue.withOpacity(0.7),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
           ],
-          onChanged: (value) {
-            setState(() {
-              if (value == null || value == 'none') {
-                _iconKey = '';
-                _typeLabel = '';
-                return;
-              }
-              final picked = widget.typeOptions.firstWhere(
-                (option) => option.key == value,
-              );
-              _iconKey = picked.key;
-              _typeLabel = picked.label;
-            });
-          },
-        ),
-      ),
+        );
+      },
     );
+
+    Overlay.of(context, rootOverlay: true).insert(_iconPickerEntry!);
+  }
+
+  void _removeIconPicker() {
+    _iconPickerEntry?.remove();
+    _iconPickerEntry = null;
   }
 }
