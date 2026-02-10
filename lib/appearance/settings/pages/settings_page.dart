@@ -48,181 +48,202 @@ class _SettingsPageState extends State<SettingsPage> {
     String? currentLocale = context.locales?.locale.languageCode;
     return BlocBuilder<SettingBloc, SettingState>(
       builder: (context, state) {
-        return CustomBackgraundStyle(
+        // final headHeight =
+        //     appSize.height -
+        //     230.h -
+        //     MediaQuery.paddingOf(context).top -
+        //     spacingVal.h;
+
+        return CustomScaffold(
+          backgroundColor: Colors.transparent,
           title: 'Settings',
-          headBody: SizedBox(
-            height: appSize.height - 230.h,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Card(
-                  elevation: 1,
-                  color: white.withOpacity(0.90),
-                  margin: EdgeInsets.symmetric(horizontal: cardMarginVal.w),
-                  borderOnForeground: false,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: borderWidth.w,
-                      color: context.borderColor.withOpacity(0.08),
-                    ),
-                    borderRadius: BorderRadius.circular(borderRadVal.r),
-                  ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
 
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: paddingVal.h,
-                    ).scaled,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: spacingVal.h,
-                      children: [
-                        CustomMenuItemCard(
-                          title: "Display thema",
-                          borderRadius: iteamCardborderRadVal.r,
-                          prefix: ImageIcon(
-                            AssetImage('assets/images/setting/catalog.png'),
-                            color: context.primaryColor,
-                            size: cardIconSize.w,
-                          ),
-                          onTap: () => Navigator.of(
-                            context,
-                          ).pushNamed(AppRouter.displayThemePage),
-                        ),
-                        CustomMenuItemCard(
-                          title: "Notification",
-                          borderRadius: iteamCardborderRadVal.r,
-                          prefix: ImageIcon(
-                            AssetImage('assets/images/setting/bell.png'),
-                            color: context.primaryColor,
-                            size: cardMarginVal.w,
-                          ),
-
-                          suffix: CupertinoSwitch(
-                            activeColor: context.secondaryColor,
-                            value: state.noteStatus,
-                            onChanged: (status) => context
-                                .read<SettingBloc>()
-                                .add(SettingEvent.togglestatus(status: status)),
-                          ),
-                        ),
-                        CustomMenuItemCard(
-                          title: "Alarm sound",
-                          borderRadius: iteamCardborderRadVal.r,
-                          prefix: ImageIcon(
-                            AssetImage('assets/images/setting/sound.png'),
-                            color: context.primaryColor,
-                            size: cardIconSize.w,
-                          ),
-                          suffix: Text(
-                            state.noteSound,
-                            style: context.subStyle.copyWith(color: black),
-                          ),
-                          onTap: () => Helper.showBottomModel(
-                            ctx: context,
-                            body: SoundModal(),
-                            title: "Select Sound",
-                          ),
-                        ),
-                        CustomMenuItemCard(
-                          title: "Language",
-                          borderRadius: iteamCardborderRadVal.r,
-                          prefix: ImageIcon(
-                            AssetImage('assets/images/setting/earth.png'),
-                            color: context.primaryColor,
-                            size: cardIconSize.w,
-                          ),
-                          suffix: Image.asset(
-                            localeIcon(currentLocale),
-                            height: cardIconSize.h,
-                          ),
-                          onTap: () => Helper.showBottomModel(
-                            ctx: context,
-                            body: LocalesModal(),
-                            title: "Select Locale",
-                          ),
-                        ),
-                        CustomMenuItemCard(
-                          title: "Font",
-                          borderRadius: iteamCardborderRadVal.r,
-                          prefix: ImageIcon(
-                            AssetImage('assets/images/setting/font.png'),
-                            color: context.primaryColor,
-                            size: cardIconSize.w,
-                          ),
-                          suffix: Text(
-                            fontName(context.subStyle.fontFamily),
-                            style: context.subStyle.copyWith(color: black),
-                          ),
-
-                          onTap: () => Helper.showBottomModel(
-                            ctx: context,
-                            body: FontsModal(),
-                            title: "Select Font Family",
-                          ),
-                        ),
-                        CustomMenuItemCard(
-                          title: "Rated",
-                          borderRadius: iteamCardborderRadVal.r,
-                          prefix: ImageIcon(
-                            AssetImage('assets/images/setting/rating.png'),
-                            color: context.primaryColor,
-                            size: cardMarginVal.w,
-                          ),
-                          suffix: SizedBox(),
-                          onTap: _onInAppReview,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const Spacer(),
-                Center(
-                  child: Text(
-                    "app_version".tr.replaceAll('1.0.12', version),
-                    style: context.subStyle.copyWith(
-                      color: white,
-                      height: 1.sp,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Row(
-                  spacing: 1.w / 1.h,
+            children: [
+              Expanded(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                      onPressed: () async =>
-                          await launchUrl(Uri.parse(AppSecrets.telegrambUrl)),
-                      icon: Icon(
-                        Icons.telegram,
-                        color: white,
-                        size: 28.w / 1.h,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: ImageIcon(
-                        AssetImage('assets/images/setting/instagram.png'),
-                        color: white,
-                        size: 24.w / 1.h,
-                      ),
-                    ),
+                    Center(
+                      child: Card(
+                        elevation: 1,
+                        color: white.withOpacity(0.90),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: cardMarginVal.w,
+                        ),
+                        borderOnForeground: false,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            width: borderWidth.w,
+                            color: context.borderColor.withOpacity(0.08),
+                          ),
+                          borderRadius: BorderRadius.circular(borderRadVal.r),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: paddingVal.h,
+                          ).scaled,
 
-                    IconButton(
-                      onPressed: () async =>
-                          await launchUrl(Uri.parse(AppSecrets.gitHubUrl)),
-                      icon: ImageIcon(
-                        AssetImage('assets/images/setting/github.png'),
-                        color: white,
-                        size: 24.w / 1.h,
+                          child: Column(
+                            // mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: spacingVal.h,
+                            children: [
+                              CustomMenuItemCard(
+                                title: "Display thema",
+                                borderRadius: iteamCardborderRadVal.r,
+                                prefix: ImageIcon(
+                                  AssetImage(
+                                    'assets/images/setting/catalog.png',
+                                  ),
+                                  color: context.primaryColor,
+                                  size: cardIconSize.w,
+                                ),
+                                onTap: () => Navigator.of(
+                                  context,
+                                ).pushNamed(AppRouter.displayThemePage),
+                              ),
+                              CustomMenuItemCard(
+                                title: "Notification",
+                                borderRadius: iteamCardborderRadVal.r,
+                                prefix: ImageIcon(
+                                  AssetImage('assets/images/setting/bell.png'),
+                                  color: context.primaryColor,
+                                  size: cardMarginVal.w,
+                                ),
+
+                                suffix: CupertinoSwitch(
+                                  activeColor: context.secondaryColor,
+                                  value: state.noteStatus,
+                                  onChanged: (status) =>
+                                      context.read<SettingBloc>().add(
+                                        SettingEvent.togglestatus(
+                                          status: status,
+                                        ),
+                                      ),
+                                ),
+                              ),
+                              CustomMenuItemCard(
+                                title: "Alarm sound",
+                                borderRadius: iteamCardborderRadVal.r,
+                                prefix: ImageIcon(
+                                  AssetImage('assets/images/setting/sound.png'),
+                                  color: context.primaryColor,
+                                  size: cardIconSize.w,
+                                ),
+                                suffix: Text(
+                                  state.noteSound,
+                                  style: context.subStyle.copyWith(
+                                    color: black,
+                                  ),
+                                ),
+                                onTap: () => Helper.showBottomModel(
+                                  ctx: context,
+                                  body: SoundModal(),
+                                  title: "Select Sound",
+                                ),
+                              ),
+                              CustomMenuItemCard(
+                                title: "Language",
+                                borderRadius: iteamCardborderRadVal.r,
+                                prefix: ImageIcon(
+                                  AssetImage('assets/images/setting/earth.png'),
+                                  color: context.primaryColor,
+                                  size: cardIconSize.w,
+                                ),
+                                suffix: Image.asset(
+                                  localeIcon(currentLocale),
+                                  height: cardIconSize.h,
+                                ),
+                                onTap: () => Helper.showBottomModel(
+                                  ctx: context,
+                                  body: LocalesModal(),
+                                  title: "Select Locale",
+                                ),
+                              ),
+                              CustomMenuItemCard(
+                                title: "Font",
+                                borderRadius: iteamCardborderRadVal.r,
+                                prefix: ImageIcon(
+                                  AssetImage('assets/images/setting/font.png'),
+                                  color: context.primaryColor,
+                                  size: cardIconSize.w,
+                                ),
+                                suffix: Text(
+                                  fontName(context.subStyle.fontFamily),
+                                  style: context.subStyle.copyWith(
+                                    color: black,
+                                  ),
+                                ),
+
+                                onTap: () => Helper.showBottomModel(
+                                  ctx: context,
+                                  body: FontsModal(),
+                                  title: "Select Font Family",
+                                ),
+                              ),
+                              CustomMenuItemCard(
+                                title: "Rated",
+                                borderRadius: iteamCardborderRadVal.r,
+                                prefix: ImageIcon(
+                                  AssetImage(
+                                    'assets/images/setting/rating.png',
+                                  ),
+                                  color: context.primaryColor,
+                                  size: cardMarginVal.w,
+                                ),
+                                suffix: SizedBox(),
+                                onTap: _onInAppReview,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+
+              // const Spacer(),
+              Center(
+                child: Text(
+                  "app_version".tr.replaceAll('1.0.12', version),
+                  style: context.subStyle.copyWith(color: white, height: 1.sp),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Row(
+                spacing: 1.w / 1.h,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () async =>
+                        await launchUrl(Uri.parse(AppSecrets.telegrambUrl)),
+                    icon: Icon(Icons.telegram, color: white, size: 28.w / 1.h),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: ImageIcon(
+                      AssetImage('assets/images/setting/instagram.png'),
+                      color: white,
+                      size: 24.w / 1.h,
+                    ),
+                  ),
+
+                  IconButton(
+                    onPressed: () async =>
+                        await launchUrl(Uri.parse(AppSecrets.gitHubUrl)),
+                    icon: ImageIcon(
+                      AssetImage('assets/images/setting/github.png'),
+                      color: white,
+                      size: 24.w / 1.h,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
           // body: SizedBox(),
         );

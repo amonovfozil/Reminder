@@ -43,16 +43,17 @@ class _CreatRemindScreenState extends State<CreatRemindScreen> {
       child: BlocBuilder<CreatorBloc, CreatorState>(
         builder: (context, state) {
           // log("message ${state.remind.title}. type=${state.remind.type}");
-          return CustomBackgraundStyle(
+          return CustomScaffold(
             title: 'New ${getTitle(state.remind.type)} Remind'.tr,
-            scaffoldColor: context.primaryColor,
-            leadingWidth: 60,
-            leadingAppbar: IconButton(
-              onPressed: () => Navigator.of(context).maybePop(),
-              icon: Icon(CupertinoIcons.back, color: white, size: 32),
+            backgroundColor: context.primaryColor,
+            appBar: AppBar(
+              leadingWidth: 60,
+              leading: IconButton(
+                onPressed: () => Navigator.of(context).maybePop(),
+                icon: Icon(CupertinoIcons.back, color: white, size: 32),
+              ),
             ),
-
-            headBody: SizedBox(
+            body: SizedBox(
               height: appSize.height * 0.85.w / 1.h,
               child: SingleChildScrollView(
                 child: Padding(

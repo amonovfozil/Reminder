@@ -37,16 +37,18 @@ class _SelectRemindTypeScreenState extends State<SelectRemindTypeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomBackgraundStyle(
+    return CustomScaffold(
       title: 'Select Remind Mode'.tr,
-      scaffoldColor: context.primaryColor,
-      leadingWidth: 60,
-      leadingAppbar: IconButton(
-        onPressed: () => Navigator.of(context).maybePop(),
-        icon: Icon(CupertinoIcons.back, color: white, size: 32),
+      backgroundColor: context.primaryColor,
+      appBar: AppBar(
+        leadingWidth: 60,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).maybePop(),
+          icon: Icon(CupertinoIcons.back, color: white, size: 32),
+        ),
       ),
 
-      headBody: BlocBuilder<CreatorBloc, CreatorState>(
+      body: BlocBuilder<CreatorBloc, CreatorState>(
         builder: (context, state) {
           return SizedBox(
             height: appSize.height * 0.81.w / 1.h,

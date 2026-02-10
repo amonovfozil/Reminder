@@ -17,5 +17,5 @@ List<BlocProvider> blocProviders = [
   ),
 
   // Todo
-  BlocProvider<TodoBloc>(create: (context) => TodoBloc()),
+  BlocProvider<TodoBloc>(create: (context) => TodoBloc()..add(const TodoInit())),
 ];

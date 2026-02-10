@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/now_remind_card.dart';
 import '../../../../core/routes/routes.dart';
 import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/core/storage/app_storage.dart';
@@ -19,9 +18,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return CustomBackgraundStyle(
+    return CustomScaffold(
+      withBackGround: false,
       title: 'Reminder',
-      bodyColor: white,
       actions: [
         IconButton(
           icon: Icon(Icons.add, size: 30, color: white),
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.of(context).pushNamed(AppRouter.selectRemindTypeScreen),
         ),
       ],
-      headBody: NowRemindCard(),
+      // headBody: NowRemindCard(),
       body: SingleChildScrollView(
         child: Column(
           spacing: spacingVal.h,

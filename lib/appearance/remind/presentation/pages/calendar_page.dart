@@ -19,11 +19,11 @@ class _CalendarPageState extends State<CalendarPage> {
   List<RemindModel> models = [];
   @override
   Widget build(BuildContext context) {
-    return CustomBackgraundStyle(
+    return CustomScaffold(
       title: 'Calendar',
-      headTopPosetionVal: 105.h / 1.w,
 
-      headBody: Column(
+      // headTopPosetionVal: 105.h / 1.w,
+      body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(

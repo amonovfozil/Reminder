@@ -1,84 +1,115 @@
 import 'package:flutter/material.dart';
-import '../widgets/backgraund_font.dart';
-import '../../../../core/constants/const_data.dart';
-import 'package:reminder/utils/theme/text_styles.dart';
-import 'package:reminder/utils/theme/responsive_size.dart';
 
-class CustomBackgraundStyle extends StatelessWidget {
+import '../../../utils/theme/text_styles.dart';
+import '../widgets/backgraund_font.dart';
+
+class CustomScaffold extends StatelessWidget {
   final String title;
-  // final AppBar? appbar;
-  final Widget? headBody;
+  final List<Widget> actions;
+  final PreferredSizeWidget? appBar;
   final Widget? body;
-  final Color bodyColor;
-  final Color scaffoldColor;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final FloatingActionButtonAnimator? floatingActionButtonAnimator;
+  final List<Widget>? persistentFooterButtons;
+  final Widget? drawer;
+  final Widget? endDrawer;
+  final Color? drawerScrimColor;
+  final double? drawerEdgeDragWidth;
+  final bool drawerEnableOpenDragGesture;
+  final bool endDrawerEnableOpenDragGesture;
   final Widget? bottomNavigationBar;
   final Widget? bottomSheet;
-  final Widget? leadingAppbar;
-  final double? toolbarHeight;
-  final double? leadingWidth;
-  final double headTopPosetionVal;
-  final List<Widget>? actions;
-  const CustomBackgraundStyle({
+  final Color? backgroundColor;
+  final bool extendBody;
+  final bool extendBodyBehindAppBar;
+  final bool? resizeToAvoidBottomInset;
+  final bool primary;
+  final bool withBackGround;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+
+  // Snow configuration
+  final bool snowfallEnabled;
+  final double snowOpacityFactor;
+
+  const CustomScaffold({
     super.key,
-    required this.title,
+    this.appBar,
     this.body,
-    this.headBody,
-    this.bodyColor = Colors.transparent,
-    this.scaffoldColor = Colors.transparent,
-    this.leadingAppbar,
+    this.title = "",
+    this.actions = const [],
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
+    this.floatingActionButtonAnimator,
+    this.persistentFooterButtons,
+    this.drawer,
+    this.endDrawer,
+    this.drawerScrimColor,
+    this.drawerEdgeDragWidth,
+    this.drawerEnableOpenDragGesture = true,
+    this.endDrawerEnableOpenDragGesture = true,
     this.bottomNavigationBar,
-    this.headTopPosetionVal = 125,
-    this.toolbarHeight,
-    this.actions,
-    this.leadingWidth,
     this.bottomSheet,
+    this.backgroundColor,
+    this.extendBody = false,
+    this.extendBodyBehindAppBar = false,
+    this.resizeToAvoidBottomInset,
+    this.primary = true,
+    this.withBackGround = true,
+    this.scaffoldKey,
+    this.snowfallEnabled = true,
+    this.snowOpacityFactor = 0.2,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        alignment: Alignment.bottomCenter,
+    // Snow falls behind the UI only (no flakes over content).
+    return
+    // Scaffold(
+    //   extendBody: true,
+    //   body:
+    Material(
+      color: backgroundColor,
+      child: Stack(
         children: [
-          BackgraundFont(color: scaffoldColor),
-          Positioned(
-            child: AppBar(
-              toolbarHeight: toolbarHeight,
-              leadingWidth: leadingWidth,
-              leading: leadingAppbar,
-              backgroundColor: Colors.transparent,
-              title: Text(title.toUpperCase(), style: context.headerTextStyle),
-              actions: actions,
-            ),
-          ),
-          Container(
-            height: appSize.height - 220.h,
-            margin: EdgeInsets.only(
-              top: 16.h,
-              left: marginVal.w,
-              right: marginVal.w,
-            ),
+          if (withBackGround)
+            Positioned.fill(child: BackgraundFont(color: backgroundColor)),
+          Scaffold(
+            
+            key: scaffoldKey,
+            appBar:
+                appBar ??
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  title: Text(
+                    title.toUpperCase(),
+                    style: context.headerTextStyle,
+                  ),
+                  actions: actions,
+                ),
+            body: body,
+            floatingActionButton: floatingActionButton,
+            floatingActionButtonLocation: floatingActionButtonLocation,
+            floatingActionButtonAnimator: floatingActionButtonAnimator,
+            persistentFooterButtons: persistentFooterButtons,
+            drawer: drawer,
+            endDrawer: endDrawer,
+            drawerScrimColor: drawerScrimColor,
+            drawerEdgeDragWidth: drawerEdgeDragWidth,
+            drawerEnableOpenDragGesture: drawerEnableOpenDragGesture,
+            endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
+            bottomNavigationBar: bottomNavigationBar,
+            bottomSheet: bottomSheet,
 
-            decoration: BoxDecoration(
-              color: bodyColor,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(borderRadVal.r),
-              ),
-            ),
-            child: body ?? SizedBox(),
-          ),
-          Positioned(
-            top: headTopPosetionVal.h,
-            left: 0,
-            right: 0,
-            child: headBody ?? SizedBox(),
+            backgroundColor: Colors.transparent,
+            // backgroundColor: backgroundColor ?? Colors.transparent,
+            extendBody: extendBody,
+            extendBodyBehindAppBar: extendBodyBehindAppBar,
+            resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+            primary: primary,
           ),
         ],
       ),
-      bottomNavigationBar: bottomNavigationBar,
-      bottomSheet: bottomSheet,
     );
   }
 }

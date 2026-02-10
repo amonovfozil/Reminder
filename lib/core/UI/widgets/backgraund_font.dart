@@ -6,10 +6,18 @@ import 'package:reminder/utils/theme/responsive_size.dart';
 class BackgraundFont extends StatelessWidget {
   final Color? color;
   final double percentSize;
-  const BackgraundFont({super.key, this.color, this.percentSize = 1});
+  final bool showDecorations;
+
+  const BackgraundFont({
+    super.key,
+    this.color,
+    this.percentSize = 1,
+    this.showDecorations = true,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final shouldShowDecorations = showDecorations && color != Colors.transparent;
     return Stack(
       children: [
         Container(
@@ -18,7 +26,7 @@ class BackgraundFont extends StatelessWidget {
           color: color ?? context.primaryColor,
         ),
         Visibility(
-          visible: color != Colors.transparent,
+          visible: shouldShowDecorations,
           child: Positioned(
             top: (0 * percentSize).h,
             left: (-35 * percentSize).w,
@@ -33,7 +41,7 @@ class BackgraundFont extends StatelessWidget {
           ),
         ),
         Visibility(
-          visible: color != Colors.transparent,
+          visible: shouldShowDecorations,
           child: Positioned(
             top: (250 * percentSize).h,
             left: (-105 * percentSize).w,
@@ -48,7 +56,7 @@ class BackgraundFont extends StatelessWidget {
           ),
         ),
         Visibility(
-          visible: color != Colors.transparent,
+          visible: shouldShowDecorations,
           child: Positioned(
             top: (95 * percentSize).h,
             right: (-80 * percentSize).w,
