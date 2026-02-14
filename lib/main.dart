@@ -2,6 +2,7 @@ import 'core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'core/constants/const_data.dart';
 import 'core/providers/bloc_providers.dart';
+import 'package:reminder/core/notifications/local_notifications_service.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'appearance/settings/bloc/setting_bloc.dart';
@@ -13,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Locales.init(['ru', 'en', 'uz']);
   await GetStorage.init();
+  await LocalNotificationsService.instance.init();
   runApp(const MyApp());
 }
 

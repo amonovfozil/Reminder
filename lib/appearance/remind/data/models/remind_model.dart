@@ -14,6 +14,7 @@ class RemindModel {
   bool enableAlert;
   bool remindMe;
   bool isPaused;
+  List<int> notificationIds;
 
   RemindModel({
     required this.id,
@@ -23,11 +24,13 @@ class RemindModel {
     this.enableAlert = true,
     this.remindMe = true,
     this.isPaused = false,
+    this.notificationIds = const <int>[],
   });
 
   factory RemindModel.fromJson(Map<String, dynamic> json) {
     final typeStr = json["type"];
     final remindType = typeStr != null ? typeValues.map[typeStr] : null;
+    final notificationIds = _parseIntList(json["notification_ids"]);
     switch (remindType) {
       case RemindType.interval:
         return IntervalRemindModel(
@@ -38,6 +41,7 @@ class RemindModel {
           enableAlert: json["enable_alert"] ?? true,
           remindMe: json["remind_me"] ?? true,
           isPaused: json["is_paused"] ?? false,
+          notificationIds: notificationIds,
           isHourly: json["is_hourly"] ?? true,
           enableInterval: json["enable_interval"] ?? false,
           interval: (json["interval"] as num?)?.toDouble() ?? 0.5,
@@ -54,6 +58,7 @@ class RemindModel {
           enableAlert: json["enable_alert"] ?? true,
           remindMe: json["remind_me"] ?? true,
           isPaused: json["is_paused"] ?? false,
+          notificationIds: notificationIds,
           amount: json["amount"] ?? 1,
           times: _parseTimes(json["times"]),
         );
@@ -66,6 +71,7 @@ class RemindModel {
           enableAlert: json["enable_alert"] ?? true,
           remindMe: json["remind_me"] ?? true,
           isPaused: json["is_paused"] ?? false,
+          notificationIds: notificationIds,
           days: _parseIntList(json["days"]),
           times: _parseTimes(json["times"]),
         );
@@ -78,6 +84,7 @@ class RemindModel {
           enableAlert: json["enable_alert"] ?? true,
           remindMe: json["remind_me"] ?? true,
           isPaused: json["is_paused"] ?? false,
+          notificationIds: notificationIds,
           startDate: _parseDate(json["start_date"]) ?? DateTime.now(),
           activeVal: json["cycle_on"] ?? 0,
           pauseVal: json["cycle_off"] ?? 0,
@@ -93,6 +100,7 @@ class RemindModel {
           enableAlert: json["enable_alert"] ?? true,
           remindMe: json["remind_me"] ?? true,
           isPaused: json["is_paused"] ?? false,
+          notificationIds: notificationIds,
         );
     }
   }
@@ -105,6 +113,7 @@ class RemindModel {
     "remind_me": remindMe,
     "is_paused": isPaused,
     "type": type?.name,
+    "notification_ids": notificationIds,
   };
 }
 

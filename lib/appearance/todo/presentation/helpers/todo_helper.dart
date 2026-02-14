@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder/appearance/todo/data/models/todo_day_model.dart';
 import 'package:reminder/appearance/todo/data/models/todo_task_model.dart';
+
+import '../bloc/todo_bloc.dart';
+import '../widgets/todo_task_editor_sheet.dart';
 
 enum TodoStatus { doneOnTime, late, notDone, pending }
 
@@ -130,5 +134,74 @@ class TodoHelper {
       'study' => 'assets/images/home/calendar_edit.png',
       _ => null,
     };
+  }
+
+  static const List<TodoTypeOption> typeOptions = [
+    TodoTypeOption(
+      key: 'work',
+      label: 'Work',
+      assetPath: 'assets/images/home/remind.png',
+    ),
+    TodoTypeOption(
+      key: 'meeting',
+      label: 'Meeting',
+      assetPath: 'assets/images/home/users.png',
+    ),
+    TodoTypeOption(
+      key: 'call',
+      label: 'Call',
+      assetPath: 'assets/images/home/emails.png',
+    ),
+    TodoTypeOption(
+      key: 'health',
+      label: 'Health',
+      assetPath: 'assets/images/home/docUser.png',
+    ),
+    TodoTypeOption(
+      key: 'shopping',
+      label: 'Shopping',
+      assetPath: 'assets/images/home/bag.png',
+    ),
+
+    TodoTypeOption(
+      key: 'study',
+      label: 'Study',
+      assetPath: 'assets/images/home/calendar_edit.png',
+    ),
+  ];
+
+  static Future<void> openTodoEditorFromNav(BuildContext context) async {
+    final todoBloc = context.read<TodoBloc>();
+    final selectedDate = todoBloc.state.selectedDate;
+    if (TodoHelper.isPast(selectedDate)) return;
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom,
+          ),
+          child: TodoTaskEditorSheet(
+            selectedDate: selectedDate,
+            typeOptions: TodoHelper.typeOptions,
+            onSave: (title, note, plannedAt, iconKey, typeLabel) {
+              todoBloc.add(
+                TodoAddOrUpdateTask(
+                  title: title,
+                  note: note,
+                  plannedAt: plannedAt,
+                  iconKey: iconKey,
+                  typeLabel: typeLabel,
+                ),
+              );
+              Navigator.of(ctx).pop();
+            },
+          ),
+        );
+      },
+    );
   }
 }

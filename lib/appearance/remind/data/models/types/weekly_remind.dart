@@ -15,21 +15,29 @@ class WeeklyRemindModel extends RemindModel {
     super.enableAlert,
     super.remindMe,
     super.isPaused,
+    super.notificationIds,
     required this.days,
     required this.times,
   });
 
   WeeklyRemindModel copyWith({
-    int? amount,
     String? title,
     String? body,
+    bool? enableAlert,
+    bool? remindMe,
+    bool? isPaused,
     List<int>? days,
     List<DateTime>? times,
+    List<int>? notificationIds,
   }) {
     return WeeklyRemindModel(
       id: id,
       title: title ?? this.title,
       body: body ?? this.body,
+      enableAlert: enableAlert ?? this.enableAlert,
+      remindMe: remindMe ?? this.remindMe,
+      isPaused: isPaused ?? this.isPaused,
+      notificationIds: notificationIds ?? this.notificationIds,
       days: days ?? this.days,
       times: times ?? this.times,
     );

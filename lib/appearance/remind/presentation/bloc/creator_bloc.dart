@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder/core/constants/const_data.dart';
+import 'package:reminder/core/notifications/local_notifications_service.dart';
 import 'package:reminder/core/storage/app_storage.dart';
 import '../../../../core/constants/enums/remind_type.dart';
 import '../../data/models/remind_model.dart';
@@ -34,10 +35,16 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
     final existingIndex = reminders.indexWhere(
       (elm) => elm.id == state.remind.id,
     );
+    final previous = existingIndex == -1 ? null : reminders[existingIndex];
+
+    final updated = state.remind;
+    updated.notificationIds = await LocalNotificationsService.instance
+        .rescheduleReminder(updated, previous: previous);
+
     if (existingIndex == -1) {
-      reminders.add(state.remind);
+      reminders.add(updated);
     } else {
-      reminders[existingIndex] = state.remind;
+      reminders[existingIndex] = updated;
     }
     await AppStorage.write.reminders(reminders);
     // await AppStorage.remove.reminders;

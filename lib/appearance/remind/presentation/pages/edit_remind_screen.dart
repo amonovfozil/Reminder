@@ -42,6 +42,7 @@ class _EditRemindScreenState extends State<EditRemindScreen> {
     mapped.enableAlert = source.enableAlert;
     mapped.remindMe = source.remindMe;
     mapped.isPaused = source.isPaused;
+    mapped.notificationIds = source.notificationIds;
     return mapped;
   }
 

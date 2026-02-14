@@ -13,15 +13,31 @@ import 'package:reminder/utils/theme/app_colors.dart';
 import 'package:reminder/utils/theme/responsive_size.dart';
 import 'package:reminder/utils/theme/text_styles.dart';
 
-enum StatisticsRange { week, month1, month3, month6, year1 }
+enum StatisticsPeriod { yearly, monthly, weekly }
 
-extension on StatisticsRange {
+extension on StatisticsPeriod {
   String get label => switch (this) {
-    StatisticsRange.week => '1 hafta',
-    StatisticsRange.month1 => '1 oy',
-    StatisticsRange.month3 => '3 oy',
-    StatisticsRange.month6 => '6 oy',
-    StatisticsRange.year1 => '1 yil',
+    StatisticsPeriod.yearly => 'Yillik',
+    StatisticsPeriod.monthly => 'Oylik',
+    StatisticsPeriod.weekly => 'Haftalik',
+  };
+
+  bool get isScrollable => this != StatisticsPeriod.weekly;
+}
+
+enum StatisticsTaskFilter { done, late, notDone }
+
+extension on StatisticsTaskFilter {
+  String get label => switch (this) {
+    StatisticsTaskFilter.done => 'Bajarilgan',
+    StatisticsTaskFilter.late => 'Kechiktirilgan',
+    StatisticsTaskFilter.notDone => 'Bajarilmagan',
+  };
+
+  Color get color => switch (this) {
+    StatisticsTaskFilter.done => const Color(0xFF2EC27E),
+    StatisticsTaskFilter.late => const Color(0xFFF2C94C),
+    StatisticsTaskFilter.notDone => const Color(0xFFEB5757),
   };
 }
 
@@ -33,59 +49,65 @@ class StatisticsPage extends StatefulWidget {
 }
 
 class _StatisticsPageState extends State<StatisticsPage> {
-  // static const _bg = Color(0xFF07152B);
-  // static const _cardTop = Color(0xFF0B1D3A);
-  // static const _cardBottom = Color(0xFF07152B);
-  static const _blue = Color(0xFF4C7BF4);
-  static const _pink = Color(0xFFFF4D6D);
+  static const _chartCardColor = Color(0xFFFF4B2B);
+  static const _chartTrackColor = Color(0xA33B1F19);
 
-  StatisticsRange _range = StatisticsRange.month3;
+  StatisticsPeriod _period = StatisticsPeriod.weekly;
+  StatisticsTaskFilter _filter = StatisticsTaskFilter.done;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TodoBloc, TodoState>(
       builder: (context, todoState) {
-        final endExclusive = TodoHelper.onlyDate(
-          DateTime.now(),
-        ).add(const Duration(days: 1));
-        final buckets = _buildBuckets(_range, endExclusive);
+        final today = TodoHelper.onlyDate(DateTime.now());
+        final buckets = _buildBuckets(_period, todoState.days, today);
         final series = _buildSeries(todoState.days, buckets);
+        final values = _valuesByFilter(series, _filter);
+        final totals = _totals(series);
+        final percents = _toPercents(totals);
 
         return CustomScaffold(
           withBackGround: false,
           backgroundColor: Colors.transparent,
-          title: 'Dashboard',
-          // scaffoldColor: _bg,
-          // showBackgroundDecorations: false,
-          // bodyColor: Colors.transparent,
+          appBar: const PreferredSize(
+            preferredSize: Size.zero,
+            child: SizedBox.shrink(),
+          ),
           body: Padding(
             padding: EdgeInsets.only(
               left: 4.w,
               right: 4.w,
-              // top:
-              //     MediaQuery.paddingOf(context).top +
-              //     kToolbarHeight +
-              //     spacingVal.h,
+              top: MediaQuery.paddingOf(context).top + 6.h,
               bottom: spacingVal.h,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _RangeSelector(
-                  value: _range,
-                  onChanged: (next) => setState(() => _range = next),
+                _PeriodSelector(
+                  value: _period,
+                  onChanged: (next) => setState(() => _period = next),
                 ),
-                SizedBox(height: 18.h),
-                Expanded(
-                  child: _ChartShell(
-                    labels: buckets.map((b) => b.label).toList(),
-                    totalValues: series.total,
-                    doneValues: series.done,
-                    totalColor: _blue,
-                    doneColor: _pink,
-                    cardTop: white.withOpacity(0.2),
-                    cardBottom: context.secondaryColor.withOpacity(0.5),
-                  ),
+                SizedBox(height: 14.h),
+                _StatisticsChartCard(
+                  title: '${_filter.label} statistikasi',
+                  labels: buckets.map((bucket) => bucket.label).toList(),
+                  values: values,
+                  color: _filter.color,
+                  cardColor: _chartCardColor,
+                  trackColor: _chartTrackColor,
+                  scrollable: _period.isScrollable,
+                ),
+                SizedBox(height: 14.h),
+                _FilterSelector(
+                  value: _filter,
+                  onChanged: (next) => setState(() => _filter = next),
+                ),
+                SizedBox(height: 14.h),
+                _PercentCards(
+                  selectedFilter: _filter,
+                  donePercent: percents.done,
+                  latePercent: percents.late,
+                  notDonePercent: percents.notDone,
                 ),
               ],
             ),
@@ -96,423 +118,450 @@ class _StatisticsPageState extends State<StatisticsPage> {
   }
 }
 
-class _RangeSelector extends StatelessWidget {
-  final StatisticsRange value;
-  final ValueChanged<StatisticsRange> onChanged;
+class _PeriodSelector extends StatelessWidget {
+  final StatisticsPeriod value;
+  final ValueChanged<StatisticsPeriod> onChanged;
 
-  const _RangeSelector({required this.value, required this.onChanged});
+  const _PeriodSelector({required this.value, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
-    final items = StatisticsRange.values;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      child: Row(
-        children: [
-          for (final item in items) ...[
-            _RangeChip(
-              label: item.label,
-              selected: item == value,
-              onTap: () => onChanged(item),
+    return Row(
+      children: [
+        for (int i = 0; i < StatisticsPeriod.values.length; i++) ...[
+          Expanded(
+            child: _PillButton(
+              label: StatisticsPeriod.values[i].label,
+              selected: value == StatisticsPeriod.values[i],
+              activeColor: Colors.white,
+              onTap: () => onChanged(StatisticsPeriod.values[i]),
             ),
+          ),
+          if (i != StatisticsPeriod.values.length - 1) SizedBox(width: 10.w),
+        ],
+      ],
+    );
+  }
+}
+
+class _FilterSelector extends StatelessWidget {
+  final StatisticsTaskFilter value;
+  final ValueChanged<StatisticsTaskFilter> onChanged;
+
+  const _FilterSelector({required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (int i = 0; i < StatisticsTaskFilter.values.length; i++) ...[
+          Expanded(
+            child: _PillButton(
+              label: StatisticsTaskFilter.values[i].label,
+              selected: value == StatisticsTaskFilter.values[i],
+              activeColor: StatisticsTaskFilter.values[i].color,
+              inactiveColor: StatisticsTaskFilter.values[i].color.withOpacity(
+                0.38,
+              ),
+              onTap: () => onChanged(StatisticsTaskFilter.values[i]),
+            ),
+          ),
+          if (i != StatisticsTaskFilter.values.length - 1)
             SizedBox(width: 10.w),
-          ],
+        ],
+      ],
+    );
+  }
+}
+
+class _PillButton extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final Color activeColor;
+  final Color? inactiveColor;
+  final VoidCallback onTap;
+
+  const _PillButton({
+    required this.label,
+    required this.selected,
+    required this.activeColor,
+    this.inactiveColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final background = selected
+        ? activeColor
+        : (inactiveColor ?? Colors.white.withOpacity(0.12));
+    final selectedTextColor = activeColor.computeLuminance() > 0.55
+        ? black
+        : white;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20.r),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 13.h),
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: context.subStyle.copyWith(
+              color: selected
+                  ? selectedTextColor
+                  : Colors.white.withOpacity(0.96),
+              fontWeight: FontWeight.w700,
+              fontSize: 12.sp,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatisticsChartCard extends StatelessWidget {
+  final String title;
+  final List<String> labels;
+  final List<double> values;
+  final Color color;
+  final Color cardColor;
+  final Color trackColor;
+  final bool scrollable;
+
+  const _StatisticsChartCard({
+    required this.title,
+    required this.labels,
+    required this.values,
+    required this.color,
+    required this.cardColor,
+    required this.trackColor,
+    required this.scrollable,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final total = values.fold<double>(0, (sum, value) => sum + value);
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(14.w, 16.h, 14.w, 14.h),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(28.r),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: context.titleTextStyle.copyWith(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Text(
+                'Jami ${total.toInt()}',
+                style: context.subStyle.copyWith(
+                  color: Colors.white.withOpacity(0.88),
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          SizedBox(
+            height: 270.h,
+            child: _StatusBarChart(
+              labels: labels,
+              values: values,
+              color: color,
+              trackColor: trackColor,
+              scrollable: scrollable,
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class _RangeChip extends StatelessWidget {
-  static const _accent = Color(0xFFFF4D6D);
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _RangeChip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(999),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        curve: Curves.easeOut,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          color: selected ? _accent : Colors.transparent,
-          borderRadius: BorderRadius.circular(999),
-        ),
-        child: Text(
-          label,
-          style: context.subStyle.copyWith(
-            fontSize: 13.sp,
-            color: selected ? Colors.white : Colors.white.withOpacity(0.72),
-            fontWeight: FontWeight.w700,
-            height: 1,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ChartShell extends StatelessWidget {
+class _StatusBarChart extends StatelessWidget {
   final List<String> labels;
-  final List<double> totalValues;
-  final List<double> doneValues;
-  final Color totalColor;
-  final Color doneColor;
-  final Color cardTop;
-  final Color cardBottom;
+  final List<double> values;
+  final Color color;
+  final Color trackColor;
+  final bool scrollable;
 
-  const _ChartShell({
+  const _StatusBarChart({
     required this.labels,
-    required this.totalValues,
-    required this.doneValues,
-    required this.totalColor,
-    required this.doneColor,
-    required this.cardTop,
-    required this.cardBottom,
+    required this.values,
+    required this.color,
+    required this.trackColor,
+    required this.scrollable,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isEmpty =
-        totalValues.every((v) => v == 0) && doneValues.every((v) => v == 0);
+    final maxValue = values.fold<double>(0, math.max);
+    final maxIndex = values.isEmpty
+        ? -1
+        : values.indexWhere((value) => value == maxValue);
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [cardTop, cardBottom],
-        ),
-        borderRadius: BorderRadius.circular(26.r),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(26.r),
-        child: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 18.h, 16.w, 14.h),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: isEmpty
-                        ? Center(
-                            child: Text(
-                              'Ma\'lumot yo\'q',
-                              style: context.subStyle.copyWith(
-                                color: Colors.white.withOpacity(0.70),
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          )
-                        : _DualLineChart(
-                            totalValues: totalValues,
-                            doneValues: doneValues,
-                            totalColor: totalColor,
-                            doneColor: doneColor,
-                          ),
-                  ),
-                  SizedBox(height: 10.h),
-                  _XAxisLabels(labels: labels),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DualLineChart extends StatelessWidget {
-  final List<double> totalValues;
-  final List<double> doneValues;
-  final Color totalColor;
-  final Color doneColor;
-
-  const _DualLineChart({
-    required this.totalValues,
-    required this.doneValues,
-    required this.totalColor,
-    required this.doneColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return CustomPaint(
-          size: Size(constraints.maxWidth, constraints.maxHeight),
-          painter: _DualLineChartPainter(
-            totalValues: totalValues,
-            doneValues: doneValues,
-            totalColor: totalColor,
-            doneColor: doneColor,
+        final itemWidth = scrollable
+            ? math.max(58.w, constraints.maxWidth / 6)
+            : constraints.maxWidth / math.max(1, values.length);
+        final chartWidth = scrollable
+            ? math.max(constraints.maxWidth, itemWidth * values.length)
+            : constraints.maxWidth;
+
+        final chart = SizedBox(
+          width: chartWidth,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              for (int i = 0; i < values.length; i++)
+                SizedBox(
+                  width: itemWidth,
+                  child: _BarItem(
+                    label: labels[i],
+                    value: values[i],
+                    maxValue: maxValue,
+                    color: color,
+                    trackColor: trackColor,
+                    highlighted: i == maxIndex && values[i] > 0,
+                  ),
+                ),
+            ],
           ),
+        );
+
+        if (!scrollable) return chart;
+
+        return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          child: chart,
         );
       },
     );
   }
 }
 
-class _DualLineChartPainter extends CustomPainter {
-  final List<double> totalValues;
-  final List<double> doneValues;
-  final Color totalColor;
-  final Color doneColor;
+class _BarItem extends StatelessWidget {
+  final String label;
+  final double value;
+  final double maxValue;
+  final Color color;
+  final Color trackColor;
+  final bool highlighted;
 
-  const _DualLineChartPainter({
-    required this.totalValues,
-    required this.doneValues,
-    required this.totalColor,
-    required this.doneColor,
+  const _BarItem({
+    required this.label,
+    required this.value,
+    required this.maxValue,
+    required this.color,
+    required this.trackColor,
+    required this.highlighted,
   });
 
   @override
-  void paint(Canvas canvas, Size size) {
-    if (totalValues.isEmpty || doneValues.isEmpty) return;
-    final count = math.min(totalValues.length, doneValues.length);
-    if (count <= 1) return;
+  Widget build(BuildContext context) {
+    const barAreaHeight = 150.0;
+    final safeMax = math.max(1.0, maxValue);
+    final normalized = (value / safeMax).clamp(0.0, 1.0);
+    final barHeight = value <= 0
+        ? 6.0
+        : math.max(12.0, barAreaHeight * normalized);
+    final barColor = highlighted ? color : color.withOpacity(0.85);
 
-    const leftPad = 8.0;
-    const rightPad = 8.0;
-    const topPad = 10.0;
-    const bottomPad = 10.0;
-
-    final chartWidth = math.max(0.0, size.width - leftPad - rightPad);
-    final chartHeight = math.max(0.0, size.height - topPad - bottomPad);
-
-    final maxTotal = totalValues
-        .take(count)
-        .fold<double>(0, (m, v) => math.max(m, v));
-    final maxDone = doneValues
-        .take(count)
-        .fold<double>(0, (m, v) => math.max(m, v));
-    final safeMax = math.max(1.0, math.max(maxTotal, maxDone));
-
-    final gridPaint = Paint()
-      ..color = Colors.white.withOpacity(0.08)
-      ..strokeWidth = 1;
-
-    for (int i = 0; i < 4; i++) {
-      final y = topPad + (chartHeight / 3) * i;
-      canvas.drawLine(
-        Offset(leftPad, y),
-        Offset(leftPad + chartWidth, y),
-        gridPaint,
-      );
-    }
-
-    final segment = chartWidth / (count - 1);
-    final verticalEvery = count <= 12
-        ? 1
-        : count <= 20
-        ? 2
-        : count <= 31
-        ? 3
-        : 6;
-    for (int i = 0; i < count; i++) {
-      if (i % verticalEvery != 0 && i != count - 1) continue;
-      final x = leftPad + segment * i;
-      canvas.drawLine(
-        Offset(x, topPad),
-        Offset(x, topPad + chartHeight),
-        gridPaint,
-      );
-    }
-
-    final totalPoints = _pointsFor(
-      totalValues.take(count).toList(growable: false),
-      leftPad,
-      topPad,
-      chartWidth,
-      chartHeight,
-      safeMax,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _ValueBadge(value: value),
+          SizedBox(height: 8.h),
+          Container(
+            width: 44.w,
+            height: barAreaHeight.h,
+            decoration: BoxDecoration(
+              color: trackColor,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            alignment: Alignment.bottomCenter,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOut,
+              width: 44.w,
+              height: barHeight.h,
+              decoration: BoxDecoration(
+                color: barColor,
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: context.subStyle.copyWith(
+              color: Colors.white,
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w700,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
-    final donePoints = _pointsFor(
-      doneValues.take(count).toList(growable: false),
-      leftPad,
-      topPad,
-      chartWidth,
-      chartHeight,
-      safeMax,
-    );
-
-    _drawSeries(canvas, size, totalPoints, totalColor);
-    _drawSeries(canvas, size, donePoints, doneColor, highlightLast: true);
-  }
-
-  List<Offset> _pointsFor(
-    List<double> values,
-    double leftPad,
-    double topPad,
-    double chartWidth,
-    double chartHeight,
-    double safeMax,
-  ) {
-    final count = values.length;
-    final segment = count == 1 ? 0.0 : chartWidth / (count - 1);
-    final points = <Offset>[];
-    for (int i = 0; i < count; i++) {
-      final normalized = (values[i] / safeMax).clamp(0.0, 1.0);
-      final x = leftPad + segment * i;
-      final y = topPad + chartHeight - (chartHeight * normalized);
-      points.add(Offset(x, y));
-    }
-    return points;
-  }
-
-  void _drawSeries(
-    Canvas canvas,
-    Size size,
-    List<Offset> points,
-    Color color, {
-    bool highlightLast = false,
-  }) {
-    if (points.length < 2) return;
-
-    final strokePath = _smoothPath(points);
-
-    final fillPath = Path()
-      ..addPath(strokePath, Offset.zero)
-      ..lineTo(points.last.dx, size.height)
-      ..lineTo(points.first.dx, size.height)
-      ..close();
-
-    final fillPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [color.withOpacity(0.18), color.withOpacity(0.00)],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
-      ..style = PaintingStyle.fill;
-    canvas.drawPath(fillPath, fillPaint);
-
-    final glowPaint = Paint()
-      ..color = color.withOpacity(0.25)
-      ..strokeWidth = 6
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
-    canvas.drawPath(strokePath, glowPaint);
-
-    final linePaint = Paint()
-      ..color = color
-      ..strokeWidth = 3
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-    canvas.drawPath(strokePath, linePaint);
-
-    final dotEvery = points.length <= 24 ? 1 : (points.length / 24).ceil();
-    final dotPaint = Paint()..color = Colors.white.withOpacity(0.85);
-    for (int i = 0; i < points.length; i += dotEvery) {
-      canvas.drawCircle(points[i], 2.4, dotPaint);
-    }
-
-    if (highlightLast) {
-      final p = points.last;
-      canvas.drawCircle(
-        p,
-        7.0,
-        Paint()..color = Colors.white.withOpacity(0.15),
-      );
-      canvas.drawCircle(
-        p,
-        5.2,
-        Paint()
-          ..color = Colors.white
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2,
-      );
-      canvas.drawCircle(p, 3.2, Paint()..color = color);
-    }
-  }
-
-  Path _smoothPath(List<Offset> points) {
-    final path = Path()..moveTo(points.first.dx, points.first.dy);
-    if (points.length == 2) {
-      path.lineTo(points.last.dx, points.last.dy);
-      return path;
-    }
-
-    for (int i = 0; i < points.length - 1; i++) {
-      final p0 = i == 0 ? points[i] : points[i - 1];
-      final p1 = points[i];
-      final p2 = points[i + 1];
-      final p3 = i + 2 < points.length ? points[i + 2] : p2;
-
-      final cp1 = Offset(
-        p1.dx + (p2.dx - p0.dx) / 6,
-        p1.dy + (p2.dy - p0.dy) / 6,
-      );
-      final cp2 = Offset(
-        p2.dx - (p3.dx - p1.dx) / 6,
-        p2.dy - (p3.dy - p1.dy) / 6,
-      );
-      path.cubicTo(cp1.dx, cp1.dy, cp2.dx, cp2.dy, p2.dx, p2.dy);
-    }
-    return path;
-  }
-
-  @override
-  bool shouldRepaint(covariant _DualLineChartPainter oldDelegate) {
-    return oldDelegate.totalValues != totalValues ||
-        oldDelegate.doneValues != doneValues ||
-        oldDelegate.totalColor != totalColor ||
-        oldDelegate.doneColor != doneColor;
   }
 }
 
-class _XAxisLabels extends StatelessWidget {
-  final List<String> labels;
+class _ValueBadge extends StatelessWidget {
+  final double value;
 
-  const _XAxisLabels({required this.labels});
+  const _ValueBadge({required this.value});
 
   @override
   Widget build(BuildContext context) {
-    if (labels.isEmpty) return const SizedBox.shrink();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.32),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Text(
+        value.toInt().toString(),
+        style: context.subStyle.copyWith(
+          color: Colors.white,
+          fontSize: 10.sp,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
 
-    final showEvery = labels.length <= 12
-        ? 1
-        : labels.length <= 20
-        ? 2
-        : labels.length <= 31
-        ? 3
-        : 6;
+class _PercentCards extends StatelessWidget {
+  final StatisticsTaskFilter selectedFilter;
+  final double donePercent;
+  final double latePercent;
+  final double notDonePercent;
 
-    return Row(
-      children: List.generate(labels.length, (index) {
-        final show =
-            index == 0 ||
-            index == labels.length - 1 ||
-            (index % showEvery == 0);
-        return Expanded(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              show ? labels[index] : '',
-              style: context.subStyle.copyWith(
-                fontSize: 10.sp,
-                color: Colors.white.withOpacity(0.55),
-                fontWeight: FontWeight.w700,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.clip,
+  const _PercentCards({
+    required this.selectedFilter,
+    required this.donePercent,
+    required this.latePercent,
+    required this.notDonePercent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12.r),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.92),
+        borderRadius: BorderRadius.circular(24.r),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _PercentCardItem(
+              title: '${donePercent.toStringAsFixed(0)}%',
+              subtitle: StatisticsTaskFilter.done.label,
+              color: StatisticsTaskFilter.done.color,
+              selected: selectedFilter == StatisticsTaskFilter.done,
             ),
           ),
-        );
-      }),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: _PercentCardItem(
+              title: '${latePercent.toStringAsFixed(0)}%',
+              subtitle: StatisticsTaskFilter.late.label,
+              color: StatisticsTaskFilter.late.color,
+              selected: selectedFilter == StatisticsTaskFilter.late,
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: _PercentCardItem(
+              title: '${notDonePercent.toStringAsFixed(0)}%',
+              subtitle: StatisticsTaskFilter.notDone.label,
+              color: StatisticsTaskFilter.notDone.color,
+              selected: selectedFilter == StatisticsTaskFilter.notDone,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PercentCardItem extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Color color;
+  final bool selected;
+
+  const _PercentCardItem({
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOut,
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
+      decoration: BoxDecoration(
+        color: selected ? color.withOpacity(0.20) : Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: selected ? color : Colors.grey.withOpacity(0.24),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: context.titleTextStyle.copyWith(
+              fontSize: 28.sp,
+              color: black,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          SizedBox(height: 6.h),
+          Text(
+            subtitle,
+            style: context.subStyle.copyWith(
+              color: black.withOpacity(0.74),
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -529,108 +578,182 @@ class _Bucket {
   });
 }
 
-List<_Bucket> _buildBuckets(StatisticsRange range, DateTime endExclusive) {
+class _SeriesData {
+  final List<double> done;
+  final List<double> late;
+  final List<double> notDone;
+
+  const _SeriesData({
+    required this.done,
+    required this.late,
+    required this.notDone,
+  });
+}
+
+class _Totals {
+  final int done;
+  final int late;
+  final int notDone;
+
+  const _Totals({
+    required this.done,
+    required this.late,
+    required this.notDone,
+  });
+
+  int get all => done + late + notDone;
+}
+
+class _Percents {
+  final double done;
+  final double late;
+  final double notDone;
+
+  const _Percents({
+    required this.done,
+    required this.late,
+    required this.notDone,
+  });
+}
+
+List<_Bucket> _buildBuckets(
+  StatisticsPeriod period,
+  List<TodoDayModel> days,
+  DateTime today,
+) {
   final locale = AppStorage.appLocale;
-  final dayFormat = DateFormat.Md(locale);
+  final weekLabelFormat = DateFormat('E', locale);
   final monthFormat = DateFormat.MMM(locale);
 
-  switch (range) {
-    case StatisticsRange.week:
-      final start = endExclusive.subtract(const Duration(days: 7));
-      return List.generate(7, (i) {
-        final d = start.add(Duration(days: i));
+  switch (period) {
+    case StatisticsPeriod.weekly:
+      final weekStart = today.subtract(Duration(days: today.weekday - 1));
+      return List.generate(7, (index) {
+        final day = weekStart.add(Duration(days: index));
         return _Bucket(
-          start: d,
-          endExclusive: d.add(const Duration(days: 1)),
-          label: dayFormat.format(d),
+          start: day,
+          endExclusive: day.add(const Duration(days: 1)),
+          label: '${weekLabelFormat.format(day)}\n${day.day}',
         );
       });
-    case StatisticsRange.month1:
-      final start = endExclusive.subtract(const Duration(days: 30));
-      return _weeklyBuckets(start, endExclusive, dayFormat);
-    case StatisticsRange.month3:
-      final start = endExclusive.subtract(const Duration(days: 90));
-      return _weeklyBuckets(start, endExclusive, dayFormat);
-    case StatisticsRange.month6:
-      return _monthBuckets(6, endExclusive, monthFormat);
-    case StatisticsRange.year1:
-      return _monthBuckets(12, endExclusive, monthFormat);
+
+    case StatisticsPeriod.monthly:
+      return List.generate(12, (index) {
+        final monthStart = DateTime(today.year, index + 1, 1);
+        final nextMonth = DateTime(today.year, index + 2, 1);
+        return _Bucket(
+          start: monthStart,
+          endExclusive: nextMonth,
+          label: monthFormat.format(monthStart),
+        );
+      });
+
+    case StatisticsPeriod.yearly:
+      final firstYear = _firstDataYear(days, today.year);
+      final yearCount = today.year - firstYear + 1;
+      return List.generate(yearCount, (index) {
+        final yearStart = DateTime(firstYear + index, 1, 1);
+        final nextYear = DateTime(firstYear + index + 1, 1, 1);
+        return _Bucket(
+          start: yearStart,
+          endExclusive: nextYear,
+          label: '${yearStart.year}',
+        );
+      });
   }
 }
 
-List<_Bucket> _weeklyBuckets(
-  DateTime start,
-  DateTime endExclusive,
-  DateFormat labelFormat,
-) {
-  final buckets = <_Bucket>[];
-  var cursor = start;
-  while (cursor.isBefore(endExclusive)) {
-    final next = cursor.add(const Duration(days: 7));
-    final bucketEnd = next.isBefore(endExclusive) ? next : endExclusive;
-    buckets.add(
-      _Bucket(
-        start: cursor,
-        endExclusive: bucketEnd,
-        label: labelFormat.format(cursor),
-      ),
-    );
-    cursor = bucketEnd;
-  }
-  return buckets;
-}
+int _firstDataYear(List<TodoDayModel> days, int fallbackYear) {
+  var minYear = fallbackYear;
 
-List<_Bucket> _monthBuckets(
-  int monthCount,
-  DateTime endExclusive,
-  DateFormat monthFormat,
-) {
-  final endDay = endExclusive.subtract(const Duration(days: 1));
-  final firstMonth = DateTime(endDay.year, endDay.month - (monthCount - 1), 1);
-  final buckets = <_Bucket>[];
+  for (final day in days) {
+    if (day.date.year < minYear) {
+      minYear = day.date.year;
+    }
 
-  for (int i = 0; i < monthCount; i++) {
-    final monthStart = DateTime(firstMonth.year, firstMonth.month + i, 1);
-    final nextMonth = DateTime(monthStart.year, monthStart.month + 1, 1);
-    final bucketEnd = i == monthCount - 1 ? endExclusive : nextMonth;
-    buckets.add(
-      _Bucket(
-        start: monthStart,
-        endExclusive: bucketEnd,
-        label: monthFormat.format(monthStart),
-      ),
-    );
+    for (final task in day.tasks) {
+      if (task.plannedAt.year < minYear) {
+        minYear = task.plannedAt.year;
+      }
+    }
   }
 
-  return buckets;
+  return minYear;
 }
 
-({List<double> total, List<double> done}) _buildSeries(
-  List<TodoDayModel> days,
-  List<_Bucket> buckets,
-) {
+_SeriesData _buildSeries(List<TodoDayModel> days, List<_Bucket> buckets) {
   final dayMap = <DateTime, TodoDayModel>{
-    for (final d in days) TodoHelper.onlyDate(d.date): d,
+    for (final day in days) TodoHelper.onlyDate(day.date): day,
   };
 
-  final totals = <double>[];
-  final dones = <double>[];
+  final done = <double>[];
+  final late = <double>[];
+  final notDone = <double>[];
 
   for (final bucket in buckets) {
-    int total = 0;
-    int done = 0;
+    int doneCount = 0;
+    int lateCount = 0;
+    int notDoneCount = 0;
+
     var cursor = TodoHelper.onlyDate(bucket.start);
     while (cursor.isBefore(bucket.endExclusive)) {
       final day = dayMap[cursor];
       if (day != null) {
-        total += day.tasks.length;
-        done += day.tasks.where((t) => t.isDone).length;
+        for (final task in day.tasks) {
+          switch (TodoHelper.statusForTask(task, cursor)) {
+            case TodoStatus.doneOnTime:
+              doneCount++;
+              break;
+            case TodoStatus.late:
+              lateCount++;
+              break;
+            case TodoStatus.notDone:
+              notDoneCount++;
+              break;
+            case TodoStatus.pending:
+              break;
+          }
+        }
       }
       cursor = cursor.add(const Duration(days: 1));
     }
-    totals.add(total.toDouble());
-    dones.add(done.toDouble());
+
+    done.add(doneCount.toDouble());
+    late.add(lateCount.toDouble());
+    notDone.add(notDoneCount.toDouble());
   }
 
-  return (total: totals, done: dones);
+  return _SeriesData(done: done, late: late, notDone: notDone);
+}
+
+List<double> _valuesByFilter(_SeriesData series, StatisticsTaskFilter filter) {
+  return switch (filter) {
+    StatisticsTaskFilter.done => series.done,
+    StatisticsTaskFilter.late => series.late,
+    StatisticsTaskFilter.notDone => series.notDone,
+  };
+}
+
+_Totals _totals(_SeriesData series) {
+  int sum(List<double> values) {
+    return values.fold(0, (total, value) => total + value.toInt());
+  }
+
+  return _Totals(
+    done: sum(series.done),
+    late: sum(series.late),
+    notDone: sum(series.notDone),
+  );
+}
+
+_Percents _toPercents(_Totals totals) {
+  if (totals.all == 0) {
+    return const _Percents(done: 0, late: 0, notDone: 0);
+  }
+
+  return _Percents(
+    done: (totals.done * 100) / totals.all,
+    late: (totals.late * 100) / totals.all,
+    notDone: (totals.notDone * 100) / totals.all,
+  );
 }

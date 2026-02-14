@@ -138,6 +138,33 @@ class Helper {
 
   static DateTime? get sortRemindTime => _nextReminder(DateTime.now()).remindTime;
 
+  /// Next scheduled occurrence for a reminder after [from].
+  static DateTime? nextOccurrence(RemindModel remind, DateTime from) {
+    return _nextOccurrence(remind, from);
+  }
+
+  /// Collect upcoming occurrences (strictly after [from]) for a reminder.
+  ///
+  /// Useful for scheduling local notifications where platform limits the number
+  /// of pending notifications (e.g. iOS).
+  static List<DateTime> nextOccurrences(
+    RemindModel remind, {
+    DateTime? from,
+    int count = 10,
+  }) {
+    final occurrences = <DateTime>[];
+    var cursor = from ?? DateTime.now();
+
+    for (int i = 0; i < count; i++) {
+      final next = _nextOccurrence(remind, cursor);
+      if (next == null) break;
+      occurrences.add(next);
+      cursor = next.add(const Duration(seconds: 1));
+    }
+
+    return occurrences;
+  }
+
   static ({RemindModel? remind, DateTime? remindTime}) _nextReminder(
     DateTime now,
   ) {

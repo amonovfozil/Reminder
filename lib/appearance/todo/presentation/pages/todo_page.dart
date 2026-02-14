@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder/core/constants/const_data.dart';
@@ -16,40 +15,6 @@ import 'package:reminder/appearance/todo/presentation/widgets/todo_task_editor_s
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
-
-  static const List<TodoTypeOption> typeOptions = [
-    TodoTypeOption(
-      key: 'work',
-      label: 'Work',
-      assetPath: 'assets/images/home/remind.png',
-    ),
-    TodoTypeOption(
-      key: 'meeting',
-      label: 'Meeting',
-      assetPath: 'assets/images/home/users.png',
-    ),
-    TodoTypeOption(
-      key: 'call',
-      label: 'Call',
-      assetPath: 'assets/images/home/emails.png',
-    ),
-    TodoTypeOption(
-      key: 'health',
-      label: 'Health',
-      assetPath: 'assets/images/home/docUser.png',
-    ),
-    TodoTypeOption(
-      key: 'shopping',
-      label: 'Shopping',
-      assetPath: 'assets/images/home/bag.png',
-    ),
-
-    TodoTypeOption(
-      key: 'study',
-      label: 'Study',
-      assetPath: 'assets/images/home/calendar_edit.png',
-    ),
-  ];
 
   @override
   State<TodoPage> createState() => _TodoPageState();
@@ -85,7 +50,7 @@ class _TodoPageState extends State<TodoPage> {
           child: TodoTaskEditorSheet(
             task: task,
             selectedDate: selectedDate,
-            typeOptions: TodoPage.typeOptions,
+            typeOptions: TodoHelper.typeOptions,
             onSave: (title, note, plannedAt, iconKey, typeLabel) {
               context.read<TodoBloc>().add(
                 TodoAddOrUpdateTask(

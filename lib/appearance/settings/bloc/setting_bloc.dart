@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import '../../../utils/theme/theme.dart';
 import '../../../core/storage/app_storage.dart';
+import 'package:reminder/core/notifications/local_notifications_service.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:reminder/core/constants/const_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -90,6 +91,22 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       ),
     );
     await AppStorage.write.noteStatus(event.status);
+    if (!event.status) {
+      await LocalNotificationsService.instance.cancelAll();
+      final reminders = AppStorage.reminders;
+      for (final remind in reminders) {
+        remind.notificationIds = const <int>[];
+      }
+      await AppStorage.write.reminders(reminders);
+      return;
+    }
+
+    final reminders = AppStorage.reminders;
+    for (final remind in reminders) {
+      remind.notificationIds = await LocalNotificationsService.instance
+          .rescheduleReminder(remind, previous: remind);
+    }
+    await AppStorage.write.reminders(reminders);
   }
 
   void _onChangeLocale(_ChangeLocale event, emit) async {
